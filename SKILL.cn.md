@@ -1,11 +1,11 @@
 ---
 name: vlog-ab-director
-description: 以人物为主体的短视频题材与轻剧情创意共创、MiniMax H3导演Skill。从零点子、人设或模糊想法发散题材与故事，多轮融合、确认Creative Brief；明确需求可直接进入Classic/Adaptive/Cinematic策略，最多8个独立15秒任务，人物道具连续性、可选转场、中文VO、无BGM及QC。
+description: 以人物为主体的短视频题材与轻剧情创意共创、MiniMax H3导演Skill。从零点子、人设或模糊想法发散题材与故事，多轮融合、确认Creative Brief；明确需求可直接进入Classic/Adaptive/Cinematic策略，最长300秒成片、有限独立15秒任务，人物道具连续性、可选转场、中文VO、无BGM及QC。
 ---
 
 # Vlog AB Director (电影感 Vlog 双轨视听导演)
 
-`vlog-ab-director` 是面向 **以人物为主体的15–120秒轻剧情、弱剧情及非剧情审美短视频** 的创意策划与视听导演 Skill，支持从零点子多轮共创，也支持直接制作 MiniMax H3 Ref2VA/T2VA 提示词。
+`vlog-ab-director` 是面向 **以人物为主体的15–300秒轻剧情、弱剧情及非剧情审美短视频** 的创意策划与视听导演 Skill，支持从零点子多轮共创，也支持直接制作 MiniMax H3 Ref2VA/T2VA 提示词。
 
 它以**“主观视点（A镜）+ 客观电影运镜（B镜）”**交替为底层视听语法，通过**右手专职持机法则、免持物浮空随行模式、硬切省略哲学、道具守恒定律、2.5 秒黄金节拍器、AI 口语化台词代写**以及**空行级绝对防字幕负向约束**，降低 AI 视频人物动作穿模、手部多指变形、道具瞬移、台词语速失控与画面乱码烧录字幕等问题的发生风险。
 
@@ -19,8 +19,23 @@ description: 以人物为主体的短视频题材与轻剧情创意共创、Mini
 - **VAGUE**（模糊想法）：保留用户的创意核心，按需细化或提出多个变体；不强迫情节、冲突或反转。
 - **READY**（明确任务/完整剧本）：用户已要求直接生成时，构建最小 Creative Brief 后跳过发散，确认类型为 direct_ready；不要求重复确认。用户只要创意、剧本或简案则停止在对应产物。
 - **多轮讨论**必须遵循 [共创协议](references/creative/collaborative_discussion.md)：保留已锁定约束、候选ID、排除项、修订版本；支持比较、融合、改结局、否决与重新发散。用户说“喜欢B”或只回答偏好问题的“OK”不是授权生成；确认当前简案并要求制作，或明确委托直接出成品，才能交接。核心变化撤销旧确认，若用户同时授权新版本则可直接推进；仅修改执行细节走原导演层。
-- **制作门禁**：先按 [Creative Brief](references/creative/creative_brief.md) 形成简案，执行 [Creative QC](references/creative/creative_quality_control.md) 九项硬门禁、十项软检查。只有当前revision获确认/委托、制作意图明确且硬项已解决才进入 T01。未授权或仅讨论阶段不得输出最终H3六字段。非剧情审美可保持无冲突、无对白；人物旅拍以体验为主，不堆空镜。
-- 进入制作后，遵循原 T01–T06；用户明确的Classic/画幅/逐字台词/无手机等硬约束不变，最多8个独立15s任务、净时长预算、真实参考资产、中文VO、无BGM、转场默认仅建议均保留。既有导演策略不按题材机械映射。简案是内部交接，不是第七个H3字段。
+- **制作门禁**：先按 [Creative Brief](references/creative/creative_brief.md) 形成简案，执行 [Creative QC](references/creative/creative_quality_control.md) 九项硬门禁、十项软检查。只有当前revision获确认/委托、制作意图明确且硬项已解决才进入 ED 叙事组织及 T01。未授权或仅讨论阶段不得输出最终H3六字段。非剧情审美可保持无冲突、无对白；人物旅拍以体验为主，不堆空镜。
+- 进入制作后，先执行ED叙事组织再遵循T01–T06；用户明确的Classic/画幅/逐字台词/无手机等硬约束不变，最长300秒成片、有限独立15s素材任务、净时长预算、真实参考资产、中文VO、无BGM、转场默认仅建议均保留。既有导演策略不按题材机械映射。简案是内部交接，不是第七个H3字段。
+
+---
+
+## v2.2 / ED：叙事组织与 Editing Auto（创意确认后、T01之前）
+
+**必须读取 [Editing Director](references/editing/editing_director.md)、[Narrative Architect](references/narrative/narrative_architect.md) 及 [Editing Auto](references/editing/editing_auto_strategy.md)**，根据真实剧本选择叙事组织，而非替换原轻剧情Vlog。
+
+- **CONTINUOUS**：连续轻剧情、日常/情侣互动等有顺序动作链时优先；故事、生成依赖、播放可同序，逐镜及跨任务严格消费T03出入状态，简单输出不强制重排/蒙太奇。
+- **EDITED**：故事需要省略、回忆、平行、蒙太奇等，按真实事件组织素材并在后期选择/重排；其中连续边界仍严格承接。
+- **HYBRID**：局部连续场景按T03承接，章间有理由的时间/地点跳跃、插入等按Story状态及观众线索核对。
+- 三者与Classic/Adaptive/Cinematic摄影策略独立，用户明确连续或剪辑约束优先，不按题材/时长强制分流。15秒可蒙太奇，300秒可全部连续。技术上独立生成不代表剧情解耦。连续链记录依赖，实机按真正保留切点修订后续Prompt。
+- 普通剪法由Agent自主选择，按[决策机制](references/editing/editing_decision_engine.md)检索八类59张剪辑卡，现有46种特殊转场仍按[T03B适配](references/editing/transition_adapter.md)授权；只建议不改Prompt，不为炫技强制手法。
+- [素材预算](references/editing/footage_planning.md)：成片0<T≤300秒、单任务15秒不变，20任务仅为300秒无损新素材下界，不是总任务上限；按用户预算给有限N、主素材/覆盖/备选。已有素材仅使用真实登记。
+- [三轴EDL](references/editing/editing_timeline.md)及[后期方案](references/editing/post_production_plan.md)：单段/简单连续多段原样；复杂重排、插镜、裁切、声画拆分才给具体预剪表。未生成只能给计划，不能声称实测。分批交付必须如实标总任务与待交付。
+- 所有成品最终执行 [Editing QC](references/editing/editing_quality_control.md) 与T06；创意未获确认或只要建议时不得越权制作。改变核心剧情返回REOPEN。
 
 ---
 
@@ -40,20 +55,20 @@ description: 以人物为主体的短视频题材与轻剧情创意共创、Mini
 - 用户明确指定 Classic 时，**固定六镜、时间边界、顺序不得被 Auto 覆盖**。互斥要求（如同时指定六镜严格 AB 与完全禁止 A 镜）应指出冲突，而不是暗中丢弃其中一条。
 - **生成视频始终无 BGM**，只保留环境声、人声与 Foley，`non_diegetic_music: N/A`；用户要求音乐氛围时只允许另提后期配乐建议。
 - **特殊跨 Part 转场不是必需项**。没有合适叙事理由时正常硬切；T03B 才实现依场景推荐与镜头成对设计，不能为增加「神转场」而硬塞镜头。
-- 最终成片上限规划为 **120 秒（最多 8 个独立 15 秒 Part）**；**T02 已补齐多段规划与可变分镜的文字时序规则，T03 已补齐镜内状态与跨 Part 交接规则**，Adaptive/Cinematic 完整 Prompt 与 3–8 Part 装配已在 T05 接入。**不得误称已能一次生成 120 秒视频或 H3 已实测精确非等长切镜**。
+- 最终成片上限为300秒；每次H3独立15秒，有限素材预算，不承诺一次生成长片。原120秒八段示例保留，连续Vlog不因扩容而重排。
 - 默认仍向用户交付可复制的 MiniMax H3 六段式 Prompt，不强制展示内部策略表/QC；当前仅完成策略路由，对未完成的动态模板不得宣称已经实机验证。
 - 用户报告已成功的**中文自然语言画外音 + `<d>[Chinese] ...</d>` + `while her lips remain completely closed.`** 是有效兼容写法；完整语音规范已在 T04 统一，不得仅因没有固定英文短语而误判失败。
 
 ---
 
-## v2 / T02：时长、分镜预算与 120 秒多 Part 规划
+## v2 / T02：时长、分镜预算与300秒成片规划
 
 **步骤 0 确定模式后、正式撰写镜头前，必须读取 [`references/timing_engine.md`](references/timing_engine.md)。** T02 负责可执行的**文字时间轴规划**，不是自动剪辑工具或真实视频生成程序。
 
 - **Classic AB**：单 Part 始终 15.000 秒、六镜、每镜 2.500 秒、A1-B1-A2-B2-A3-B3。原有 15s/30s 模板的镜序和切点不可被 Auto 或节奏优化覆盖。
 - **Adaptive AB / Cinematic-led**：先按故事列镜头职责，再决定 A/B 比例、镜数和每镜持续时间，允许连续 A-A 或 B-B，**每个 15s Part 的全部镜长必须精确合计 15.000s**。镜头时长要容纳主要动作、对白窗口与情绪留白，不强制六镜或 2.5s；24fps 时可用整数帧预算再换算毫秒时间码。
-- **长片分段**：目标净时长 `0<T≤120s`；用 `ceil(T/15)` 规划 1–8 个独立 **15s 生成任务**。每个 Part 镜头局部时间从 `00:00.000` 重置；另维护全片名义素材位置和剪后累计时间。**本期不支持一次生成 120s**，也不宣称 H3 原生可以一次生成 8/10/12s；这些是预留的未来单任务时长。
-- **先算净时长再承诺交付**：逐 Part 用 `edit_out−edit_in` 计算保留时长，再累计成片净时长，需考虑已知裁切/实际重叠。**8×15s=120s 只是素材名义长度**；如果剪辑裁掉部分画面，不能保证剪后仍恰好 120s；遇到不可满足的精确时长应明确指出并给出可行选择。
+- **长片分段**：0<T≤300秒；无复用新素材无损下界ceil(T/15)，实际任务按有限素材预算。每任务0–15s局部闭合；故事、生成、剪辑三轴可以同序也可不同。不能声称H3一次生成长片或已支持原生8/10/12秒。
+- **先算净时长再承诺交付**：按实际保留区间与EDL计算净时长，普通硬切无预设损耗；20×15=300秒零余量，裁切需补镜或短版。额外素材显式预算，复用须叙事理由，声音重叠不扣画面长度。
 - **不因长片强制转场**：任意 Part 边界都可 `none` / 自然硬切；T03B 已实现**按场景可选的导演决策与被采纳时的双端镜头规划规则**；未选用时不预设转场损耗。
 - **声音与交付**：生成仍无 BGM，`non_diegetic_music: N/A`；台词时长随镜头实际可说话窗口调整（Classic 既有字数规则保留）。**T02 只落地分镜预算与长片规划规则；T05 已交付 Adaptive/Cinematic 六段式模板与多 Part 装配规则**。时间码是导演意图，不保证 H3 实际逐帧命中。
 
@@ -66,7 +81,7 @@ description: 以人物为主体的短视频题材与轻剧情创意共创、Mini
 - **每镜三态闭合**：内部先列 `entry_state → visible_action → exit_state`。锁定 `character_id`、身份/服饰、姿态/位置、`camera_mode`、各角色左右手、`prop_id` 与唯一所在位置、`scene_id`、固定锚点和光照；镜内只安排时长允许的真实动作。
 - **镜间切点事件**：如果下一镜切入时已经收伞、装包、进门或举起自拍手机，明确 `cut_event` 的 `before → after`。**合法硬切省略是允许的，但不能把同一道具无事件瞬移、变色或复制**。
 - **手部资源约束**：有实际现代自拍手机的主角通常右手持机、左手交互；同手不能同时拿两个互斥道具。纯第三人称 Cinematic、古风或用户明确不要手机时，**不编造手机**；配角分别建自己的手部状态。肩背包不当然占用手。
-- **每段必有交接**：对所有相邻 `P1→P2` … `P7→P8`，前 Part 末镜输出内部 `handoff_out`，后 Part 首镜消费其人物/手/道具/场景快照。分别标记 `same_moment`、`cut_ellipsis`、`time_jump` 或 `location_jump`；有时间或地点跳跃时写明变化事件，不假装同一瞬间无缝。
+- **逐边界承接**：CONTINUOUS及HYBRID连续链严格T03，前段保留出点→后段入点；独立时域/联想/回忆按Story状态版本与合法事件核对，禁止无事件瞬移。每个实际播放边界或生成连续依赖都需检查；不因编号相邻强制承接，也不因任务独立强制断开。
 - **场景锚点不瞬移**：放在唱片店伞桶的伞必须留在唱片店；湖边镜头无需显示旧店伞桶。相同人物跨场景可改变光照、姿势和衣着，但**改变必须有可解释事件**，身份与关键道具外观不能凭空替换。
 - **参考图逐任务重编号**：为每个独立 15s Part 建立实际上传的 `asset_id → <Picture N>` 映射；所引用的图必须存在于**当前任务**，编号从 1 起连续。P2 只上传全局角色图 A 与场景图 C 时，C 必须是 `<Picture 2>`，绝不能沿用全局资产序号写 `<Picture 3>`。无图的 T2VA 不伪造 Picture 引用。
 - **不强制特殊转场**：T03 负责合法物理/叙事交接，T03B 已增加按场景评估的 `none / suggest_only / planned_pair` 路由；只有用户明确采纳或明确授权导演实际安排时才成对改写镜头，**不是每个 Part 的固定要求**。
@@ -78,15 +93,15 @@ description: 以人物为主体的短视频题材与轻剧情创意共创、Mini
 
 ## v2 / T03B：场景驱动的可选创意转场（按需推荐）
 
-**每个相邻 Part 的状态交接完成后，必须读取 [`references/transition_director.md`](references/transition_director.md)，并按需查询 [`docs/transition-techniques-library-v2.md`](docs/transition-techniques-library-v2.md) 的 46 种拍摄/剪辑技巧。** T03B 的转场是**导演建议和授权使用后的成对镜头设计**，不是固定模板效果，也不是每个 Part 的必需动作。
+**每个实际播放边界的状态规划完成后，必须读取 [`references/transition_director.md`](references/transition_director.md)，并按需查询 [`docs/transition-techniques-library-v2.md`](docs/transition-techniques-library-v2.md) 的 46 种拍摄/剪辑技巧。** T03B 的转场是**导演建议和授权使用后的成对镜头设计**，不是固定模板效果，也不是每个 Part 的必需动作。
 
-- **先比较普通硬切**：如果对话连贯、情绪需要留白、动作/地点切换自然，直接 `none`；不用为 120 秒、8 个 Part 强制安排 7 次神转场。
+- **先比较普通硬切**：如果对话连贯、情绪需要留白、动作/地点切换自然，直接 `none`；不用因片长或任务数强制安排神转场。
 - **Auto 默认仅建议**：场景中真实存在可匹配的树干/人物遮挡、同向运镜、连续动作、同形物体、水面/门洞/倒影等，且对叙事有价值时，通常使用 `suggest_only`，在完整 Prompt **之外**给出简短可选技巧与理由，**不修改任意 Part 的尾镜和首镜**。
 - **只在用户明确选用或授权导演直接应用时才 `planned_pair`**：同时设计前 Part **最后一镜 outgoing**、后 Part **第一镜 incoming**，确保摄影机高度、方向/速度、画面遮挡/纹理、动作相位、实际硬切剪点、人物道具/参考资产交接、编辑裁切预算、风险与失败回退都相容。
 - **典型技巧**：遮挡擦镜 OC、运镜甩镜 CM、动作接力 AC、构图/形状匹配 GM、水面/门框/镜面穿越 PT、真实失焦/倒影 OT。**排除淡入淡出、交叉叠化、软件预设闪白/故障效果**；不将纯音频 J/L Cut 伪装成拍摄神转场。
-- **高风险与固定约束**：像水池穿越 PT01 这种复杂技巧，需要两段独立镜头在水纹覆盖处真正硬切，不能声称 H3 自动跨空间一镜到底。Classic 的六镜、2.5s 时点和用户指定内容不能强改；若会破坏物理连续性或剪后精确 120s 的预算，回退为 `suggest_only` 或 `none`。
+- **高风险与固定约束**：像水池穿越 PT01 这种复杂技巧，需要两段独立镜头在水纹覆盖处真正硬切，不能声称 H3 自动跨空间一镜到底。Classic 的六镜、2.5s 时点和用户指定内容不能强改；若会破坏物理连续性或剪后精确目标时长的预算，回退为 `suggest_only` 或 `none`。
 - **始终不生成 BGM**：只允许环境音、人声、Foley；`non_diegetic_music: N/A`。人物画外音的合法中文自然写法继续保留，不为转场更改已验证口型语义。
-- **能力边界**：本阶段已定义转场选择及双端规划契约，**3–8 Part 正式完整 H3 Prompt 模板装配已在 T05 接入**；效果还未经过 MiniMax H3 实机验证。默认输出仍以可复制 Prompt 为主，详细状态与 QC 按需给出。
+- **能力边界**：本阶段已定义转场选择及双端规划契约，**多任务 H3 Prompt 模板装配已在 T05 接入**；效果还未经过 MiniMax H3 实机验证。默认输出仍以可复制 Prompt 为主，详细状态与 QC 按需给出。
 
 **内部交接必须符合**：[`references/continuity_handoff.md`](references/continuity_handoff.md) 第 10 节；参考案例：[T03B 转场边界规划样例](templates/transition_boundary_examples.md)；回归测试：[T03B 转场用例](tests/transition-cases.md)。
 
@@ -120,7 +135,7 @@ description: 以人物为主体的短视频题材与轻剧情创意共创、Mini
 
 ---
 
-## 工作流：Creative Engine → 步骤 0–5
+## 工作流：Creative Engine → Editing Auto → 步骤 0–5
 
 ```text
 [CE: 创意讨论 / 已明确任务直通 → 当前简案QC及制作授权] ──> [步骤 0: Auto 导演模式选择] ──> [步骤 1: 需求定位与分类] ──> [步骤 2: 状态机与资产锁定] ──> [步骤 3: 节奏与台词规划] ──> [步骤 4: 六段式装配] ──> [步骤 5: 统一QC]
@@ -133,7 +148,7 @@ description: 以人物为主体的短视频题材与轻剧情创意共创、Mini
 2. **时长模式分类**：
    - **Classic 15 秒单片**：六镜 A-B-A-B-A-B、每镜 2.500 秒；
    - **Classic 30 秒双段**：两个独立 15s 视频生成任务，每段遵循严格 Classic AB；
-   - **v2 长片目标**：成片最多 120 秒，由 1–8 个独立 15s Part 规划；T02 已提供逐段时间轴与剪辑净时长账本，**T05 已接入完整多段 H3 Prompt 装配规则**。
+   - **v2 长片目标**：成片最多300秒，每任务独立15秒，有限素材预算；T02 已提供逐段时间轴与剪辑净时长账本，**T05 已接入完整多段 H3 Prompt 装配规则**。
 3. **角色模式**：
    - **单人模式**：专注单人情绪转换与生活环境交互；
    - **双人模式**：强调默契互动、闺蜜反差与视线交流。
@@ -149,7 +164,7 @@ description: 以人物为主体的短视频题材与轻剧情创意共创、Mini
    - 场景锚点：脱下的鞋、放下的包、插在伞桶的雨伞固定在场景同一干燥位置，作为背景参照物；
    - 道具闭环：贝壳、拍立得、相纸、黑胶唱片、书籍等关键道具遵循“引入→使用→收纳→复现”的完整物理链。
 4. **单段任务资产独立紧凑编号铁律（Per-Task Asset Re-indexing Rule）**：
-   - **核心原理**：在 30–120 秒多 Part 规划中，每一段在 MiniMax H3 中都是一个**完全独立的 15 秒视频生成任务（Task）**，30 秒两段式只是经典兼容示例。AI 模型是根据该任务实际上传的参考图数量，从 1 开始按顺序匹配 `<Picture 1>`、`<Picture 2>`...；
+   - **核心原理**：在 30–300秒多任务规划中，每一段在 MiniMax H3 中都是一个**完全独立的 15 秒视频生成任务（Task）**，30 秒两段式只是经典兼容示例。AI 模型是根据该任务实际上传的参考图数量，从 1 开始按顺序匹配 `<Picture 1>`、`<Picture 2>`...；
    - **重编号约束**：若全局有图1人物、图2车库、图3超市，Part 1 上传图1和图2（`<Picture 1>`/`<Picture 2>`）；Part 2 仅上传图1和图3，**则图3在 Part 2 提示词中必须重编号为 `<Picture 2>`**！不得引用本次未上传的 `<Picture 3>`；无图的任务不编造 Picture 引用。完整映射和检查见 [`references/continuity_handoff.md`](references/continuity_handoff.md)。
 5. **绝对画面防字幕与防UI负向铁律（Zero-Text & Clean Screen Enforcement）**：
    - 降低 AI 视频因包含 `<d>` 对白标签而容易在画面中“烧录字幕、生成乱码水印与虚假UI”的通病；
@@ -201,13 +216,15 @@ description: 以人物为主体的短视频题材与轻剧情创意共创、Mini
 
 **必须读取 [quality_control.md](references/quality_control.md)**。以实际用户约束及 T01–T05 的导演计划、状态表、当前任务上传清单和最终 Prompt 为依据，执行 H01–H15 硬门禁、S01–S10 软风险检查。硬性失败先修复再复核受影响镜头和相邻 Part，不能用软性评分抵消错误；缺必要输入或互斥约束未解时明确指出，不能编造通过结论。
 
-重点：局部 15 秒时间闭合、Classic 六镜兼容、独立资产编号、人物/手/道具守恒、中文 VO 音画语义、无 BGM、六字段完整、真实场景文字的限定例外、最长 8 个独立任务和净时长账本。none/suggest_only 不强制特殊转场；planned_pair 才检查双端、剪点、授权与回退。Cinematic 全 B、零台词均合法。
+重点：局部 15 秒时间闭合、Classic 六镜兼容、独立资产编号、人物/手/道具守恒、中文 VO 音画语义、无 BGM、六字段完整、真实场景文字的限定例外、≤300秒成片、有限任务预算与净时长账本。none/suggest_only 不强制特殊转场；planned_pair 才检查双端、剪点、授权与回退。Cinematic 全 B、零台词均合法。
 
 默认只交付通过文本 QC 的完整 Prompt 与必要上传/交接/重要风险提示；详细 QC 仅按需展示。区分 S（结构）、L（语义审查）、E（用户单例经验）、V（真实视频）。仓库可执行静态回归脚本 `node tests/qc-check.mjs`；不把该结果当成任意自然语言或 H3 渲染的可靠性证明。T07 实机须按 [验证协议](docs/h3-validation-protocol.md) 提供真实样本才可升级正式版本。
 
 ---
 
 ## 模板与参考资源导航
+
+- **ED 叙事组织及剪辑**：[Narrative Architect](references/narrative/narrative_architect.md)、[Editing Auto](references/editing/editing_auto_strategy.md)、[素材预算](references/editing/footage_planning.md)、[EDL](references/editing/editing_timeline.md)、[Editing QC](references/editing/editing_quality_control.md)；[详细设计](docs/design-v2.2-editing-director.md) / [实施计划](docs/implementation-plan-v2.2-editing-director.md)。
 
 - **CE 创意入口与讨论**：[creative_director.md](references/creative/creative_director.md)、[collaborative_discussion.md](references/creative/collaborative_discussion.md)；[Creative Brief](references/creative/creative_brief.md)、[创意QC](references/creative/creative_quality_control.md)。
 - **CE 资料与组合**：[题材](references/creative/genre_library.md)、[叙事](references/creative/micro_story_structures.md)、[种子](references/creative/creative_seed_library.md)、[人物关系](references/creative/character_interaction_library.md)、[情绪](references/creative/emotional_arc_library.md)、[组合机制](references/creative/creative_combination_engine.md)。[设计](docs/design-v2.1-creative-engine.md) / [计划](docs/implementation-plan-v2.1-creative-engine.md) / [创意回归](tests/creative-cases.md)。
@@ -218,7 +235,7 @@ description: 以人物为主体的短视频题材与轻剧情创意共创、Mini
 - **T03 交接样例与正反测试**：[`templates/segment_handoff_example.md`](templates/segment_handoff_example.md)、[`tests/continuity-cases.md`](tests/continuity-cases.md)。
 - **T03B 可选转场导演（只有选用才成对改写镜头）**：[`references/transition_director.md`](references/transition_director.md)；[46 种技巧库](docs/transition-techniques-library-v2.md)；[回归测试](tests/transition-cases.md)。
 - **T04 声画与对白导演（无 BGM、中文 VO、J/L-Cut）**：[`references/audio_director.md`](references/audio_director.md)；[回归用例](tests/audio-cases.md)。
-- **T05 H3 装配器**：[model_h3_adapter.md](references/model_h3_adapter.md)；[15s Adaptive](templates/template_15s_adaptive.md)、[30s Adaptive](templates/template_30s_adaptive_twopart.md)、[15s Cinematic-led](templates/template_15s_cinematic.md)、[3–8 Part 完整装配及八段示例](templates/template_multipart_15s_sequence.md)。旧 Classic 模板保留固定六镜并改用无占位符完整样例。
+- **T05 H3 装配器**：[model_h3_adapter.md](references/model_h3_adapter.md)；[15s Adaptive](templates/template_15s_adaptive.md)、[30s Adaptive](templates/template_30s_adaptive_twopart.md)、[15s Cinematic-led](templates/template_15s_cinematic.md)、[多任务装配及120秒八段兼容示例](templates/template_multipart_15s_sequence.md)。旧 Classic 模板保留固定六镜并改用无占位符完整样例。
 
 
 - **T06 质量门禁与测试**：[quality_control.md](references/quality_control.md)、[qc-check.mjs](tests/qc-check.mjs)；[T07 实机验收协议](docs/h3-validation-protocol.md)。
