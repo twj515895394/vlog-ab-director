@@ -1,6 +1,6 @@
 ---
 name: vlog-ab-director
-description: Direct MiniMax H3 Ref2VA/T2VA cinematic Vlog prompts using an Auto routing step that chooses Classic AB, Adaptive AB, or Cinematic-led. Preserve strict 6-shot 2.5s Classic timing when explicitly requested, with right-hand camera logic, prop continuity, no-BGM audio, Chinese voiceovers, and six-section prompts. Current complete templates support 15s/30s Classic; multipart up to 120s and adaptive timing/templates are staged for later implementation.
+description: Direct MiniMax H3 Ref2VA/T2VA cinematic Vlog prompts using an Auto routing step that chooses Classic AB, Adaptive AB, or Cinematic-led. Preserve strict 6-shot 2.5s Classic timing when explicitly requested, with right-hand camera logic, prop continuity, no-BGM audio, Chinese voiceovers, and six-section prompts. Current complete templates support 15s/30s Classic; T02 defines adaptive timing and multipart 15–120s planning, while full adaptive/multipart H3 templates remain staged for T05.
 ---
 
 # Vlog AB Director (电影感 Vlog 双轨视听导演)
@@ -27,9 +27,22 @@ description: Direct MiniMax H3 Ref2VA/T2VA cinematic Vlog prompts using an Auto 
 - 用户明确指定 Classic 时，**固定六镜、时间边界、顺序不得被 Auto 覆盖**。互斥要求（如同时指定六镜严格 AB 与完全禁止 A 镜）应指出冲突，而不是暗中丢弃其中一条。
 - **生成视频始终无 BGM**，只保留环境声、人声与 Foley，`non_diegetic_music: N/A`；用户要求音乐氛围时只允许另提后期配乐建议。
 - **特殊跨 Part 转场不是必需项**。没有合适叙事理由时正常硬切；T03B 才实现依场景推荐与镜头成对设计，不能为增加「神转场」而硬塞镜头。
-- 最终成片上限规划为 **120 秒（最多 8 个独立 15 秒 Part）**，但 **T01 只识别目标范围**；多段时长、可变镜头时间轴、状态交接和 Adaptive/Cinematic 正式提示词模板分别留给 T02、T03、T05。**不得误称 T01 已支持生成完整 120 秒视频或所有动态镜头时间轴**。
+- 最终成片上限规划为 **120 秒（最多 8 个独立 15 秒 Part）**，；**T02 已补齐多段规划与可变分镜的文字时序规则**，实际人物/道具状态交接留给 T03，Adaptive/Cinematic 完整 Prompt 模板与 3–8 Part 装配留给 T05。**不得误称已能一次生成 120 秒视频或 H3 已实测精确非等长切镜**。
 - 默认仍向用户交付可复制的 MiniMax H3 六段式 Prompt，不强制展示内部策略表/QC；当前仅完成策略路由，对未完成的动态模板不得宣称已经实机验证。
 - 用户报告已成功的**中文自然语言画外音 + `<d>[Chinese] ...</d>` + `while her lips remain completely closed.`** 是有效兼容写法；完整语音规范在 T04 继续统一，不得仅因没有固定英文短语而误判失败。
+
+---
+
+## v2 / T02：时长、分镜预算与 120 秒多 Part 规划
+
+**步骤 0 确定模式后、正式撰写镜头前，必须读取 [`references/timing_engine.md`](references/timing_engine.md)。** T02 负责可执行的**文字时间轴规划**，不是自动剪辑工具或真实视频生成程序。
+
+- **Classic AB**：单 Part 始终 15.000 秒、六镜、每镜 2.500 秒、A1-B1-A2-B2-A3-B3。原有 15s/30s 模板的镜序和切点不可被 Auto 或节奏优化覆盖。
+- **Adaptive AB / Cinematic-led**：先按故事列镜头职责，再决定 A/B 比例、镜数和每镜持续时间，允许连续 A-A 或 B-B，**每个 15s Part 的全部镜长必须精确合计 15.000s**。镜头时长要容纳主要动作、对白窗口与情绪留白，不强制六镜或 2.5s；24fps 时可用整数帧预算再换算毫秒时间码。
+- **长片分段**：目标净时长 `0<T≤120s`；用 `ceil(T/15)` 规划 1–8 个独立 **15s 生成任务**。每个 Part 镜头局部时间从 `00:00.000` 重置；另维护全片名义素材位置和剪后累计时间。**本期不支持一次生成 120s**，也不宣称 H3 原生可以一次生成 8/10/12s；这些是预留的未来单任务时长。
+- **先算净时长再承诺交付**：逐 Part 用 `edit_out−edit_in` 计算保留时长，再累计成片净时长，需考虑已知裁切/实际重叠。**8×15s=120s 只是素材名义长度**；如果剪辑裁掉部分画面，不能保证剪后仍恰好 120s；遇到不可满足的精确时长应明确指出并给出可行选择。
+- **不因长片强制转场**：任意 Part 边界都可 `none` / 自然硬切；本轮**不实现 T03B 特殊转场技巧的成对镜头设计**，也不预设转场损耗。
+- **声音与交付**：生成仍无 BGM，`non_diegetic_music: N/A`；台词时长随镜头实际可说话窗口调整（Classic 既有字数规则保留）。**T02 只落地分镜预算与长片规划规则；T05 才交付 Adaptive/Cinematic 的正式六段式完整模板及多 Part Prompt 装配**。时间码是导演意图，不保证 H3 实际逐帧命中。
 
 ---
 
@@ -60,7 +73,7 @@ description: Direct MiniMax H3 Ref2VA/T2VA cinematic Vlog prompts using an Auto 
 2. **时长模式分类**：
    - **Classic 15 秒单片**：六镜 A-B-A-B-A-B、每镜 2.500 秒；
    - **Classic 30 秒双段**：两个独立 15s 视频生成任务，每段遵循严格 Classic AB；
-   - **v2 长片目标**：成片最多 120 秒，由独立 15s Part 组成；当前 T01 只判定导演策略，完整多段编排由 T02/T05 落地，不能当作现有已完成的视频生成能力。
+   - **v2 长片目标**：成片最多 120 秒，由 1–8 个独立 15s Part 规划；T02 已提供逐段时间轴与剪辑净时长账本，**T05 才负责将其装配为完整多段 H3 Prompt**。
 3. **角色模式**：
    - **单人模式**：专注单人情绪转换与环境互动；
    - **双人模式**：强调红白双生、前后辈默契、闺蜜反差与视线互动。
@@ -95,12 +108,12 @@ description: Direct MiniMax H3 Ref2VA/T2VA cinematic Vlog prompts using an Auto 
 *详细时序与台词预算参阅 `references/metronome_dialogue_timings.md`*
 1. **Classic AB 2.5 秒节拍器（仅此模式强制）**：
    - 15 秒六镜，起点 0.000、2.500、5.000、7.500、10.000、12.500 秒，15.000 秒结束；30 秒的两个 Part 各自局部重置为 0 秒。
-   - **Adaptive AB / Cinematic-led**：先遵循导演策略决定 A/B 镜头职责，不能把 Classic 交替与六镜限制当作默认；可变镜头时长的完整预算与标准模板由 T02/T05 实施，暂不承诺已验证的非等长时间码。
+   - **Adaptive AB / Cinematic-led**：先决定 A/B 职责与镜数，再按 [`references/timing_engine.md`](references/timing_engine.md) 给每镜分配正数时长，**每段合计 15.000s**；可变时间预算已在 T02 定义，**正式模板仍由 T05 交付**。分镜时间戳不等于模型已实测逐帧执行。
 2. **AI 智能代写台词（全自动口语化编排）**：
    - **出镜直言（A镜）**：直视镜头说话，嘴唇同步，生活感强；
    - **闭嘴画外音（B镜）**：允许用户实测有效的自然中文表述，例如 `此时她以画外音心声说道：<d>[Chinese] 果然如入深谷，甚是清净。</d> while her lips remain completely closed.`；英文 `says in an off-screen voiceover:` 可用但**不是必须出现的字面短语**。说话人、声音来源与嘴唇闭合要求必须清楚，T04 将同步完善语音细则。
    - **跨镜延续（L-Cut）**：A 镜说完前半句，B 镜画面切走声音不中断，使用 `<scenetrans>` 跨镜连接；
-   - **Classic 2.5s 台词预算**：每镜中文 6–12 字、英文 4–8 词；15 秒内推荐只有 2–3 镜说话，其余镜头留给环境音与动作。Adaptive/Cinematic 的时长与对白预算需根据实际镜头长度规划，交由 T02/T04 实施。
+   - **Classic 2.5s 台词预算**：每镜中文 6–12 字、英文 4–8 词；15 秒内推荐只有 2–3 镜说话，其余镜头留给环境音与动作。**Adaptive/Cinematic 根据每镜可说话窗口预算台词**：先扣除停顿/动作，再以约 3–4 中文字/秒作为审慎的起算建议；T04 再统一完善声音语法。
 
 ### 步骤 4：标准化提示词装配输出
 输出完整且严密的六段式提示词（默认按照用户要求输出纯中文或英文版本）：
@@ -116,7 +129,8 @@ description: Direct MiniMax H3 Ref2VA/T2VA cinematic Vlog prompts using an Auto 
 ## 模板与参考资源导航
 
 - **默认 Auto 模式与优先级（T01）**：[`references/director_strategy.md`](references/director_strategy.md)
-- **注意**：现有 15s/30s 模板目前仅为 Classic AB 兼容模板；Adaptive/Cinematic 的正式时间与装配模板将在 T02/T05 实现。
+- **T02 已落地分镜时间预算与多 Part 净时长规划**：[`references/timing_engine.md`](references/timing_engine.md)。
+- **注意**：现有 15s/30s 模板目前仍仅为 Classic AB 兼容模板；Adaptive/Cinematic 的**正式完整 Prompt 模板及 3–8 Part 装配留给 T05**，不得把 T02 的时间规划示例当成真实 H3 成品模板。
 
 
 - 状态机与防穿帮法则：`references/rules_state_machine.md`
