@@ -23,3 +23,8 @@
 - [详细设计](design-v2.1-creative-engine.md) 与 [实施计划](implementation-plan-v2.1-creative-engine.md)，在用户 CRLF 修复基线上进行。
 - 新增四种创意入口、12题材、10结构、30种子、9关系、13情绪路径，组合与多轮共创协议、Creative Brief、独立创意QC；两份Skill入口前置创意门禁，充分明确的直接生成路径保留。
 - 仍为候选实现。原v2 QC与H3实机验收边界保持；具体静态回读结果与未执行项见v2.1实施计划及创意回归。
+
+
+## v2.2 Editing Director 扩展
+
+新增连续/剪辑/混合叙事组织Auto（原Vlog仍一等路径）、三时间轴、300秒成片上限与分离素材预算、12种叙事结构、59张剪辑技巧卡与原46转场适配、素材/EDL/后期/QC。开发候选版本，实机仍未验收。历史120秒/8段为兼容样例而非现行上限。详见 [设计](design-v2.2-editing-director.md) 与 [计划](implementation-plan-v2.2-editing-director.md)。
