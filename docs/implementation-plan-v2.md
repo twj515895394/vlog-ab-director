@@ -1,5 +1,7 @@
 # Vlog AB Director v2 分阶段实施计划
 
+> 本文为历史v2实施证据，现行时长及剪辑兼容规范见 [v2.2实施](implementation-plan-v2.2-editing-director.md)。不改变此前真实验收未完成结论。
+
 > 状态：**In Progress / 分阶段实施中**（2026-11-18：T00、T01、T02、T03、T03B、T04、T05 已提交；T06 已实施 QC；T07 文档与验收准备已完成，H3 实机及正式发布门禁未通过）  
 > 制定日期：2026-11-18  
 > 设计依据：[v2 详细设计（已确认）](design-v2-director-engine.md)  
