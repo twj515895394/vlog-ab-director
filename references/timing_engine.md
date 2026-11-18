@@ -189,7 +189,7 @@ audio_policy: no BGM in generation
 - **T01**：确定导演策略、用户硬约束、成片时长上限。
 - **T02（当前）**：输出单任务镜头时间表、1–8 Part 规划及名义/净时长编辑账本；这是 **Skill 的规划规则**，不是硬性执行代码。
 - **T03（已接入规范）**：参见 [continuity_handoff.md](continuity_handoff.md)，检查每镜 `entry/action/exit`、手/道具、场景锚点和各相邻 Part 的合法交接；仍需 T06/T07 验证实际效果。
-- **T03B**：只在合适时建议创意剪辑转场，已选用才更新两端镜头和实际剪辑损耗。
+- **T03B（已接入文字规则）**：见 [transition_director.md](transition_director.md)；只有在用户采纳/授权且可行时才安排创意剪辑转场和两端镜头。编辑账本**只扣实际确认的裁切/重叠损耗**，`none` 或 `suggest_only` 不自动产生额外剪辑损失。
 - **T04**：声音/对白/画外音的完整模型语法和冲突检查。
 - **T05**：把该时间表编译为可复制的 Adaptive/Cinematic H3 Prompt，并生成 3–8 Part 成套 Prompt；在 T05 完成前不要声明该完整能力已交付。
 - **T06/T07**：文本 QC 与真实 H3 视频样本验证。数学闭合不能保证模型真正在精确时间点切镜。
