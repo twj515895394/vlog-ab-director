@@ -89,7 +89,7 @@ AI 视频模型在 2~3 秒内极其难以连续且合理地完成复杂的物理
 
 ## 六、 单段任务资产独立紧凑重编号法则（Per-Task Asset Re-indexing Rule）
 
-这是**任何 2–8 Part 多段生成任务**中最关键的工程避坑指南（30 秒只是双 Part 兼容示例）：
+这是**任何多任务连续动作链**中最关键的工程避坑指南（30 秒只是双 Part 兼容示例）：
 
 1. **生成引擎的任务独立性**：
    * 在 MiniMax H3 或同类模型中，Part 1 和 Part 2 是通过两次独立创建任务（New Task）来分别生成的；
@@ -122,12 +122,14 @@ AI 视频模型在 2~3 秒内极其难以连续且合理地完成复杂的物理
 
 ## 八、 T03 多 Part 连续性交接（Segment Handoff）
 
-1. 对 2–8 个独立 15 秒任务中的**每一对相邻 Part**，从前一段最后一镜的 `exit_state` 生成 `handoff_out`，后一段的第一镜 `entry_state` 逐项消费。
+1. 按实际剧本及播放边界，CONTINUOUS/HYBRID连续链从前段实际保留出点的exit_state生成handoff_out，后段入点消费；剪辑型合法时域跳跃按Story状态版本核对，不能强制同一瞬间承接。
 2. 必须明确 `boundary_type`：`same_moment` / `cut_ellipsis` / `time_jump` / `location_jump`。前两类侧重物理连续；后两类允许有原因的光照/场景/服装变化，但稳定身份不可凭空替换。
 3. 交接至少包含人物身份/造型、手与道具、场景锚点、光照与时段、音频是否接续、当前 Part 参考图上传顺序；如有不同，明确 `allowed_changes` 及事件。
 4. 如果 B 镜低握手机、下一段 A 镜举机，右手占用可以保持不变，**举起手机是切点动作**，不属于手机消失后重新出现。
 5. **普通硬切始终有效**。T03 只维护叙事与物理状态，不强制使用遮挡转场、甩镜、穿越水池等技巧；是否建议特殊转场由已接入的 [T03B 转场导演规则](transition_director.md) 决定；默认只是推荐，不改原 Prompt。
 6. 用户默认只需要完整可复制的 H3 Prompt、必要的下一段参考图上传/状态提醒；内部状态表与交接字段按需展示。
-7. 时长与参考图按 T02/各任务局部映射处理。**最多 120 秒是成片规划上限，不是一次生成时长**。
+7. 时长与参考图按 T02/各任务局部映射处理。**最多300秒是成片规划上限，不是一次生成时长**。
 
 **格式参考**：[`continuity_handoff.md`](continuity_handoff.md)、[`templates/segment_handoff_example.md`](../templates/segment_handoff_example.md)。**完整多段 H3 Prompt 模板在 T05**，上述内容不作为新增的 H3 顶层字段输出。
+
+叙事组织不等于摄影模式；详见 [Editing Timeline](editing/editing_timeline.md)。连续Vlog仍严格承接。
