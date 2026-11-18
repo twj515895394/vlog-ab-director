@@ -5,7 +5,7 @@
 ## 1. 从计划到成品：执行顺序
 
 1. 读取 director_strategy、timing_engine、continuity_handoff、transition_director、audio_director，依次得到唯一导演模式、每 Part 镜头表、首尾状态、边界决策及声音事件。
-2. 根据目标净时长 T 规划 N=ceil(T/15)，1–8 个独立 15 秒任务；任何任务内时间从 0 重置到 15.000。名义素材 15×N，不是剪后时长。非整倍数目标列出裁切区间；若余量不足，不承诺精确时长。
+2. 根据 [素材预算](editing/footage_planning.md) 与实际剧情，目标0<T≤300，明确有限N个独立15秒任务；ceil(T/15)仅为新素材无损下界；任何任务内时间从 0 重置到 15.000。名义素材 15×N，不是剪后时长。非整倍数目标列出裁切区间；若余量不足，不承诺精确时长。
 3. 为每 Part 单独维护实际上传 manifest，按上传顺序从 Picture 1 编号。先锁定全局人物/道具身份，再转换任务内局部编号，不能用全局序号替代。
 4. 选择下表的路径，重新撰写每个字段；样例仅作为结构和镜头表达参考，不默认采用相同人物、地点、道具、风格、分辨率或对白。
 5. 逐 Part 生成独立完整六字段文本；禁止“其余同上”“参见前一 Part”代替本次任务的身份、场景、声画、首尾状态或缺失字段。
@@ -21,7 +21,7 @@
 | 15s Adaptive AB | [template_15s_adaptive.md](../templates/template_15s_adaptive.md) |
 | 30s Adaptive AB | [template_30s_adaptive_twopart.md](../templates/template_30s_adaptive_twopart.md) |
 | Cinematic-led 单段 | [template_15s_cinematic.md](../templates/template_15s_cinematic.md) |
-| 3–8 Part 任意已选模式 | [template_multipart_15s_sequence.md](../templates/template_multipart_15s_sequence.md) |
+| 多任务任意已选模式 | [template_multipart_15s_sequence.md](../templates/template_multipart_15s_sequence.md) |
 
 Classic 的单 Part 严格六镜 2.500s，A-B-A-B-A-B；允许全片 A/B 镜号连续而每次 Shot 及时间码重置。Adaptive 不强制六镜与 A/B 交替；Cinematic-led 可全 B、零台词、无手机。
 
@@ -75,19 +75,21 @@ Classic 的单 Part 严格六镜 2.500s，A-B-A-B-A-B；允许全片 A/B 镜号�
 ## 5. 输出视图
 
 - Standard（默认单段）：一个完整可复制 text 代码块；有图时附必要的上传清单。不强制展示路由推理、内部表或 QC。
-- Multi-Part（默认多段）：按顺序输出 N 个独立 text 代码块，每段之前只列当前上传顺序（无图则说明）、必要的首尾交接和名义时长；片尾按需给净时长/裁切说明。不能只提供 P1/P2，再以省略号代替 P3…P8。
+- Multi-Part（默认多段）：按顺序输出 N 个独立 text 代码块，每段之前只列当前上传顺序（无图则说明）、必要的首尾交接和名义时长；片尾按需给净时长/裁切说明。不能以省略号替代完整任务；若用户选择分批则明确总任务、当前批次、待交付，不称已完整。
 - Director Detail（用户要求）：额外展示完整时间表、状态表、声音/转场计划、风险与 QC；成品 Prompt 仍独立可复制。
 - suggest_only 可选转场、后期 BGM/节拍建议、实际剪点待确认提示，都在代码块之外。planned_pair 的双端摄影动作在各自 Prompt 内，剪辑方法与选择条件在外部。
 - 所有进入成品的示例方括号占位符必须替换；合法的 [Shot N]、[Chinese] 等语言标记、Ref2VA 的 [reference generation] 例外。不允许“[AI代写]”“[场景名称]”“[如：…]”或虚构模型参数。
 
 ## 6. 交付前自检（T06 统一门禁）
 
-- N 和输出代码块数量相符；每块恰好六字段且顺序一致；无未替换占位符。
+- 本批任务清单与代码块数量相符；每块恰好六字段且顺序一致；无未替换占位符。
 - 每块时间从 0 到 15.000、镜头无空隙重叠，Classic 六镜/固定切点；镜头数与描述一致。
 - 当前上传 manifest 所有引用有效；无图不写 Picture；每个独立 Part 的 Shot / 时间重新起算。
-- 连续性、人物状态、道具、声音归属及下一段首镜一致；跨任务变化有合法事件。
+- 连续边界按T03实际保留点承接；其他边界按事件/时期版本、因果和线索；声源不串。
 - T03B 选用状态与实际 Prompt 一致；planned_pair 两端齐备，suggest_only 不修改，none 不要求技巧；净时长不作无凭据保证。
 - 每块 non_diegetic_music 值严格 N/A、声场无 BGM 指令、防字幕块齐备；指定真实场景文字仅用限定例外。
 - 看见硬性冲突先修正；模型实机能力仍未验证时说明。不把本规则描述成可执行软件编译器或模型端自动视频剪辑。
 
 正式交付前须执行 [T06 统一质量门禁](quality_control.md)，本节不替代完整 H01–H15 与 S01–S10 审查。
+
+Edited Film View：非顺序、插入、裁切、复用等提供 [EDL](editing/editing_timeline.md) 与 [后期计划](editing/post_production_plan.md)，简单连续保持原输出；预剪点不冒充实际。执行 [Editing QC](editing/editing_quality_control.md)。
