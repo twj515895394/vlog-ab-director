@@ -1,5 +1,7 @@
 # v2.1 Creative Engine 实施计划
 
+> 历史v2.1实施证据：当前300秒与三种叙事组织见 [v2.2实施计划](implementation-plan-v2.2-editing-director.md)，不以历史120秒/8任务为现行限制。历史静态测试结果不改写。
+
 > 基于 [详细设计](design-v2.1-creative-engine.md)，设计提交 1395b0ab2df3c77c31f5341119af78d21eeb5b9c；原基线 67de77323ec096335408d19d53570ca3f8bcec11。用户已要求先设计、再计划、再一次性实施。保留 v2 T01–T06、Windows CRLF 修复与正式版本 1.0.0。
 
 ## 1. 工作分解与验收
