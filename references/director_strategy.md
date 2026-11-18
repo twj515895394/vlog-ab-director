@@ -12,7 +12,7 @@
 - **B 镜（客观）**：空间、动作、人物整体造型、场景光线、环境氛围；镜头的作用应有叙事理由。
 - 用户指定 `Classic AB`、固定六镜、每镜 2.5s 或严格 A/B 交替时，**必须固定为 Classic**；不可悄悄修改镜数、时间点和交替顺序。
 - 视频**生成阶段始终没有 BGM**，仅允许现场环境音、人物对白/画外音和 Foley。模型 `non_diegetic_music: N/A`；想要音乐节拍可另给后期剪辑建议，不能变成生成背景音乐。
-- 当前设计最终成片最长 **120 秒**：可规划最多 8 个独立 15s Part；**T02 已提供 1–8 Part 时长规划规则；T05 已接入正式多段 H3 Prompt 装配。不能说已一次生成 120s 完整视频**。
+- 最终成片最长 **300秒**；每次H3仍独立15s；有限任务数按素材预算，不能承诺一次生成长片。叙事组织由[Editing Auto](editing/editing_auto_strategy.md)独立选择CONTINUOUS/EDITED/HYBRID，摄影模式不决定是否承接。
 - Part 间**技巧性转场是可选建议**：T03B 已接入按场景判断的 `none / suggest_only / planned_pair`；Auto 默认只建议、不改 Prompt，只有用户明确选用或授权直接安排才成对改写；没有适合技巧应正常硬切；不得用淡入淡出或一键特效替代摄影/剪辑技巧。
 - 默认输出给用户可复制的完整 H3 六段式 Prompt；内部决策理由可压缩成必要的简短说明，完整状态表和 QC 仅按需展示。
 
@@ -48,7 +48,7 @@
 | **P4** | 强调聊天、日常互动、对镜陪伴、真实记录但尚未指定 Classic 结构 | 首期选择 `Adaptive AB` 并加强 A 镜；**`POV-led` 只预留，不作为可用独立路由** |
 | **P5** | 题材、主体、镜头目的均不明确，且无法判定更合适模式 | **保守回退 `Classic AB`**，避免凭空炫技 |
 | **Safety / World** | 明确古风、仙侠或禁止手机 | 在已选模式中启用无手机的自然主观近景/跟拍；**世界观约束只调整机位实现，不自动等于 Classic** |
-| **Delivery** | 目标时长大于 120s，或要求 H3 一次生成长片 | 不做错误承诺；注明 120s 成片上限及独立 15s 任务限制，交给已实施的 T02 时间预算及T05 完整装配规则 |
+| **Delivery** | 目标时长大于 300s，或要求 H3 一次生成长片 | 不做错误承诺；注明 300s 成片上限及独立 15s 任务限制，交给已实施的 T02 时间预算及T05 完整装配规则 |
 
 处理同时出现多个信号时：**用户明确镜头硬约束优先于题材推断**；如果用户显式说「经典六镜，但不要任何 A 镜」等互斥要求，必须指出冲突并请求用户选择哪项优先，不能暗中忽略一个要求。若两种题材信号相近而无明确镜头硬约束，按作品的主要视觉功能做最简单的选择，不需要罗列多个候选让用户选。
 
@@ -92,7 +92,7 @@ director_mode: Classic AB | Adaptive AB | Cinematic-led
 reason: 一句话解释主要判断依据（只在必要时向用户展示）
 hard_constraints: 用户指定必须遵守的拍摄/时长/世界观要求
 camera_intent: A 镜与 B 镜的分工及期望主次
-duration_scope: 15s task / multipart plan (<=120s final)
+duration_scope: 15s task / multipart plan (<=300s final)
 audio_policy: NO_BGM_IN_GENERATION
 transition_policy: OPTIONAL, never force at part boundaries
 prompt_output: complete six-section H3 prompt by default
@@ -119,14 +119,14 @@ prompt_output: complete six-section H3 prompt by default
 | F28 | 「15 秒必须六镜 2.5 秒但不要任何主观镜头」 | 明确互斥约束，请求优先级；不悄悄忽略 |
 | F29 | 「45 秒旅行 Vlog，不强制场景转场」 | Adaptive AB；按 T05 输出三段独立 Prompt，**无强制转场**，时长装配属于 T02/T05 |
 | F30 | 「120 秒温馨 Vlog，全程无背景音乐」 | 根据核心故事选模式；上限合理但路由不等于已生成 8 Part |
-| F31 | 「我想生成一条 150 秒 Vlog」 | 提示当前成片支持上限 120s，不错误承诺 |
+| F31 | 「我想生成一条 301 秒 Vlog」 | 提示当前成片上限300s，不错误承诺 |
 | F32 | 「古风双人且要求严格六镜 2.5 秒」 | Classic AB + 无现代手机主观随行，遵循 v1 无手机分支 |
 | F33 | 「音乐卡点的人物混剪」 | Cinematic-led（若无更多条件），生成阶段依然无 BGM，后期另配乐 |
 | F34 | 「两个 Part 之间自然接就好，不要神转场」 | 尊重用户的 none 偏好，不能为了 Auto 添加额外转场 |
 
 ## 7. 后续阶段与本文件的关系
 
-- **T02（已完成文字规范）**：见 [timing_engine.md](timing_engine.md)，提供 Adaptive/Cinematic 15s 镜头预算、1–8 Part 规划及剪后净时长账本；不等于 H3 已经逐帧执行。
+- **T02（已完成文字规范）**：见 [timing_engine.md](timing_engine.md)，提供 Adaptive/Cinematic 15s 镜头预算、有限任务预算及剪后净时长账本；不等于 H3 已经逐帧执行。
 - **T03（已接入规范）**：参见 [continuity_handoff.md](continuity_handoff.md)；已定义跨镜/跨段的人物、手、道具和场景状态交接，模型行为与视频效果仍待后续验证。
 - **T03B（已接入文字规则）**：见 [transition_director.md](transition_director.md) 和 [46 技巧库](../docs/transition-techniques-library-v2.md)；按场景判断 `none / suggest_only / planned_pair`，仅实际采纳/授权时才要求双端镜头，始终不强制转场。
 - **T04（已接入文本规则）**：参见 [audio_director.md](audio_director.md)；已统一用户实测中文闭嘴 VO、多人说话者/口型、L/J-Cut 和无 BGM 约束，英文固定短语不是必填。
