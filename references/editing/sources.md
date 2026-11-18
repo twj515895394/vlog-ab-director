@@ -1,6 +1,6 @@
 # 影视剪辑参考来源（2026-11-18 核实）
 
-以下在线资料用于理解传统电影剪辑原理。技巧库是独立整理的 AI 短片操作规范，不是原文摘录，不代表这些来源认证了 H3 效果。视频条目核实标题和发布方/说明，未逐帧审阅。来源ID稳定。
+以下在线资料用于理解传统电影剪辑原理。技巧库是独立整理的 AI 短片操作规范，不是原文摘录，不代表这些来源认证了 H3 效果。视频条目核实标题和发布方/说明，未逐帧审阅。SRC06检索摘要可访问，页面直接访问返回403；不作为逐段全文核验的证据。来源ID稳定。
 
 | ID | 资料与链接 | 支撑范围 |
 |---|---|---|
@@ -17,4 +17,5 @@
 | SRC11 | Every Frame a Painting, [How Does an Editor Think and Feel?](https://www.youtube.com/watch?v=3Q3eITC01Fg) | 剪辑者的观察与情绪/节奏实践，视频学习推荐 |
 | SRC12 | New York Film Academy, [Film Editing Vocabulary](https://www.nyfa.edu/student-resources/a-beginners-guide-to-film-editing-vocabulary/) | 交叉、视线、蒙太奇等术语 |
 
-项目附加约束（不归因外部资料）：生成任务15s、六字段、无BGM、真实资产、可选转场的授权、毫秒EDL和补镜预算。所有技巧风险/回退、提示词和验收规则均是本Skill设计。
+项目附加约束（不归因外部资料）：生成任务15s、六字段、无BGM、真实资产、可选转场的授权、毫秒EDL和补镜预算。所有技巧风险/回退、提示词和验收规则均是本Skill设计。 
+补充支持连续叙事：[Oklahoma State University开放教材 Editing](https://open.library.okstate.edu/introfilmtv/part/editing/)（SRC13），连续性剪辑与非连续性剪辑的选择；[Oxford UP Continuity Editing Basics](https://academic.oup.com/book/39668/chapter-abstract/339654901)（SRC14，摘要可读）。
