@@ -2,7 +2,7 @@
 
 > 状态：T01 已实现的**自然语言策略路由规则**（不是视频生成 API，也不是程序化分类器）。  
 > 设计依据：[v2 详细设计](../docs/design-v2-director-engine.md) 第 3–4 章和 D1–D5。  
-> 范围边界：T01 负责识别、决策、约束传递；**T02 已定义可变镜头时间预算**，跨段状态在 T03、转场导演在 T03B、Adaptive/Cinematic 正式模板装配在 T05 实现。不可把本参考文件理解成上述模块已完成。
+> 范围边界：T01 负责识别、决策、约束传递；**T02 已定义可变镜头时间预算**，T03 已接入跨段状态交接，T03B 已接入可选转场导演规则；Adaptive/Cinematic 正式模板装配仍留给 T05。不可把文字规则等同于 H3 实机效果。
 
 ## 1. 目标及不变约束
 
@@ -13,7 +13,7 @@
 - 用户指定 `Classic AB`、固定六镜、每镜 2.5s 或严格 A/B 交替时，**必须固定为 Classic**；不可悄悄修改镜数、时间点和交替顺序。
 - 视频**生成阶段始终没有 BGM**，仅允许现场环境音、人物对白/画外音和 Foley。模型 `non_diegetic_music: N/A`；想要音乐节拍可另给后期剪辑建议，不能变成生成背景音乐。
 - 当前设计最终成片最长 **120 秒**：可规划最多 8 个独立 15s Part；**T02 已提供 1–8 Part 时长规划规则；T05 仍负责正式多段 H3 Prompt 装配。不能说已一次生成 120s 完整视频**。
-- Part 间**技巧性转场是可选建议**：未到 T03B 前不强行安排；没有适合技巧应正常硬切；不得用淡入淡出或一键特效替代摄影/剪辑技巧。
+- Part 间**技巧性转场是可选建议**：T03B 已接入按场景判断的 `none / suggest_only / planned_pair`；Auto 默认只建议、不改 Prompt，只有用户明确选用或授权直接安排才成对改写；没有适合技巧应正常硬切；不得用淡入淡出或一键特效替代摄影/剪辑技巧。
 - 默认输出给用户可复制的完整 H3 六段式 Prompt；内部决策理由可压缩成必要的简短说明，完整状态表和 QC 仅按需展示。
 
 ## 2. 输入提取：Director Brief
@@ -32,7 +32,7 @@
 | `aspect_ratio` | 9:16 / 16:9 | 用户指定优先，否则依发布场景推断 |
 | `references` | 角色图、道具图、场景图、是否已上传 | 无图不能虚构 `<Picture N>` |
 | `audio` | 对镜讲话、画外音、静默、环境声、后期配乐需求 | 以故事中的声音合理性判断 |
-| `transition_preference` | none / 仅建议 / 用户指定技巧 | 未指定；**不能等同于强制转场** |
+| `transition_preference` | none / 仅建议 / 用户指定技巧 / 明确授权导演按需实际应用 | 未指定：按场景评估，默认只建议、不能强制或私自改 Prompt |
 | `language` | 用户想使用的 Prompt 语言 | 跟随用户 |
 
 这是一份**内部决策草稿**，不是每次都展示给用户的大表单。只有缺少真正影响故事或交付的必要信息，才询问一个针对性问题；其他按上表默认推断。冲突信息按第 3 节处理。
@@ -128,7 +128,7 @@ prompt_output: complete six-section H3 prompt by default
 
 - **T02（已完成文字规范）**：见 [timing_engine.md](timing_engine.md)，提供 Adaptive/Cinematic 15s 镜头预算、1–8 Part 规划及剪后净时长账本；不等于 H3 已经逐帧执行。
 - **T03（已接入规范）**：参见 [continuity_handoff.md](continuity_handoff.md)；已定义跨镜/跨段的人物、手、道具和场景状态交接，模型行为与视频效果仍待后续验证。
-- **T03B**：基于已建的 [转场技巧库](../docs/transition-techniques-library-v2.md)，真正判断 none / suggest_only / planned_pair 与双端镜头；在此之前不强行套用转场；
+- **T03B（已接入文字规则）**：见 [transition_director.md](transition_director.md) 和 [46 技巧库](../docs/transition-techniques-library-v2.md)；按场景判断 `none / suggest_only / planned_pair`，仅实际采纳/授权时才要求双端镜头，始终不强制转场。
 - **T04**：将用户已实测有效的中文闭嘴画外音正式同步到相关硬规则，清理旧规范中「必须英文固定短语」的矛盾；
 - **T05**：根据策略输出可复制的 Adaptive/Cinematic 长片模板和逐任务引用；
 - **T06/T07**：静态 QC 和 H3 实机生成效果回归。
