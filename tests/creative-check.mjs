@@ -38,7 +38,7 @@ function runCreativeQC(rawFiles,group){
    check("handoff-ref-audio",!b.includes("<Picture")&&!b.includes("[reference generation]")&&!b.includes("<d>")&&/non_diegetic_music:\nN\/A\s*$/.test(b)&&b.includes("【禁止项】\n\n文字/UI/水印/Logo/角标/可读文字/真实UI\n\n【强制声明】\n\n无背景音乐,仅保留"));
   }
   // Only structured fixture decisions; this is not a language classifier.
-  function canHandoff(b){return b.requestGoal==="PROMPT"&&b.status==="confirmed"&&Number.isInteger(b.revision)&&b.revision>0&&["explicit","delegated","direct_ready"].includes(b.confirmation?.kind)&&b.confirmation.revision===b.revision&&b.qcRevision===b.revision&&b.hardQC==="PASS"&&b.minimalBrief===true&&Number.isFinite(b.duration)&&b.duration>=15&&b.duration<=120&&b.partCount===Math.ceil(b.duration/15)&&b.partCount<=8&&b.bgm===false&&b.fabricatedAsset===false&&["none","suggest_only","planned_pair"].includes(b.transition)&&(b.transition!=="planned_pair"||b.transitionAuthorized===true);}
+  function canHandoff(b){return b.requestGoal==="PROMPT"&&b.status==="confirmed"&&Number.isInteger(b.revision)&&b.revision>0&&["explicit","delegated","direct_ready"].includes(b.confirmation?.kind)&&b.confirmation.revision===b.revision&&b.qcRevision===b.revision&&b.hardQC==="PASS"&&b.minimalBrief===true&&Number.isFinite(b.duration)&&b.duration>0&&b.duration<=300&&Number.isInteger(b.partCount)&&b.partCount>=Math.ceil(b.duration/15)&&(!Number.isInteger(b.taskBudget)||b.partCount<=b.taskBudget)&&b.bgm===false&&b.fabricatedAsset===false&&["none","suggest_only","planned_pair"].includes(b.transition)&&(b.transition!=="planned_pair"||b.transitionAuthorized===true);}
   const base={requestGoal:"PROMPT",status:"confirmed",revision:1,confirmation:{kind:"explicit",revision:1},hardQC:"PASS",qcRevision:1,minimalBrief:true,duration:30,partCount:2,bgm:false,fabricatedAsset:false,transition:"none"};
   const rows=[
    ["explicit",{},true],["direct-ready",{confirmation:{kind:"direct_ready",revision:1}},true],["delegated",{confirmation:{kind:"delegated",revision:1}},true],
@@ -47,8 +47,8 @@ function runCreativeQC(rawFiles,group){
    ["old-authorization",{revision:2,qcRevision:2},false],["stale-qc",{revision:2,confirmation:{kind:"explicit",revision:2}},false],
    ["updated-authorization",{revision:2,qcRevision:2,confirmation:{kind:"explicit",revision:2}},true],
    ["hard-fail",{hardQC:"FAIL"},false],["hard-unknown",{hardQC:"UNKNOWN"},false],["missing-brief",{minimalBrief:false},false],
-   ["15s",{duration:15,partCount:1},true],["52s",{duration:52,partCount:4},true],["120s",{duration:120,partCount:8},true],["150s",{duration:150,partCount:10},false],
-   ["9parts",{duration:120,partCount:9},false],["wrong-count",{duration:52,partCount:3},false],["bgm",{bgm:true},false],["fabricated-asset",{fabricatedAsset:true},false],
+   ["15s",{duration:15,partCount:1},true],["52s",{duration:52,partCount:4},true],["120s",{duration:120,partCount:8},true],["150s",{duration:150,partCount:10},true],["300s",{duration:300,partCount:20},true],["300s-with-coverage",{duration:300,partCount:24,taskBudget:24},true],["301s",{duration:301,partCount:21},false],
+   ["extra-coverage",{duration:120,partCount:9},true],["user-cap",{duration:120,partCount:9,taskBudget:8},false],["wrong-count",{duration:52,partCount:3},false],["bgm",{bgm:true},false],["fabricated-asset",{fabricatedAsset:true},false],
    ["suggest-only",{transition:"suggest_only",transitionAuthorized:false},true],["unauthorized-pair",{transition:"planned_pair",transitionAuthorized:false},false],["authorized-pair",{transition:"planned_pair",transitionAuthorized:true},true],["invalid-transition",{transition:"magic"},false]
   ];
   for(const [id,patch,want] of rows)check("structured:"+id,canHandoff({...base,...patch})===want);
