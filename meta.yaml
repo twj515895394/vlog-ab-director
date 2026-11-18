@@ -1,0 +1,19 @@
+display-name-zh: 电影感Vlog双轨视听导演
+version: 1.0.0
+tag-en: Video Generation
+tag-cn: 视频生成
+complete-tags-en:
+- Video Generation / Cinematic Vlog
+- Video Generation / Prompt Engineering
+- Video Generation / Multi-Camera Director
+complete-tags-cn:
+- 视频生成 / 电影感Vlog
+- 视频生成 / 提示词工程
+- 视频生成 / 双轨视听分镜
+summary-en: Generate production-grade cinematic Vlog prompts using the AB-Camera alternating perspective engine.
+summary-cn: 基于AB双轨视听与2.5秒黄金节拍器，生成零穿模、抗畸变、带地道对白的电影感Vlog提示词（MiniMax H3专用）。
+desc-en: Designed for creators and AI filmmakers who want to produce cinematic, highly engaging, distortion-free lifestyle Vlogs using MiniMax H3 (especially Ref2VA full-reference and T2VA modes). It deploys an alternating A-cam (subjective handheld selfie or floating follow) and B-cam (third-person cinematic external tracking) perspective engine. The skill enforces strict physical state machine rules (the right-hand holding rule, cut ellipsis, prop conservation, spatial anchors, and per-task compact asset re-indexing) paired with a 2.5-second golden metronome and scripted colloquial dialogue (Mode B). It outputs fully compliant prompts with robust zero-text and negative constraint blocks, completely eliminating AI video hallucinations, morphing artifacts, multi-finger defects, and burned-in subtitle glitches.
+desc-cn: 专为希望使用 MiniMax H3（特别是 Ref2VA 全参考与 T2VA 模式）制作电影级生活 Vlog 的创作者与 AI 影视导演设计。本 Skill 采用专有的“AB 双轨视听引擎”，在 A 镜（主观自拍近景/免持浮空随行）与 B 镜（第三人称电影级大片运镜）之间交替咬合推进。内置五大抗畸变与物理工程铁律（右手专职持机/浮空随行、硬切省略哲学、核心道具守恒、空间永久锚点、单任务紧凑重编号），搭配 2.500 秒黄金节拍器与 AI 口语化对白预算（Mode B）。输出标准规范的六段式提示词，并严格焊接独立空行排版的双重防字幕与防 UI 负向约束，彻底解决 AI 视频肢体穿模、手部多指变形、道具瞬移及画面乱码烧录字幕等行业通病。
+author-en: MiniMax Hub User
+author-cn: MiniMax Hub 用户
+source: community
