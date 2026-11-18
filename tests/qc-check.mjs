@@ -39,8 +39,9 @@ function runQC(files) {
    H09_no_bgm:values.non_diegetic_music==="N/A"&&noPositiveMusic
   };
  }
- function budget(target,parts,overlap=0){
-  const range=Number.isFinite(target)&&target>0&&target<=120&&Array.isArray(parts)&&parts.length===Math.ceil(target/15)&&parts.length<=8&&parts.every(p=>p.length===2&&Number.isFinite(p[0])&&Number.isFinite(p[1])&&p[0]>=0&&p[1]<=15&&p[1]>p[0])&&Number.isFinite(overlap)&&overlap>=0;
+ // Sequential no-reuse fixture; parts is the explicitly budgeted list; ED regression handles EDL/reuse.
+ function budget(target,parts,overlap=0,maxTasks=parts.length){
+  const range=Number.isFinite(target)&&target>0&&target<=300&&Array.isArray(parts)&&Number.isInteger(maxTasks)&&parts.length>0&&parts.length<=maxTasks&&parts.every(p=>p.length===2&&Number.isFinite(p[0])&&Number.isFinite(p[1])&&p[0]>=0&&p[1]<=15&&p[1]>p[0])&&Number.isFinite(overlap)&&overlap>=0;
   if(!range)return {valid:false,net:null,conflict:true};
   const retained=parts.reduce((n,[a,b])=>n+b-a,0);
   if(overlap>retained||overlap>(parts.length===1?0:retained-Math.max(...parts.map(([a,b])=>b-a))))return {valid:false,net:null,conflict:true};
@@ -97,7 +98,11 @@ function runQC(files) {
  ["budget-3-to-8",[45,60,75,90,105,120].every(t=>{const q=budget(t,Array.from({length:t/15},()=>[0,15]));return q.valid&&!q.conflict})],
  ["budget-52",budget(52,[[0,13],[1,14],[1,14],[2,15]]).net===52&&!budget(52,[[0,13],[1,14],[1,14],[2,15]]).conflict],
  ["budget-120-trim",budget(120,Array.from({length:8},(_,i)=>[0,i===7?14:15])).net===119&&budget(120,Array.from({length:8},(_,i)=>[0,i===7?14:15])).conflict],
- ["budget-over-limit",!budget(121,Array.from({length:9},()=>[0,15])).valid],
+ ["budget-over-limit",!budget(301,Array.from({length:21},()=>[0,15])).valid],
+ ["budget-150-sequential",budget(150,Array.from({length:10},()=>[0,15])).valid&&!budget(150,Array.from({length:10},()=>[0,15])).conflict],
+ ["budget-300-continuous",budget(300,Array.from({length:20},()=>[0,15])).net===300],
+ ["budget-300-coverage",budget(300,Array.from({length:24},()=>[1,13.5])).net===300],
+ ["budget-user-cap",!budget(300,Array.from({length:24},()=>[1,13.5]),0,20).valid],
  ["budget-overlap",budget(30,[[0,15],[0,15]],1).net===29&&budget(30,[[0,15],[0,15]],1).conflict],
  ["boundary-none",boundary({decision:"none",modified:false,handoff:true})],
  ["boundary-suggest",boundary({decision:"suggest_only",modified:false,handoff:true})],
