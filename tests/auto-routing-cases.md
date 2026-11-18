@@ -2,7 +2,7 @@
 
 > 级别：**规范静态回归（不依赖真正的视频渲染）**。  
 > 状态：T01 已将 Auto 路由约定纳入 `SKILL.md` / `SKILL.cn.md` 并创建 `references/director_strategy.md`；这些是**对基于文本的 Skill 的执行指令**，不代表存在程序化分类器。  
-> 依据：[`references/director_strategy.md`](../references/director_strategy.md)、[`tests/regression-matrix.md`](regression-matrix.md)；T02 动态时间轴、T05 非 Classic 完整模板、T07 模型实机依旧待实施。
+> 依据：[`references/director_strategy.md`](../references/director_strategy.md)、[`tests/regression-matrix.md`](regression-matrix.md)；T02 动态时间轴规范已接入，T05 非 Classic 完整模板、T07 模型实机依旧待实施。
 
 ## 1. 策略优先级（可作为人工验收 oracle）
 
@@ -12,7 +12,7 @@
 4. 只强调陪伴/对镜交流且不要求 Classic → Adaptive AB，提高 A 镜权重；**POV-led 暂不单独支持**；
 5. 没有足够信号 → Classic AB 保守回退；
 6. 世界观禁用手机时改变 A 镜实现方式，不强迫更换导演模式；
-7. 时长上限 120s 与不强制转场、无 BGM 是跨模式硬约束；但 T01 仅识别需求，不替代 T02/T03B/T05。
+7. 时长上限 120s 与不强制转场、无 BGM 是跨模式硬约束；T02 已实现时间预算的规划约束，但不替代 T03B/T05 的转场与模板实现。
 
 ## 2. 逐条输入 / 预期策略 / 优先级理由
 
@@ -41,7 +41,7 @@
 
 - 有「旅行」「偶尔自拍」「多展现山海」等视觉目标，且没有固定六镜约束；
 - Auto 判定 `Adaptive AB`，B 景别负担更重，但仍应存在有效的主观在场感；
-- T01 **不宣称**已实现不等长时间分配；时间与模板由 T02/T05 承接。
+- T02 已提供不等长分镜的文字时间预算；正式 H3 Prompt 模板仍由 T05 承接。
 
 ### F03：纯氛围
 
@@ -74,7 +74,7 @@
 - 二者都引用同一份 `references/director_strategy.md` 作为路由规则源；
 - 具备 F01/F02/F03/F04 与额外 F23–F34 的输入与预期决策；
 - **现阶段验证的是文档内容与规则一致性**，不是 LLM 对每种自然语言输入的实际执行成功率，也不是生成视频效果；
-- 下一 Ticket T02 才实施具体的可变镜头时间分配，后续 T05 才完善相应成品 Prompt 模板；**不得提前将 F05–F22 标成已通过**。
+- T02 已补齐可变镜头时间预算规范，后续 T05 才完善相应成品 Prompt 模板；**F05–F22 的时间算术设计通过也不等于跨段状态、转场、完整视频或实机验证通过**。
 
 ## 5. 手动验收建议（当前非实机）
 
