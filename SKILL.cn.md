@@ -1,6 +1,6 @@
 ---
 name: vlog-ab-director
-description: 面向 MiniMax H3 Ref2VA/T2VA 的电影感 Vlog 导演 Skill。默认 Auto 识别并路由 Classic AB、Adaptive AB 或 Cinematic-led；Classic 才强制 15 秒六镜、2.5 秒节拍。保留人物持机/道具连续性、中文画外音、六段式 Prompt 与生成阶段无 BGM。现有完整模板为 15s/30s Classic；T02 已定义自适应时序及最长 120s 多 Part 规划，完整 Adaptive / 多段 H3 Prompt 模板仍待 T05。
+description: 面向 MiniMax H3 Ref2VA/T2VA 的电影感 Vlog 导演 Skill。默认 Auto 识别并路由 Classic AB、Adaptive AB 或 Cinematic-led；Classic 才强制 15 秒六镜、2.5 秒节拍。保留人物持机/道具连续性、中文画外音、六段式 Prompt 与生成阶段无 BGM。现有完整模板为 15s/30s Classic；T02 已定义自适应时序及最长 120s 多 Part 规划，T03 已定义人物/道具状态机与跨段交接；完整 Adaptive / 多段 H3 Prompt 模板仍待 T05。
 ---
 
 # Vlog AB Director (电影感 Vlog 双轨视听导演)
@@ -27,7 +27,7 @@ description: 面向 MiniMax H3 Ref2VA/T2VA 的电影感 Vlog 导演 Skill。默�
 - 用户明确指定 Classic 时，**固定六镜、时间边界、顺序不得被 Auto 覆盖**。互斥要求（如同时指定六镜严格 AB 与完全禁止 A 镜）应指出冲突，而不是暗中丢弃其中一条。
 - **生成视频始终无 BGM**，只保留环境声、人声与 Foley，`non_diegetic_music: N/A`；用户要求音乐氛围时只允许另提后期配乐建议。
 - **特殊跨 Part 转场不是必需项**。没有合适叙事理由时正常硬切；T03B 才实现依场景推荐与镜头成对设计，不能为增加「神转场」而硬塞镜头。
-- 最终成片上限规划为 **120 秒（最多 8 个独立 15 秒 Part）**，；**T02 已补齐多段规划与可变分镜的文字时序规则**，实际人物/道具状态交接留给 T03，Adaptive/Cinematic 完整 Prompt 模板与 3–8 Part 装配留给 T05。**不得误称已能一次生成 120 秒视频或 H3 已实测精确非等长切镜**。
+- 最终成片上限规划为 **120 秒（最多 8 个独立 15 秒 Part）**；**T02 已补齐多段规划与可变分镜的文字时序规则，T03 已补齐镜内状态与跨 Part 交接规则**，Adaptive/Cinematic 完整 Prompt 模板与 3–8 Part 装配仍留给 T05。**不得误称已能一次生成 120 秒视频或 H3 已实测精确非等长切镜**。
 - 默认仍向用户交付可复制的 MiniMax H3 六段式 Prompt，不强制展示内部策略表/QC；当前仅完成策略路由，对未完成的动态模板不得宣称已经实机验证。
 - 用户报告已成功的**中文自然语言画外音 + `<d>[Chinese] ...</d>` + `while her lips remain completely closed.`** 是有效兼容写法；完整语音规范在 T04 继续统一，不得仅因没有固定英文短语而误判失败。
 
@@ -43,6 +43,23 @@ description: 面向 MiniMax H3 Ref2VA/T2VA 的电影感 Vlog 导演 Skill。默�
 - **先算净时长再承诺交付**：逐 Part 用 `edit_out−edit_in` 计算保留时长，再累计成片净时长，需考虑已知裁切/实际重叠。**8×15s=120s 只是素材名义长度**；如果剪辑裁掉部分画面，不能保证剪后仍恰好 120s；遇到不可满足的精确时长应明确指出并给出可行选择。
 - **不因长片强制转场**：任意 Part 边界都可 `none` / 自然硬切；本轮**不实现 T03B 特殊转场技巧的成对镜头设计**，也不预设转场损耗。
 - **声音与交付**：生成仍无 BGM，`non_diegetic_music: N/A`；台词时长随镜头实际可说话窗口调整（Classic 既有字数规则保留）。**T02 只落地分镜预算与长片规划规则；T05 才交付 Adaptive/Cinematic 的正式六段式完整模板及多 Part Prompt 装配**。时间码是导演意图，不保证 H3 实际逐帧命中。
+
+---
+
+## v2 / T03：镜头状态机与多 Part 连续性交接
+
+**在 T01 选定导演策略、T02 分配好每镜时长后，编写镜头和跨 Part Prompt 前，必须读取 [`references/continuity_handoff.md`](references/continuity_handoff.md)，并结合 [`references/rules_state_machine.md`](references/rules_state_machine.md)。**
+
+- **每镜三态闭合**：内部先列 `entry_state → visible_action → exit_state`。锁定 `character_id`、身份/服饰、姿态/位置、`camera_mode`、各角色左右手、`prop_id` 与唯一所在位置、`scene_id`、固定锚点和光照；镜内只安排时长允许的真实动作。
+- **镜间切点事件**：如果下一镜切入时已经收伞、装包、进门或举起自拍手机，明确 `cut_event` 的 `before → after`。**合法硬切省略是允许的，但不能把同一道具无事件瞬移、变色或复制**。
+- **手部资源约束**：有实际现代自拍手机的主角通常右手持机、左手交互；同手不能同时拿两个互斥道具。纯第三人称 Cinematic、古风或用户明确不要手机时，**不编造手机**；配角分别建自己的手部状态。肩背包不当然占用手。
+- **每段必有交接**：对所有相邻 `P1→P2` … `P7→P8`，前 Part 末镜输出内部 `handoff_out`，后 Part 首镜消费其人物/手/道具/场景快照。分别标记 `same_moment`、`cut_ellipsis`、`time_jump` 或 `location_jump`；有时间或地点跳跃时写明变化事件，不假装同一瞬间无缝。
+- **场景锚点不瞬移**：放在唱片店伞桶的伞必须留在唱片店；湖边镜头无需显示旧店伞桶。相同人物跨场景可改变光照、姿势和衣着，但**改变必须有可解释事件**，身份与关键道具外观不能凭空替换。
+- **参考图逐任务重编号**：为每个独立 15s Part 建立实际上传的 `asset_id → <Picture N>` 映射；所引用的图必须存在于**当前任务**，编号从 1 起连续。P2 只上传全局角色图 A 与场景图 C 时，C 必须是 `<Picture 2>`，绝不能沿用全局资产序号写 `<Picture 3>`。无图的 T2VA 不伪造 Picture 引用。
+- **不强制特殊转场**：T03 负责合法的物理/叙事交接；普通硬切可直接使用。遮挡/甩镜/水面穿越等可选的摄影剪辑转场由 T03B 判断是否推荐或实际选用，**不是每个 Part 的固定要求**。
+- **输出边界**：上述状态表属于 Skill 的内部规划，**不是 H3 的新增顶层字段**。用户默认仍拿到完整六段式 Prompt，必要时附当前 Part 的上传清单和交接摘要，详细状态表仅按需展示。生成阶段继续**无 BGM**；多段完整 H3 装配属于 T05，真实模型动作/口型效果需在 T07 验证。
+
+**状态交接样例**：[`templates/segment_handoff_example.md`](templates/segment_handoff_example.md)；**正反测试**：[`tests/continuity-cases.md`](tests/continuity-cases.md)。
 
 ---
 
@@ -77,7 +94,7 @@ description: 面向 MiniMax H3 Ref2VA/T2VA 的电影感 Vlog 导演 Skill。默�
    - **双人模式**：强调默契互动、闺蜜反差与视线交流。
 
 ### 步骤 2：状态机与资产锁定（五大抗畸变铁律）
-*详细规则参阅 `references/rules_state_machine.md`*
+*详细规则参阅 [`references/rules_state_machine.md`](references/rules_state_machine.md) 及 [`references/continuity_handoff.md`](references/continuity_handoff.md)；**先建立每镜 entry/action/exit 和跨段 handoff，再将合理的可见动作写进 Prompt**。*
 1. **右手持机唯一性 / 免持道具浮空随行原则**：
    - **现代自拍**：`<Subject 1>` **右手专职持机**（A 镜举起自拍，B 镜放低贴身侧），**左手专职交互**（撩发、推门、拿咖啡），杜绝双手逻辑抢占；
    - **仙侠/古风无道具**：启用**免持道具浮空随行模式**，A 镜为灵气/第一人称主观近景，双手完全解放拂袖理簪，保留直视对白陪伴感，杜绝突兀镜子道具。
@@ -87,8 +104,8 @@ description: 面向 MiniMax H3 Ref2VA/T2VA 的电影感 Vlog 导演 Skill。默�
    - 场景锚点：脱下的鞋、放下的包、插在伞桶的雨伞固定在场景同一干燥位置，作为背景参照物；
    - 道具闭环：贝壳、拍立得、相纸、黑胶唱片、书籍等关键道具遵循“引入→使用→收纳→复现”的完整物理链。
 4. **单段任务资产独立紧凑编号铁律（Per-Task Asset Re-indexing Rule）**：
-   - **核心原理**：在 30 秒两段式（Part 1 + Part 2）中，每一段在 MiniMax H3 中都是一个**完全独立的视频生成任务（Task）**。AI 模型是根据该任务实际上传的参考图数量，从 1 开始按顺序匹配 `<Picture 1>`、`<Picture 2>`...；
-   - **重编号约束**：若全局有图1人物、图2车库、图3超市，Part 1 上传图1和图2（`<Picture 1>`/`<Picture 2>`）；Part 2 仅上传图1和图3，**则图3在 Part 2 提示词中必须重编号为 `<Picture 2>`**！严禁出现未上传的空编号（如跳写 `<Picture 3>`），彻底杜绝 `Unresolved Reference Label` 报错。
+   - **核心原理**：在 30–120 秒多 Part 规划中，每一段在 MiniMax H3 中都是一个**完全独立的 15 秒视频生成任务（Task）**，30 秒两段式只是经典兼容示例。AI 模型是根据该任务实际上传的参考图数量，从 1 开始按顺序匹配 `<Picture 1>`、`<Picture 2>`...；
+   - **重编号约束**：若全局有图1人物、图2车库、图3超市，Part 1 上传图1和图2（`<Picture 1>`/`<Picture 2>`）；Part 2 仅上传图1和图3，**则图3在 Part 2 提示词中必须重编号为 `<Picture 2>`**！不得引用本次未上传的 `<Picture 3>`；无图的任务不编造 Picture 引用。完整映射和检查见 [`references/continuity_handoff.md`](references/continuity_handoff.md)。
 5. **绝对画面防字幕与防UI负向铁律（Zero-Text & Clean Screen Enforcement）**：
    - 彻底解决 AI 视频因包含 `<d>` 对白标签而容易在画面中“烧录字幕、生成乱码水印与虚假UI”的通病；
    - 在提示词的 `detailed_description` 结尾必须永久强制注入（严格遵循独立空行排版格式）：
@@ -127,7 +144,9 @@ description: 面向 MiniMax H3 Ref2VA/T2VA 的电影感 Vlog 导演 Skill。默�
 ## 模板与参考资源导航
 
 - **默认 Auto 模式与优先级（T01）**：[`references/director_strategy.md`](references/director_strategy.md)
-- **T02 已落地分镜时间预算与多 Part 净时长规划**：[`references/timing_engine.md`](references/timing_engine.md)。
+- **T02 分镜时间预算与多 Part 净时长规划**：[`references/timing_engine.md`](references/timing_engine.md)。
+- **T03 每镜状态/道具守恒/跨 Part handoff**：[`references/continuity_handoff.md`](references/continuity_handoff.md)。
+- **T03 交接样例与正反测试**：[`templates/segment_handoff_example.md`](templates/segment_handoff_example.md)、[`tests/continuity-cases.md`](tests/continuity-cases.md)。
 - **注意**：现有 15s/30s 模板目前仍仅为 Classic AB 兼容模板；Adaptive/Cinematic 的**正式完整 Prompt 模板及 3–8 Part 装配留给 T05**，不得把 T02 的时间规划示例当成真实 H3 成品模板。
 
 
