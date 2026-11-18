@@ -1,6 +1,6 @@
 ---
 name: vlog-ab-director
-description: 基于 AB 双轨视听引擎与 2.5 秒黄金节拍器，生成工业级电影感生活 Vlog 提示词（MiniMax H3 Ref2VA/T2VA 专用）。融合主观自拍（A镜）与客观电影大片（B镜），内置右手专职持机法则、免持浮空模式、硬切省略哲学、道具生命周期追踪、台词预算管理与严格防字幕负向约束。
+description: 面向 MiniMax H3 Ref2VA/T2VA 的电影感 Vlog 导演 Skill。默认 Auto 识别并路由 Classic AB、Adaptive AB 或 Cinematic-led；Classic 才强制 15 秒六镜、2.5 秒节拍。保留人物持机/道具连续性、中文画外音、六段式 Prompt 与生成阶段无 BGM。现有完整模板为 15s/30s Classic，自适应时序与最长 120s 多 Part 装配分阶段实施。
 ---
 
 # Vlog AB Director (电影感 Vlog 双轨视听导演)
@@ -45,7 +45,7 @@ description: 基于 AB 双轨视听引擎与 2.5 秒黄金节拍器，生成工�
 
 ---
 
-## 四步标准化工作流 (Workflow)
+## 五步工作流（包含步骤 0 Auto 路由）
 
 ```text
 [步骤 0: Auto 导演模式选择] ──> [步骤 1: 需求定位与分类] ──> [步骤 2: 状态机与资产锁定] ──> [步骤 3: 节奏与台词规划] ──> [步骤 4: 六段式装配]
