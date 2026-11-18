@@ -1,6 +1,6 @@
 # Creative Director — C00–C06 人物短视频创意入口
 
-设计：[v2.1详细设计](../../docs/design-v2.1-creative-engine.md)。先判创作需求，再选择题材；这里不是 H3 摄影模式路由。适用于以人物为主体的15–120秒轻剧情、弱剧情和非剧情审美短片。用户的明确需求优先；不借创意强制改写其剧本。
+设计：[v2.1详细设计](../../docs/design-v2.1-creative-engine.md)。先判创作需求，再选择题材；这里不是 H3 摄影模式路由。适用于以人物为主体的15–300秒轻剧情、弱剧情和非剧情审美短片。用户的明确需求优先；不借创意强制改写其剧本。
 
 ## C00 双维入口识别（每轮）
 
@@ -40,6 +40,6 @@ idea_maturity：ZERO（没有点子）、CHARACTER_ONLY（仅角色/参考图/�
 
 ## C06 创意QC / T01交接
 
-必须读取 [创意QC](creative_quality_control.md) 并逐项核查。未解决硬冲突、需要用户确认或仅讨论的状态不得交付最终H3 Prompt。通过且交付意图是PROMPT时，把当前确认简案映射到原 T01 Director Brief；不在Prompt新增内部字段。T01–T06保持旧优先级与约束：15秒独立任务、最多8段、Classic仅固定6×2.5s、无BGM、真实资产与局部编号、转场默认仅建议、已验证中文VO、最终QC。执行层发现必须改核心故事时回REOPEN；用户仅修改执行细节则重新执行相关 T02–T06。
+必须读取 [创意QC](creative_quality_control.md) 并逐项核查。未解决硬冲突、需要用户确认或仅讨论的状态不得交付最终H3 Prompt。通过且交付意图是PROMPT时，把当前确认简案先进入 [Narrative Architect](../narrative/narrative_architect.md) 与 [Editing Director](../editing/editing_director.md)，再映射到原 T01 Director Brief；不在Prompt新增内部字段。T01–T06保持旧优先级与约束：15秒独立任务、最长300秒成片、有限独立任务预算、Classic仅固定6×2.5s、无BGM、真实资产与局部编号、转场默认仅建议、已验证中文VO、最终QC。执行层发现必须改核心故事时回REOPEN；用户仅修改执行细节则重新执行相关 T02–T06。
 
 非核心内容可解释范围并提供可行简化；不要为遵守人本定位改写用户明确的纯风景/产品请求。涉及真实人物的纪实创作以提供的事实为限。创意质量和模型视频证据分别记录，不承诺物理/声画效果。
