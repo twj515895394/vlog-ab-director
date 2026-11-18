@@ -6,7 +6,7 @@
 
 ## 1. 目标及不变约束
 
-用户只说一个故事/主题时，Skill **默认使用 Auto** 先判断怎样拍，而不是机械套用 A1-B1-A2-B2-A3-B3。用户可直接要求 `Classic AB`、`Adaptive AB` 或 `Cinematic-led` 覆盖 Auto 的推荐。
+**v2.1 前置门禁**：先由 [Creative Director](creative/creative_director.md) 识别是否需要创意讨论；只有当前 [Creative Brief](creative/creative_brief.md) 已确认/委托、创意QC通过且用户明确要制作（或充分明确的任务直接请求成品）才进入 T01。仅要点子/继续讨论时不得运行成品装配。进入制作后，Skill **默认使用 Auto** 先判断怎样拍，而不是机械套用 A1-B1-A2-B2-A3-B3。用户可直接要求 `Classic AB`、`Adaptive AB` 或 `Cinematic-led` 覆盖 Auto 的推荐。
 
 - **A 镜（主观）**：人物对镜头交流、身临其境和情绪陪伴；现代真实自拍通常右手持机。无手机的古风/仙侠世界观采用自然的近距离主观跟拍/随行视点，**不凭空出现现代手机**。
 - **B 镜（客观）**：空间、动作、人物整体造型、场景光线、环境氛围；镜头的作用应有叙事理由。
@@ -18,7 +18,7 @@
 
 ## 2. 输入提取：Director Brief
 
-从用户自然语言、明确的参数和可用参考素材中提取：
+从确认的 Creative Brief、用户自然语言、明确参数和可用参考素材中提取（映射参见 Creative Brief 第4节）；题材不自动决定摄影模式：
 
 | 字段 | 内容 | 未指定时 |
 |---|---|---|
