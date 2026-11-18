@@ -4,7 +4,7 @@
 > 仓库：twj515895394/vlog-ab-director  
 > 基线：main，v1.0.0；以 2026-11-18 读取的 SKILL.md、SKILL.cn.md、meta.yaml、3 个 references 和 2 个 templates 为依据  
 > 创建日期：2026-11-18  
-> 范围：设计与验收口径，不代表已实施；独立实施计划见 [`implementation-plan-v2.md`](implementation-plan-v2.md)，当前未开始修改 Skill 实现
+> 范围：设计与验收口径，不代表已实施；独立实施计划见 [`implementation-plan-v2.md`](implementation-plan-v2.md)，实际阶段进度以实施计划为准
 
 ## 1. 背景与问题定义
 
@@ -491,7 +491,7 @@ Auto 的输出必须做到「按需推荐，允许没有」。用户指示「仅
 
 后续拆分、执行顺序、每步涉及的文件、验证方式与完成标准已整理在 [`docs/implementation-plan-v2.md`](implementation-plan-v2.md)；转场技巧、适配限制与可选决策详见 [`docs/transition-techniques-library-v2.md`](transition-techniques-library-v2.md)。
 
-**当前状态：仅设计批准并准备实施计划，尚未开始修改 `SKILL.md`、参考规范、模板、测试文件或其他 Skill 实现。** 实施时逐阶段验收，不允许一次性替换现有已验证规则。
+**当前状态：设计已批准，T00–T06 的文本实现已接入；T07 实机验收状态以验收报告为准。** 不因文本回归通过而宣称模型实际能力已验证。
 
 ---
 **设计立场**：保留已经实测有效的 AB 语法和画外音表达，以可解释的自适应策略、状态校验和实际生成验证补足 v1，不做为改而改的规则重写。
