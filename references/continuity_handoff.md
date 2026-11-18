@@ -111,7 +111,7 @@
 4. 记录 `allowed_changes` 与 `events`；要求 Part k+1 第一镜的 `entry_state` 与 handoff_out 一致，或有对应合法改变事件；
 5. 分别构造 Part k 与 Part k+1 的**独立参考素材上传清单**，先映射全局资产，再按当前任务重编号；
 6. 检查所有 1–8 Part 的边界，不能只维护 P1→P2 而忘记 P5→P6；
-7. 默认只在输出中给用户必需的「下一 Part 上传顺序 / 关键状态」简短说明；完整内部 handoff 表仅按需展示。T05 才完成 3–8 Part 成套 Prompt 装配。
+7. 默认只在输出中给用户必需的「下一 Part 上传顺序 / 关键状态」简短说明；完整内部 handoff 表仅按需展示。T05 已接入 3–8 Part 成套 Prompt 装配，见 [H3 Adapter](model_h3_adapter.md)。
 
 ### 6.2 Handoff 必需字段
 
@@ -144,7 +144,7 @@
 - 全局资产使用稳定 `asset_id`（例如 `role_hero`、`scene_gate`、`scene_greenhouse`、`prop_map`），在全片保持同一含义；
 - **单次生成任务**的 `Picture 1..N` 是按用户**当前实际上传顺序**分配的局部编号，每个 Part 从 1 重新编号；
 - 给每个任务先列出 `upload_manifest = [(Picture 1, asset_id), (Picture 2, asset_id)...]`，再在该任务 Prompt 中引用；**不能引用这次没有上传的图片**；
-- 如果没有上传任何参考图（T2VA）：`upload_manifest=[]`，Prompt 不得假装存在 `<Picture 1>`；具体纯文本模式装配由 T05 处理。
+- 如果没有上传任何参考图（T2VA）：`upload_manifest=[]`，Prompt 不得假装存在 `<Picture 1>`；具体纯文本模式装配已在 [T05 H3 Adapter](model_h3_adapter.md) 定义。
 
 ### 7.2 多 Part 映射示例
 
@@ -191,7 +191,7 @@ P2 的「温室」虽然是全局第三个资产，实际本段仅上传两张�
 - **T03B（已接入规则）** 根据题材与景别判 `none / suggest_only / planned_pair`，只有选用 `planned_pair` 时才要求两 Part 的出场/入场镜头成对匹配，并计入确实发生的编辑损耗。
 - 任意 120 秒片子即使所有边界都是普通硬切，**T03 的 handoff 仍必须成立**；特殊转场数量没有下限。
 
-**T03 完成定义**：规范已接入入口，能够从镜头状态推导合法连续性，能够按每个任务重新编写参考资产清单，能够按不同时间/地点跳跃说明物理状态。完整动态 H3 Prompt 装配及实际视频仍属于 T05/T07。
+**T03 完成定义**：规范已接入入口，能够从镜头状态推导合法连续性，能够按每个任务重新编写参考资产清单，能够按不同时间/地点跳跃说明物理状态。完整动态 H3 Prompt 装配已由 T05 定义，实际视频仍待 T07。
 
 ---
 
