@@ -1,4 +1,4 @@
-# Vlog AB Director 回归测试矩阵（T00 基线 + T01 Auto 路由）
+# Vlog AB Director 回归测试矩阵（T00 基线 + T01 路由 + T02 时序）
 
 > 建立：2026-11-18。当前状态：**仅冻结测试数据和验收口径；不代表 MiniMax H3 实机测试通过。**  
 > T00 不改动 `SKILL.md`、`SKILL.cn.md`、`references/` 或 `templates/`；后续 Tickets 按阶段实现并填写验证结果。  
