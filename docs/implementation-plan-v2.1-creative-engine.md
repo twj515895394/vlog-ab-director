@@ -32,6 +32,22 @@
 
 运行 node tests/creative-check.mjs 与 node tests/qc-check.mjs。可用环境若不能运行 Node CLI，则执行回读的相同核心JS逻辑并披露区别；不能宣称本地已运行。脚本只对结构化fixture和可解析规范事实做断言，语义、多轮自然语言实际执行及H3渲染独立记录。用户的CRLF修复必须保持，新增读取同样规范化换行，另测LF/CRLF。报告实际commit、文件、通过/失败数量、未执行项目。设计选择及临时假设可追溯。
 
-## 5. 状态
+## 5. 实际实施与验收记录（2026-11-18）
 
-CE00：设计与实施计划已提交。CE01–CE07：待实施。完成后逐项更新，不把计划或预期用例当作实际验证。
+| Ticket | 状态 | 实际交付 |
+|---|---|---|
+| CE00 | 已完成 | 详细设计 1395b0a、实施计划 94eb73c；基于用户 CRLF 修复 67de773 |
+| CE01 | 已完成 | 创意入口、四种成熟度和五种交付意图、多轮讨论协议、确认版本门禁 |
+| CE02 | 已完成 | 12 题材、10 叙事结构、30 种子、9 人物关系、13 情绪路径 |
+| CE03 | 已完成 | 组合机制、差异化指纹、约束过滤、反馈与排除项 |
+| CE04 | 已完成 | Creative Brief、T01 映射、9 HARD / 10 SOFT 创意 QC |
+| CE05 | 已完成 | 中英文入口、T01 前置门禁、README、meta 描述、变更记录 |
+| CE06 | 已完成 | 4 份人工共创示例（含完整独立15s H3交接）、40条行为预期、creative-check.mjs |
+| CE07 | 静态回读验收完成 | 实际执行仓库回读的核心函数；真实 Skill 行为和 H3 视频仍待验证，不发布正式版本 |
+
+### 实际执行证据
+
+- 从 GitHub 回读 tests/creative-check.mjs（blob 70c4714152a0992f8bd1dca3a4efbb128a80ca9d）并在 JavaScript 执行环境执行其 runCreativeQC 核心函数。library 28/28、integration 51/51，共79/79项确定性断言通过；以 CRLF 重编码后再执行，79/79通过，结果与 LF 完全相同。
+- 从 GitHub 回读原 tests/qc-check.mjs，blob c1e75107e2b0a85f8b8e1e0afb30ea3ec7b7ce0d，与 CRLF 修复后的基线完全相同。执行原 runQC 核心函数及原归一化口径：15份完整模板Prompt、69镜、176/176断言通过；CRLF输入重复验证176/176通过，与LF相同；Classic冻结比对通过。
+- 以上为回读实际文件并执行相同核心函数的有限静态测试，**未执行 Node CLI 包装器或用户本地环境**；可在仓库根目录用 Node.js 18+ 运行 node tests/creative-check.mjs 和 node tests/qc-check.mjs 复现。40条自然语言行为用例为 NOT_RUN，人工编写的4份会话示范不是模型实际运行结果。H3视频、口型、手部、剪辑、创意主观质量与模型稳定性均未实测。
+- 版本仍为 1.0.0；main 是 v2.1 Creative Engine 文本候选实现，不打正式发布标签。下一步为在实际 Skill 客户端按用例进行多轮行为验收，再使用具体 H3 部署完成原 T07 视频验收。
