@@ -183,7 +183,7 @@
 **计划涉及文件**
 - 新增 `references/quality_control.md`；
 - 完成 `tests/regression-matrix.md` 和必要的测试提示词；
-- 视需要微调 ``SKILL*.md`、`templates/` 的 QC 调用说明。
+- 视需要微调 `SKILL*.md`、`templates/` 的 QC 调用说明。
 
 **硬性检查**
 - 时间轴区间正确且总时长吻合；
