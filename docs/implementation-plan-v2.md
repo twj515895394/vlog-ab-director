@@ -1,6 +1,6 @@
 # Vlog AB Director v2 分阶段实施计划
 
-> 状态：**In Progress / 分阶段实施中**（2026-11-18：T00、T01、T02 规范/入口实现已提交；T03–T07 尚未实施；H3 实机尚未验证）  
+> 状态：**In Progress / 分阶段实施中**（2026-11-18：T00、T01、T02、T03 规范/入口实现已提交；T03B–T07 尚未实施；H3 实机尚未验证）  
 > 制定日期：2026-11-18  
 > 设计依据：[v2 详细设计（已确认）](design-v2-director-engine.md)  
 > 目标仓库：`twj515895394/vlog-ab-director` / `main`  
@@ -114,7 +114,8 @@
 **计划涉及文件**
 - 扩展 `references/rules_state_machine.md`；
 - 新增 `references/continuity_handoff.md`（段间字段与规则）；
-- 可新增 `templates/segment_handoff_example.md`（供内部规划，不作为模型输入强制段落）；
+- 新增 `templates/segment_handoff_example.md`（供内部规划，不作为模型输入强制段落）；
+- 新增 `tests/continuity-cases.md`（手、道具、场景跳跃、参考图与多 Part 交接的正反案例）；
 - 扩展 `tests/regression-matrix.md`。
 
 **具体任务**
@@ -130,6 +131,8 @@
 - 同一枚核心道具不会无事件变更位置或持有人；
 - 任意相邻 Part 的服装、道具、空间和人物状态交接清晰；
 - 每个 Part 未上传资产不得被引用、无编号跳号。
+
+**T03 当前实现记录（2026-11-18）**：已将镜头 `entry_state / visible_action / exit_state`、道具/手资源及 `cut_event / jump_event` 写入 `references/rules_state_machine.md` 与新建的 `references/continuity_handoff.md`；新增内部三 Part 交接样例及 32 个正反回归用例，已接入中英文 Skill 入口。已明确从任意相邻 Part 传递状态、按当前任务重编号参考图、场景锚点不瞬移。**这是文字规则与样例的实施；不代表存在自动语义检测程序，也未验证 MiniMax H3 实际生成连续性。**
 
 ### T03B — 场景驱动的可选跨 Part 创意转场导演
 
@@ -342,9 +345,10 @@
 | **T00** | 已完成文本基线 | `examples/classic-ab-15s.md`、`examples/classic-ab-30s.md`、`examples/voiceover-verified.md` 及 `tests/regression-matrix.md`；无 H3 实机视频 |
 | **T01** | 已实施规范/入口 | `references/director_strategy.md`、`SKILL.md`、`SKILL.cn.md`、路由预期用例；真实加载 Skill 的语言模型行为尚待验收 |
 | **T02** | 已实施时间规划/预算 | `references/timing_engine.md`、Classic 节拍器兼容注记、`tests/timing-cases.md`；仅静态时间算术与文档一致性验证 |
-| **T03 / T03B** | 未实施 | 人物道具状态机与选用型转场导演 |
+| **T03** | 已实施规则/入口 | `references/continuity_handoff.md`、扩展 `rules_state_machine.md`、`templates/segment_handoff_example.md`、`tests/continuity-cases.md`（32 例）；语言模型行为及 H3 视频待验证 |
+| **T03B** | 未实施 | 按场景推荐/采纳特殊转场、双端镜头配对、剪辑点与风险回退 |
 | **T04** | 未实施 | VO/L-Cut 完整声音语法、无 BGM 声画 QC |
 | **T05** | 未实施 | 可复制 Adaptive/Cinematic 多 Part H3 完整模板装配 |
 | **T06 / T07** | 未实施 | 完整静态 QC 与真实 H3 实机视频回归 |
 
-**后续执行从 T03 开始**；不要因为 T02 的 120 秒规划账本已存在，就宣称 120 秒视频成品提示词、自动剪辑或视频实际渲染已交付。
+**后续执行从 T03B 开始**；T03 状态交接已定义，但不要因此声称实现了创意转场推荐、120 秒完整 H3 Prompt 自动装配、自动剪辑或实际视频渲染。
