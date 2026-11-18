@@ -75,7 +75,7 @@ description: Direct MiniMax H3 Ref2VA/T2VA cinematic Vlog prompts using an Auto 
 - **始终不生成 BGM**：只允许环境音、人声、Foley；`non_diegetic_music: N/A`。人物画外音的合法中文自然写法继续保留，不为转场更改已验证口型语义。
 - **能力边界**：本阶段已定义转场选择及双端规划契约，**但 3–8 Part 正式完整 H3 Prompt 模板装配仍归 T05**；效果还未经过 MiniMax H3 实机验证。默认输出仍以可复制 Prompt 为主，详细状态与 QC 按需给出。
 
-**内部交接必须符合**：[`references/continuity_handoff.md`](references/continuity_handoff.md) §10；参考案例：[T03B 转场边界规划样例](templates/transition_boundary_examples.md)；回归测试：[T03B 转场用例](tests/transition-cases.md)。
+**内部交接必须符合**：[`references/continuity_handoff.md`](references/continuity_handoff.md) 第 10 节；参考案例：[T03B 转场边界规划样例](templates/transition_boundary_examples.md)；回归测试：[T03B 转场用例](tests/transition-cases.md)。
 
 ---
 
