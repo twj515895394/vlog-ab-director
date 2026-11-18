@@ -1,8 +1,8 @@
-# 3–8 Part 动态装配模板与八段完整样例
+# 多任务动态装配模板与120秒八段兼容样例
 
 ## A. 通用装配流程
 
-按 [model_h3_adapter.md](../references/model_h3_adapter.md) 确定 N=ceil(T/15)，对 3、4、5、6、7、8 个独立任务分别执行镜头分配、状态交接、当前任务参考图映射、声音及选用转场装配；每个 Part 输出完整六字段并重置到 0–15s。禁止跨 Part 引用未上传图片、用省略号代替任何 Prompt，或默认把下面八段故事截取前几段当作新的完整成片。短片需重新规划结尾。Classic 每段六镜2.5s；Adaptive 可变；Cinematic 可全B。
+按 [model_h3_adapter.md](../references/model_h3_adapter.md) 确定有限素材任务预算N（目标≤300秒），对全部独立任务分别执行镜头分配、状态交接、当前任务参考图映射、声音及选用转场装配；每个 Part 输出完整六字段并重置到 0–15s。禁止跨 Part 引用未上传图片、用省略号代替任何 Prompt，或默认把下面八段故事截取前几段当作新的完整成片。短片需重新规划结尾。Classic 每段六镜2.5s；Adaptive 可变；Cinematic 可全B。
 
 ## B. 120 秒名义素材完整样例（八个独立 T2VA 任务）
 
@@ -341,4 +341,4 @@ N/A
 
 ## C. 剪辑账本
 
-每段计划 edit_in=0.000、edit_out=15.000、retained=15.000；七个普通硬切不预设重叠或裁切损耗。实际若裁掉任何帧，重新核算净长；精确120秒而有损耗时依 T02 报告 LENGTH_FEASIBILITY_CONFLICT。没有神转场不扣分。
+每段计划 edit_in=0.000、edit_out=15.000、retained=15.000；七个普通硬切不预设重叠或裁切损耗。实际若裁掉任何帧，重新核算净长；精确120秒而有损耗时在固定8任务且无其他素材时依T02报告 LENGTH_FEASIBILITY_CONFLICT。没有神转场不扣分。
