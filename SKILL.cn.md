@@ -1,13 +1,26 @@
 ---
 name: vlog-ab-director
-description: MiniMax H3 电影感 Vlog 提示词导演，支持 Ref2VA/T2VA、Auto 三种导演策略、Classic 六镜2.5秒、Adaptive/Cinematic 自适应节奏、人物道具连续性、可选转场、中文画外音和无 BGM；输出1–8个独立15秒任务的完整六字段Prompt，规划最长120秒，并附必要参考图清单与交接说明。
+description: 以人物为主体的短视频题材与轻剧情创意共创、MiniMax H3导演Skill。从零点子、人设或模糊想法发散题材与故事，多轮融合、确认Creative Brief；明确需求可直接进入Classic/Adaptive/Cinematic策略，最多8个独立15秒任务，人物道具连续性、可选转场、中文VO、无BGM及QC。
 ---
 
 # Vlog AB Director (电影感 Vlog 双轨视听导演)
 
-`vlog-ab-director` 是一套专为 **MiniMax H3（特别是全参考 Ref2VA 及 T2VA 模式）** 研发的电影感生活 Vlog 提示词导演 Skill。
+`vlog-ab-director` 是面向 **以人物为主体的15–120秒轻剧情、弱剧情及非剧情审美短视频** 的创意策划与视听导演 Skill，支持从零点子多轮共创，也支持直接制作 MiniMax H3 Ref2VA/T2VA 提示词。
 
 它以**“主观视点（A镜）+ 客观电影运镜（B镜）”**交替为底层视听语法，通过**右手专职持机法则、免持物浮空随行模式、硬切省略哲学、道具守恒定律、2.5 秒黄金节拍器、AI 口语化台词代写**以及**空行级绝对防字幕负向约束**，降低 AI 视频人物动作穿模、手部多指变形、道具瞬移、台词语速失控与画面乱码烧录字幕等问题的发生风险。
+
+---
+
+## v2.1 / CE：创意策划与轻剧情共创（先于步骤 0）
+
+收到短视频创作需求时，**必须先读取 [Creative Director](references/creative/creative_director.md)**，识别 idea_maturity 和 request_goal。定位以人物为主体的轻剧情、弱剧情与非剧情审美短视频，Vlog 只是其中一种表现形式。
+
+- **ZERO / CHARACTER_ONLY**（没有点子 / 只有人设或参考图）：主动提供3–5个真正不同、可拍的创意提案（用户指定数量优先）。读取 [题材库](references/creative/genre_library.md) 和按需的 [组合引擎](references/creative/creative_combination_engine.md)、[叙事结构](references/creative/micro_story_structures.md)、[种子库](references/creative/creative_seed_library.md)、[关系](references/creative/character_interaction_library.md)、[情绪](references/creative/emotional_arc_library.md)。素材未知不虚构，少量聚焦提问而非问卷。每条有具体人物行为/视觉主题、记忆点、时长及难度，不只列题材名。
+- **VAGUE**（模糊想法）：保留用户的创意核心，按需细化或提出多个变体；不强迫情节、冲突或反转。
+- **READY**（明确任务/完整剧本）：用户已要求直接生成时，构建最小 Creative Brief 后跳过发散，确认类型为 direct_ready；不要求重复确认。用户只要创意、剧本或简案则停止在对应产物。
+- **多轮讨论**必须遵循 [共创协议](references/creative/collaborative_discussion.md)：保留已锁定约束、候选ID、排除项、修订版本；支持比较、融合、改结局、否决与重新发散。用户说“喜欢B”或只回答偏好问题的“OK”不是授权生成；确认当前简案并要求制作，或明确委托直接出成品，才能交接。核心变化撤销旧确认，若用户同时授权新版本则可直接推进；仅修改执行细节走原导演层。
+- **制作门禁**：先按 [Creative Brief](references/creative/creative_brief.md) 形成简案，执行 [Creative QC](references/creative/creative_quality_control.md) 九项硬门禁、十项软检查。只有当前revision获确认/委托、制作意图明确且硬项已解决才进入 T01。未授权或仅讨论阶段不得输出最终H3六字段。非剧情审美可保持无冲突、无对白；人物旅拍以体验为主，不堆空镜。
+- 进入制作后，遵循原 T01–T06；用户明确的Classic/画幅/逐字台词/无手机等硬约束不变，最多8个独立15s任务、净时长预算、真实参考资产、中文VO、无BGM、转场默认仅建议均保留。既有导演策略不按题材机械映射。简案是内部交接，不是第七个H3字段。
 
 ---
 
@@ -107,10 +120,10 @@ description: MiniMax H3 电影感 Vlog 提示词导演，支持 Ref2VA/T2VA、Au
 
 ---
 
-## 五步工作流（包含步骤 0 Auto 路由）
+## 工作流：Creative Engine → 步骤 0–5
 
 ```text
-[步骤 0: Auto 导演模式选择] ──> [步骤 1: 需求定位与分类] ──> [步骤 2: 状态机与资产锁定] ──> [步骤 3: 节奏与台词规划] ──> [步骤 4: 六段式装配]
+[CE: 创意讨论 / 已明确任务直通 → 当前简案QC及制作授权] ──> [步骤 0: Auto 导演模式选择] ──> [步骤 1: 需求定位与分类] ──> [步骤 2: 状态机与资产锁定] ──> [步骤 3: 节奏与台词规划] ──> [步骤 4: 六段式装配] ──> [步骤 5: 统一QC]
 ```
 
 ### 步骤 1：需求定位与分类
@@ -195,6 +208,9 @@ description: MiniMax H3 电影感 Vlog 提示词导演，支持 Ref2VA/T2VA、Au
 ---
 
 ## 模板与参考资源导航
+
+- **CE 创意入口与讨论**：[creative_director.md](references/creative/creative_director.md)、[collaborative_discussion.md](references/creative/collaborative_discussion.md)；[Creative Brief](references/creative/creative_brief.md)、[创意QC](references/creative/creative_quality_control.md)。
+- **CE 资料与组合**：[题材](references/creative/genre_library.md)、[叙事](references/creative/micro_story_structures.md)、[种子](references/creative/creative_seed_library.md)、[人物关系](references/creative/character_interaction_library.md)、[情绪](references/creative/emotional_arc_library.md)、[组合机制](references/creative/creative_combination_engine.md)。[设计](docs/design-v2.1-creative-engine.md) / [计划](docs/implementation-plan-v2.1-creative-engine.md) / [创意回归](tests/creative-cases.md)。
 
 - **默认 Auto 模式与优先级（T01）**：[`references/director_strategy.md`](references/director_strategy.md)
 - **T02 分镜时间预算与多 Part 净时长规划**：[`references/timing_engine.md`](references/timing_engine.md)。
