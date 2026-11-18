@@ -3,7 +3,7 @@
 > 状态：T03 已接入的**内部导演规划规范**；不是 MiniMax H3 原生参数格式，不是程序化校验器。  
 > 生效范围：Classic AB、Adaptive AB、Cinematic-led 的每一镜，以及最多 8 个独立 15 秒 Part 之间的每个边界。  
 > 关联：[基础物理规则](rules_state_machine.md) · [T02 时间轴](timing_engine.md) · [已确认 v2 设计](../docs/design-v2-director-engine.md)。  
-> 后续边界：**T03B 才决定是否建议/采纳特殊转场**；T04 完善画外音/声音语法，T05 将状态转成完整 H3 Prompt，T06 执行完整自动 QC。
+> 阶段边界：**T03B 已接入可选转场决策与选用时的双端镜头契约**，详见 [transition_director.md](transition_director.md)；T04 完善声音语法，T05 将状态及已选用的镜头转成完整 H3 Prompt，T06 执行完整 QC。
 
 ## 1. 基本原则
 
@@ -127,7 +127,7 @@
 | `audio_carry` | 仅记录跨 Part 音频是否接续，详细语法归 T04 |
 | `asset_manifest` | 各 Part 实际上传的全局资产 ID 与当前 `Picture N` 映射 |
 | `edit_notes` | 可直接普通硬切；已知剪辑裁切按 T02 账本核算 |
-| `transition_intent` | `none` 或用户明确想尝试某技巧的待评估需求；**T03 不决定/强制特效转场** |
+| `transition_intent` | T03B 决策 `none / suggest_only / planned_pair`；**只在 planned_pair 时才附出/入镜头的特殊转场契约**。T03 本身不强制任何技巧 |
 
 **same_moment** 时场景、持有手、服装、核心道具与光影原则上保持一致，但剪辑可以使用不同机位；**cut_ellipsis** 可以短时间进入门内/收伞等；**time_jump/location_jump** 可以声明合理变化，但不能把身份或核心道具随意替换成别的。
 
@@ -188,7 +188,33 @@ P2 的「温室」虽然是全局第三个资产，实际本段仅上传两张�
 ## 9. T03 / T03B 的清晰分工
 
 - **T03** 处理 `same_moment`、`cut_ellipsis`、`time_jump`、`location_jump` 的**叙事状态继承**；不把「水池穿越」等技巧当成必须调用的状态事件。
-- **T03B** 才根据题材与景别判 `none / suggest_only / planned_pair`，只有选用 `planned_pair` 时才要求两 Part 的出场/入场镜头成对匹配，并计入实际编辑损耗。
+- **T03B（已接入规则）** 根据题材与景别判 `none / suggest_only / planned_pair`，只有选用 `planned_pair` 时才要求两 Part 的出场/入场镜头成对匹配，并计入确实发生的编辑损耗。
 - 任意 120 秒片子即使所有边界都是普通硬切，**T03 的 handoff 仍必须成立**；特殊转场数量没有下限。
 
 **T03 完成定义**：规范已接入入口，能够从镜头状态推导合法连续性，能够按每个任务重新编写参考资产清单，能够按不同时间/地点跳跃说明物理状态。完整动态 H3 Prompt 装配及实际视频仍属于 T05/T07。
+
+---
+
+## 10. T03B 可选转场扩展：仅对已选用的边界附双端契约
+
+转场决策和技术目录以 [`transition_director.md`](transition_director.md) 为准。**先有 T03 的 handoff 状态，再判断是否有特殊拍摄/剪辑技巧的价值；任何边界都可以保持 `none`。**
+
+| `transition_decision` | T03 handoff 必需字段 | T03B 特有字段 | 能否修改前后 Part Prompt |
+|---|---|---|---|
+| `none` | 原有 `exit_snapshot`、`entry_snapshot`、events、assets 等 | 无（`transition_id` 为空） | **不能**为转场强制改写 |
+| `suggest_only` | 原有字段保持不变 | 技巧 ID、建议理由、简要的两端拍法、风险（**在 Prompt 外**） | **不能**修改当前 Prompt |
+| `planned_pair` | 原有字段 + 重新核对允许的状态变化 | 必须填 `outgoing_shot / incoming_shot / cut_basis / matching_constraints / physical_handoff / assets / edit_plan / duration_budget / risk / fallback` | **仅在用户授权且物理/时长可行时**修改双方镜头内容，不改变用户锁定的 Classic 6×2.5s 节奏 |
+
+### 10.1 选用的前置条件
+
+1. 用户明确指定具体技巧或明确委托导演按需要直接安排；**默认 Auto 只建议**。用户说不用转场就始终是 `none`。
+2. 前一 Part 尾镜、后一 Part 首镜均有符合故事的摄影机/道具/动作配合。不能只对一端写「水面穿越」。
+3. `outgoing_shot` 保留前段镜头结束时的手、道具与人物状态；`incoming_shot` 继承或通过 `cut_event / location_jump / time_jump` 合法改变状态。
+4. 每个 Part 用自己的局部 0–15 秒时间轴、独立的 `asset_id → Picture N` 上传列表；需要新素材时提醒真实上传，**绝不能凭空引用**。
+5. `cut_basis` 必须是剪辑可找到的画面依据（满幅遮挡、同向甩镜模糊峰值、相近水纹、动作相位、形状重合），而不是只写「无缝神转场」。
+6. 记录真实/预估的 `edit_in / edit_out`、是否真的产生净时长损耗。8×15s 恰好 120s 名义素材若需裁切，不得声称剪后仍有 120s。
+7. 高风险镜头必须提供 `fallback=normal_hard_cut` 或更保守的真实镜头匹配方案；不能承诺 H3 跨任务精确无缝。
+
+**例：P4 水面 → P5 海岸的 PT01**：P4 尾镜的水纹覆盖画面，P5 首镜从类似水纹揭开环境；真正剪辑点在水纹覆盖帧，故事上标 `location_jump`，旧场景锚点仍留原场景，声音仅有水声/Foley、人声（如有），**没有 BGM**。两端都需要相应独立生成素材；若水纹不匹配则改普通硬切，不能编造自动无缝穿越。
+
+**T03B 完成边界**：本章只让 Skill 拥有**文本导演决策和已选用双端镜头规划规则**，不是一个自动剪辑器；将其嵌入真实 H3 六字段 Prompt 的完整多 Part 模板属于 T05，生成结果与实际剪点质量属于 T07。
