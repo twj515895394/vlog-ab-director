@@ -1,6 +1,6 @@
 ---
 name: vlog-ab-director
-description: Generate production-grade cinematic Vlog video prompts (MiniMax H3 Ref2VA/T2VA) using the proprietary AB-Camera alternating perspective engine. Combines intimate handheld selfie vlogging (A-cam) with cinematic third-person external shots (B-cam), featuring strict right-hand phone-holding logic, hard-cut ellipsis transitions, prop lifecycle tracking, 2.5s metronome pacing, and automatic AI-scripted colloquial dialogue with closed-lips voiceovers and cross-cut audio continuity for 15s single clips or 30s two-part continuous series.
+description: Direct MiniMax H3 Ref2VA/T2VA cinematic Vlog prompts using an Auto routing step that chooses Classic AB, Adaptive AB, or Cinematic-led. Preserve strict 6-shot 2.5s Classic timing when explicitly requested, with right-hand camera logic, prop continuity, no-BGM audio, Chinese voiceovers, and six-section prompts. Current complete templates support 15s/30s Classic; multipart up to 120s and adaptive timing/templates are staged for later implementation.
 ---
 
 # Vlog AB Director (电影感 Vlog 双轨视听导演)
@@ -45,9 +45,9 @@ description: Generate production-grade cinematic Vlog video prompts (MiniMax H3 
 
 ---
 
-## 4 步标准化工作流 (Workflow)
+## 5 步工作流（包含步骤 0 Auto 路由）
 
-当用户提出 Vlog 创作需求时，按以下 4 步进行标准化构建：
+当用户提出 Vlog 创作需求时，首先执行步骤 0 的 Auto 导演路由，再依次完成后面 4 步；**Classic AB 才强制固定六镜**：
 
 ```
 [步骤 0: Auto 导演模式选择] ──> [步骤 1: 需求定位与分类] ──> [步骤 2: 状态机与资产锁定] ──> [步骤 3: 节奏与台词规划] ──> [步骤 4: 六段式装配]
