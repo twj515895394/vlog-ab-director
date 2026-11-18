@@ -2,7 +2,7 @@
 
 > 状态：**T04 自然语言声画规划规则**，不是音频引擎、视频剪辑器或 MiniMax H3 官方语法承诺。
 > 证据：[用户实测成功的中文闭嘴 VO](../examples/voiceover-verified.md)；L/J-Cut 与 `<scenetrans>` 的模型兼容性仍待 T07 验证。
-> 前置：T01 [策略](director_strategy.md) → T02 [时长](timing_engine.md) → T03 [连续性](continuity_handoff.md) → T03B [可选转场](transition_director.md)。T05 才负责完整可复制 H3 多 Part Prompt 模板装配。
+> 前置：T01 [策略](director_strategy.md) → T02 [时长](timing_engine.md) → T03 [连续性](continuity_handoff.md) → T03B [可选转场](transition_director.md)。T05 已接入完整可复制 H3 多 Part Prompt 模板装配，见 [H3 Adapter](model_h3_adapter.md)。
 
 ## 1. 不可覆盖的 D3：生成阶段一律无背景音乐
 
@@ -114,7 +114,7 @@ Classic、Adaptive、Cinematic-led，以及每个独立的 15s Part 均遵循：
 | `overall_soundscape` | 场景环境声、Foley、人物呼吸/说话与合理声画连接；**不写任何 BGM 生成指令** |
 | `non_diegetic_music` | 严格为 `N/A` |
 
-内部 `Audio Plan` **不是第七个 H3 顶层字段**；每个独立 15s Part 都必须有各自六字段，T05 再实现完整 Adaptive/Cinematic 装配。
+内部 `Audio Plan` **不是第七个 H3 顶层字段**；每个独立 15s Part 都必须有各自六字段，T05 已定义完整 Adaptive/Cinematic 装配规则。
 
 ## 7. T04 静态 QC：应拒绝与应接受
 
@@ -138,5 +138,5 @@ Classic、Adaptive、Cinematic-led，以及每个独立的 15s Part 均遵循：
 ## 8. 能力与实测证据边界
 
 - T04 交付的是 **可执行文本规则**：画内对白/闭嘴 VO/L-Cut/J-Cut/无台词、多人发声归属、按时长规划与 D3 无 BGM。
-- T04 没有交付真实声音拼接程序、跨 Part H3 音轨锁定、T05 多段完整 H3 模板或 T06 自动语义判定器。
+- T05 已交付多段完整 H3 文本模板；仍没有真实声音拼接程序、跨 Part H3 音轨锁定或完整语义判定器。
 - 当前中文 VO 的成功证据来自**用户报告的单个具体片段**；T07 仍需实机验证声画行为及 `<scenetrans>` 兼容性。
