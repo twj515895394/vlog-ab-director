@@ -55,6 +55,13 @@
 
 参考图样例需按各任务清单实际上传；本仓库并未附送对应图像。无图走T2VA，不虚构Picture引用。模板是写作范例，不代表全部题材都使用同样故事。
 
+## 剪辑与连续叙事样例
+
+- [30秒混合叙事完整三任务Prompt](examples/editing/hybrid-30s-complete.md)：现实出入状态中间插入回忆，返回仍严格接续。
+- [120秒完整故事预剪计划](examples/editing/edited-120s-story-plan.md)：10任务、非线性播放、净120s预算。
+- [300秒两种组织方式预算](examples/editing/300s-dual-path-budget.md)：连续20任务/剪辑24任务（示例，不是生成数上限）。
+- [50条行为回归](tests/editing-cases.md) 与 [确定性脚本](tests/editing-check.mjs)；真实多轮Skill/H3仍未验证。
+
 ## 检查与维护
 
 Node.js 18+，无npm依赖：
@@ -62,6 +69,7 @@ Node.js 18+，无npm依赖：
 ```sh
 node tests/qc-check.mjs
 node tests/creative-check.mjs
+node tests/editing-check.mjs
 ```
 
 仓库脚本检查完整模板、冻结基线、可解析字段、局部时间轴、图编号、负向块、有限音乐指令检测及结构化正反例。不是任意自然语言理解器，也不能判断真实视频中的穿模或声画表现。运行 Skill 时必须按 [统一QC](references/quality_control.md) 自检。
