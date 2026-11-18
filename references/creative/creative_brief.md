@@ -20,8 +20,9 @@
 | beats | 有序{beat_id,action,meaning,result}；不是固定镜数或全片模型时码 |
 | emotional_arc | 可变化或保持；用动作/表演/声场表达 |
 | memorable_moment, ending | 可见记忆点与结尾；开放或无反转合法 |
-| duration_target_s | 交接时为15–120内目标，可用15秒默认且注明；非整15由T02规划 |
+| duration_target_s | 交接时为0<T≤300秒（常规15–300），可用15秒默认且注明；非整15由T02规划 |
 | aspect_ratio, language | 用户指定优先；未知可标可逆默认 |
+| organization_mode_preference | AUTO / CONTINUOUS / EDITED / HYBRID；仅明确要求才锁，不按时长强制选择 |
 | camera_intent, director_mode_lock | 自拍/观众POV/客观/混合/禁自拍；仅用户明确才锁模式 |
 | dialogue_intent | 无台词/对白/VO/具体锁定原文；不静默删改 |
 | audio_plan_intent | generation_bgm=false；可有post_music_note但不装进H3 |
@@ -40,7 +41,7 @@
 ## 3. 交接门禁
 
 - 仍在讨论、仅选题/偏好、仅需简案时不交付最终Prompt。
-- 只有 request_goal=PROMPT（或明确要求制作型修改），status=confirmed，confirmation.revision=revision，且当前创意QC硬项无FAIL/未解决UNKNOWN时才交 T01。
+- 只有 request_goal=PROMPT（或明确要求制作型修改），status=confirmed，confirmation.revision=revision，且当前创意QC硬项无FAIL/未解决UNKNOWN时才交 Narrative/Editing Auto 与 T01。
 - READY/PROMPT 充分明确的任务可最小简案 direct_ready；委托方向并要求直接成品 -> delegated。不要求重复确认；默认未锁定细节注明即可。
 - 核心修改后旧授权失效；更新版本、按新约束重检，只有明确同步授权才可直接继续。执行层不改变核心的调整无需重开创意。
 
@@ -58,4 +59,4 @@
 | transition_preference | transition_preference；建议不等于授权 |
 | constraints/preferences/exclusions/language | constraints/language 与导演决策依据 |
 
-T01依原优先级选择Classic/Adaptive/Cinematic，不因G-ID强制模式。T02划分独立15秒任务并净长核算，T03构建具体镜头状态和真实逐任务图片，T03B处理选用转场，T04音频，T05完整六字段，T06最终QC。创意层beats、session、QC、库ID等不添加为模型字段。跨任务声音/剪辑依现有边界。现有已批准剧本按用户原意直通，不因创意模板擅加小事件、人物或台词。
+先按实际剧本确定叙事组织与连续依赖，不推翻原轻剧情。[Editing Auto](../editing/editing_auto_strategy.md)。T01依原优先级选择Classic/Adaptive/Cinematic，不因G-ID强制模式。T02划分独立15秒任务并净长核算，T03构建具体镜头状态和真实逐任务图片，T03B处理选用转场，T04音频，T05完整六字段，T06最终QC。创意层beats、session、QC、库ID等不添加为模型字段。跨任务声音/剪辑依现有边界。现有已批准剧本按用户原意直通，不因创意模板擅加小事件、人物或台词。
