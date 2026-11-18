@@ -3,7 +3,7 @@
 > 状态：T03 已接入的**内部导演规划规范**；不是 MiniMax H3 原生参数格式，不是程序化校验器。  
 > 生效范围：Classic AB、Adaptive AB、Cinematic-led 的每一镜，以及最多 8 个独立 15 秒 Part 之间的每个边界。  
 > 关联：[基础物理规则](rules_state_machine.md) · [T02 时间轴](timing_engine.md) · [已确认 v2 设计](../docs/design-v2-director-engine.md)。  
-> 阶段边界：**T03B 已接入可选转场决策与选用时的双端镜头契约**，详见 [transition_director.md](transition_director.md)；T04 完善声音语法，T05 将状态及已选用的镜头转成完整 H3 Prompt，T06 执行完整 QC。
+> 阶段边界：**T03B 已接入可选转场决策与选用时的双端镜头契约**，详见 [transition_director.md](transition_director.md)；T04 声音规范已接入 [audio_director.md](audio_director.md)，T05 将状态及已选用的镜头转成完整 H3 Prompt，T06 执行完整 QC。
 
 ## 1. 基本原则
 
@@ -29,7 +29,7 @@
 | `props` | 核心道具必选 | 稳定 `prop_id`、材质/形态、`holder/hand` 或世界坐标锚点、可见与否 |
 | `spatial_anchors` | 场景存在固定锚点时必选 | `anchor_id` + 所在 `scene_id` + 具体位置 + 是否可见；离开场景时不能自动跟随 |
 | `environment` | 必选 | `scene_id`、相对位置/室内外、时段/光照、天气、连续性假设 |
-| `audio_carry` | 有跨镜音频时必选 | 仅记录声源/说话者 ID、跨镜是否继续；音频标签语法由 T04 负责 |
+| `audio_carry` | 有跨镜音频时必选 | 仅记录声源/说话者 ID、跨镜是否继续；音频起止与口型规则遵循已接入的 [T04 Audio Director](audio_director.md) |
 | `reference_ids` | 使用参考图时必选 | 稳定全局 `asset_id`，之后按**本任务上传顺序**转换成 `Picture N` |
 | `state_confidence` | 适用 | 若用户输入缺信息，标记明确的保守假设，而不是发明新的关键实体 |
 
@@ -124,7 +124,7 @@
 | `allowed_changes` | 允许改变的字段，**仅在有事件时改变** |
 | `entry_snapshot` | 下一 Part 第一镜需要呈现的状态 |
 | `persistent_lock` | 即使跨时空仍必须保留的身份、关键道具外观等 |
-| `audio_carry` | 仅记录跨 Part 音频是否接续，详细语法归 T04 |
+| `audio_carry` | 仅记录跨 Part 音频是否接续，详细声画规则见已实施的 [T04 Audio Director](audio_director.md) |
 | `asset_manifest` | 各 Part 实际上传的全局资产 ID 与当前 `Picture N` 映射 |
 | `edit_notes` | 可直接普通硬切；已知剪辑裁切按 T02 账本核算 |
 | `transition_intent` | T03B 决策 `none / suggest_only / planned_pair`；**只在 planned_pair 时才附出/入镜头的特殊转场契约**。T03 本身不强制任何技巧 |
