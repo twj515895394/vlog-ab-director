@@ -1,5 +1,7 @@
 # Vlog AB Director v2 详细设计（已确认）
 
+> 历史设计记录：v2.2 扩展至300秒且支持连续/剪辑/混合，原120秒/8任务只为历史基线；现行 [v2.2设计](design-v2.2-editing-director.md) 和运行规则优先。原有经典模式及证据仍保留。
+
 > 文档状态：Approved / D1–D4 已确认，D2 时长扩展及 D5 可选转场策略已追加确认（2026-11-18）  
 > 仓库：twj515895394/vlog-ab-director  
 > 基线：main，v1.0.0；以 2026-11-18 读取的 SKILL.md、SKILL.cn.md、meta.yaml、3 个 references 和 2 个 templates 为依据  
