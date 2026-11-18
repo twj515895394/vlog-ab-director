@@ -134,7 +134,8 @@ const paths=[
   "examples/classic-ab-15s.md",
   "examples/classic-ab-30s.md"
 ];
-const files=Object.fromEntries(paths.map(p=>[p,readFileSync(new URL("../"+p,import.meta.url),"utf8")]));
+// Normalize checkout line endings before exact block comparisons and mutations.
+const files=Object.fromEntries(paths.map(p=>[p,readFileSync(new URL("../"+p,import.meta.url),"utf8").replace(/\r\n/g,"\n")]));
 const report=runQC(files);
 console.log(JSON.stringify(report,null,2));
 if(report.failures.length)process.exitCode=1;
