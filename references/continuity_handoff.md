@@ -106,7 +106,7 @@
 ### 6.1 边界生成顺序
 
 1. 在 T02 完成每段时间轴规划以后，依次规划 Part k 的每镜 `entry/action/exit`；
-2. 对 Part k 最后一镜的 `exit_state` 形成 **handoff_out(k)`；
+2. 对 Part k 最后一镜的 `exit_state` 形成 `handoff_out(k)`；
 3. 在 Part k+1 前，明确衔接类型：`same_moment`、`cut_ellipsis`、`time_jump` 或 `location_jump`；这些是**叙事/物理连续性类型，不是 T03B 的「神转场」算法结果**；
 4. 记录 `allowed_changes` 与 `events`；要求 Part k+1 第一镜的 `entry_state` 与 handoff_out 一致，或有对应合法改变事件；
 5. 分别构造 Part k 与 Part k+1 的**独立参考素材上传清单**，先映射全局资产，再按当前任务重编号；
