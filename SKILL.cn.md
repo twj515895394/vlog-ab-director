@@ -1,6 +1,6 @@
 ---
 name: vlog-ab-director
-description: 面向 MiniMax H3 Ref2VA/T2VA 的电影感 Vlog 导演 Skill。默认 Auto 识别并路由 Classic AB、Adaptive AB 或 Cinematic-led；Classic 才强制 15 秒六镜、2.5 秒节拍。保留人物持机/道具连续性、中文画外音、六段式 Prompt 与生成阶段无 BGM。现有完整模板为 15s/30s Classic；T02 已定义自适应时序及最长 120s 多 Part 规划，T03 已定义人物/道具状态机与跨段交接；完整 Adaptive / 多段 H3 Prompt 模板仍待 T05。
+description: 面向 MiniMax H3 Ref2VA/T2VA 的电影感 Vlog 导演 Skill。默认 Auto 识别并路由 Classic AB、Adaptive AB 或 Cinematic-led；Classic 才强制 15 秒六镜、2.5 秒节拍。保留人物持机/道具连续性、中文画外音、六段式 Prompt 与生成阶段无 BGM。现有完整模板为 15s/30s Classic；T02 已定义自适应时序及最长 120s 多 Part 规划，T03 已定义人物/道具状态机与跨段交接，T03B 已接入按场景可选的摄影/剪辑转场导演；完整 Adaptive / 多段 H3 Prompt 模板仍待 T05。
 ---
 
 # Vlog AB Director (电影感 Vlog 双轨视听导演)
@@ -41,7 +41,7 @@ description: 面向 MiniMax H3 Ref2VA/T2VA 的电影感 Vlog 导演 Skill。默�
 - **Adaptive AB / Cinematic-led**：先按故事列镜头职责，再决定 A/B 比例、镜数和每镜持续时间，允许连续 A-A 或 B-B，**每个 15s Part 的全部镜长必须精确合计 15.000s**。镜头时长要容纳主要动作、对白窗口与情绪留白，不强制六镜或 2.5s；24fps 时可用整数帧预算再换算毫秒时间码。
 - **长片分段**：目标净时长 `0<T≤120s`；用 `ceil(T/15)` 规划 1–8 个独立 **15s 生成任务**。每个 Part 镜头局部时间从 `00:00.000` 重置；另维护全片名义素材位置和剪后累计时间。**本期不支持一次生成 120s**，也不宣称 H3 原生可以一次生成 8/10/12s；这些是预留的未来单任务时长。
 - **先算净时长再承诺交付**：逐 Part 用 `edit_out−edit_in` 计算保留时长，再累计成片净时长，需考虑已知裁切/实际重叠。**8×15s=120s 只是素材名义长度**；如果剪辑裁掉部分画面，不能保证剪后仍恰好 120s；遇到不可满足的精确时长应明确指出并给出可行选择。
-- **不因长片强制转场**：任意 Part 边界都可 `none` / 自然硬切；本轮**不实现 T03B 特殊转场技巧的成对镜头设计**，也不预设转场损耗。
+- **不因长片强制转场**：任意 Part 边界都可 `none` / 自然硬切；T03B 已实现**按场景可选的导演决策与被采纳时的双端镜头规划规则**；未选用时不预设转场损耗。
 - **声音与交付**：生成仍无 BGM，`non_diegetic_music: N/A`；台词时长随镜头实际可说话窗口调整（Classic 既有字数规则保留）。**T02 只落地分镜预算与长片规划规则；T05 才交付 Adaptive/Cinematic 的正式六段式完整模板及多 Part Prompt 装配**。时间码是导演意图，不保证 H3 实际逐帧命中。
 
 ---
@@ -56,10 +56,26 @@ description: 面向 MiniMax H3 Ref2VA/T2VA 的电影感 Vlog 导演 Skill。默�
 - **每段必有交接**：对所有相邻 `P1→P2` … `P7→P8`，前 Part 末镜输出内部 `handoff_out`，后 Part 首镜消费其人物/手/道具/场景快照。分别标记 `same_moment`、`cut_ellipsis`、`time_jump` 或 `location_jump`；有时间或地点跳跃时写明变化事件，不假装同一瞬间无缝。
 - **场景锚点不瞬移**：放在唱片店伞桶的伞必须留在唱片店；湖边镜头无需显示旧店伞桶。相同人物跨场景可改变光照、姿势和衣着，但**改变必须有可解释事件**，身份与关键道具外观不能凭空替换。
 - **参考图逐任务重编号**：为每个独立 15s Part 建立实际上传的 `asset_id → <Picture N>` 映射；所引用的图必须存在于**当前任务**，编号从 1 起连续。P2 只上传全局角色图 A 与场景图 C 时，C 必须是 `<Picture 2>`，绝不能沿用全局资产序号写 `<Picture 3>`。无图的 T2VA 不伪造 Picture 引用。
-- **不强制特殊转场**：T03 负责合法的物理/叙事交接；普通硬切可直接使用。遮挡/甩镜/水面穿越等可选的摄影剪辑转场由 T03B 判断是否推荐或实际选用，**不是每个 Part 的固定要求**。
+- **不强制特殊转场**：T03 负责合法物理/叙事交接，T03B 已增加按场景评估的 `none / suggest_only / planned_pair` 路由；只有用户明确采纳或明确授权导演实际安排时才成对改写镜头，**不是每个 Part 的固定要求**。
 - **输出边界**：上述状态表属于 Skill 的内部规划，**不是 H3 的新增顶层字段**。用户默认仍拿到完整六段式 Prompt，必要时附当前 Part 的上传清单和交接摘要，详细状态表仅按需展示。生成阶段继续**无 BGM**；多段完整 H3 装配属于 T05，真实模型动作/口型效果需在 T07 验证。
 
 **状态交接样例**：[`templates/segment_handoff_example.md`](templates/segment_handoff_example.md)；**正反测试**：[`tests/continuity-cases.md`](tests/continuity-cases.md)。
+
+---
+
+## v2 / T03B：场景驱动的可选创意转场（按需推荐）
+
+**每个相邻 Part 的状态交接完成后，必须读取 [`references/transition_director.md`](references/transition_director.md)，并按需查询 [`docs/transition-techniques-library-v2.md`](docs/transition-techniques-library-v2.md) 的 46 种拍摄/剪辑技巧。** T03B 的转场是**导演建议和授权使用后的成对镜头设计**，不是固定模板效果，也不是每个 Part 的必需动作。
+
+- **先比较普通硬切**：如果对话连贯、情绪需要留白、动作/地点切换自然，直接 `none`；不用为 120 秒、8 个 Part 强制安排 7 次神转场。
+- **Auto 默认仅建议**：场景中真实存在可匹配的树干/人物遮挡、同向运镜、连续动作、同形物体、水面/门洞/倒影等，且对叙事有价值时，通常使用 `suggest_only`，在完整 Prompt **之外**给出简短可选技巧与理由，**不修改任意 Part 的尾镜和首镜**。
+- **只在用户明确选用或授权导演直接应用时才 `planned_pair`**：同时设计前 Part **最后一镜 outgoing**、后 Part **第一镜 incoming**，确保摄影机高度、方向/速度、画面遮挡/纹理、动作相位、实际硬切剪点、人物道具/参考资产交接、编辑裁切预算、风险与失败回退都相容。
+- **典型技巧**：遮挡擦镜 OC、运镜甩镜 CM、动作接力 AC、构图/形状匹配 GM、水面/门框/镜面穿越 PT、真实失焦/倒影 OT。**排除淡入淡出、交叉叠化、软件预设闪白/故障效果**；不将纯音频 J/L Cut 伪装成拍摄神转场。
+- **高风险与固定约束**：像水池穿越 PT01 这种复杂技巧，需要两段独立镜头在水纹覆盖处真正硬切，不能声称 H3 自动跨空间一镜到底。Classic 的六镜、2.5s 时点和用户指定内容不能强改；若会破坏物理连续性或剪后精确 120s 的预算，回退为 `suggest_only` 或 `none`。
+- **始终不生成 BGM**：只允许环境音、人声、Foley；`non_diegetic_music: N/A`。人物画外音的合法中文自然写法继续保留，不为转场更改已验证口型语义。
+- **能力边界**：本阶段已定义转场选择及双端规划契约，**但 3–8 Part 正式完整 H3 Prompt 模板装配仍归 T05**；效果还未经过 MiniMax H3 实机验证。默认输出仍以可复制 Prompt 为主，详细状态与 QC 按需给出。
+
+**内部交接必须符合**：[`references/continuity_handoff.md`](references/continuity_handoff.md) §10；参考案例：[T03B 转场边界规划样例](templates/transition_boundary_examples.md)；回归测试：[T03B 转场用例](tests/transition-cases.md)。
 
 ---
 
@@ -147,6 +163,7 @@ description: 面向 MiniMax H3 Ref2VA/T2VA 的电影感 Vlog 导演 Skill。默�
 - **T02 分镜时间预算与多 Part 净时长规划**：[`references/timing_engine.md`](references/timing_engine.md)。
 - **T03 每镜状态/道具守恒/跨 Part handoff**：[`references/continuity_handoff.md`](references/continuity_handoff.md)。
 - **T03 交接样例与正反测试**：[`templates/segment_handoff_example.md`](templates/segment_handoff_example.md)、[`tests/continuity-cases.md`](tests/continuity-cases.md)。
+- **T03B 可选转场导演（只有选用才成对改写镜头）**：[`references/transition_director.md`](references/transition_director.md)；[46 种技巧库](docs/transition-techniques-library-v2.md)；[回归测试](tests/transition-cases.md)。
 - **注意**：现有 15s/30s 模板目前仍仅为 Classic AB 兼容模板；Adaptive/Cinematic 的**正式完整 Prompt 模板及 3–8 Part 装配留给 T05**，不得把 T02 的时间规划示例当成真实 H3 成品模板。
 
 
