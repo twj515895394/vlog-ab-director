@@ -1,12 +1,21 @@
-# Vlog AB Director · 电影感 Vlog 导演 Skill
+# Vlog AB Director · 人物短视频创意与视听导演 Skill
 
-面向 MiniMax H3 Ref2VA / T2VA 的提示词导演：按题材选择镜头策略、组织15秒独立任务、控制人物和道具状态、设计可选转场与声画，再交付完整六字段 Prompt。
+从零点子和人物参考开始共同构思轻剧情/弱剧情/非剧情审美短视频，确认创意简案后进入 MiniMax H3 Ref2VA/T2VA 导演引擎：选择策略、安排15秒任务、处理连续性、可选转场及声画，交付完整六字段 Prompt。
 
-**状态：v2 文本实现候选版，静态回归已通过；实际 Skill 行为与 H3 视频验收尚未完成。正式版本号暂保留 1.0.0。**
+**状态：v2.1 Creative Engine 文本候选实现；实际 Skill 多轮行为与 H3 视频验收尚未完成。正式版本号暂保留 1.0.0。**
 
 ## 使用
 
 在支持 Skill 的客户端中加载本仓库 SKILL.md（中文入口另见 SKILL.cn.md），保留 references、templates 和 docs 相对目录。客户端的实际导入/安装方式取决于所使用的工具。本仓库不是 H3 推理服务，也不会自动调用模型或剪辑视频。
+
+没有点子时也可以直接使用：
+
+- 「我想做以人为主的轻剧情短视频，没有点子，陪我一起发散。」
+- 「只有一张古风角色图，希望是30秒柔光电影感，先给我几条具体创意。」
+- 「喜欢A的偶遇和C的情绪，但不要咖啡和悲伤结局，再讨论两个版本。」
+- 「这版简案定稿，直接生成H3 Prompt。」
+
+创意阶段会给不同人物驱动力、核心情境及记忆点；可比较、融合和重构。只要灵感/简案时不会强制进入制作；已有明确剧本且要求成品则直接进入导演引擎，不重复走讨论。
 
 给出题材、人物与参考素材、希望的成片时长、画幅、对白/留白、可选的导演模式或转场要求。例如：
 
@@ -27,6 +36,12 @@
 
 转场三态：none（自然硬切）、suggest_only（建议在Prompt外，不改原稿）、planned_pair（用户选用或明确委托且可行才设计双端）。没有合适技巧时完全不使用。生成阶段始终无BGM，后期音乐卡点仅外置建议。中文闭嘴画外音不要求固定英文短语。
 
+## 创意资料库
+
+[创意入口](references/creative/creative_director.md) · [题材库](references/creative/genre_library.md) · [共创协议](references/creative/collaborative_discussion.md) · [创意组合机制](references/creative/creative_combination_engine.md) · [简案契约](references/creative/creative_brief.md) · [创意QC](references/creative/creative_quality_control.md)
+
+[详细设计](docs/design-v2.1-creative-engine.md) · [实施计划](docs/implementation-plan-v2.1-creative-engine.md) · [创意回归](tests/creative-cases.md)
+
 ## 模板
 
 - [15秒 Classic](templates/template_15s_single.md) / [30秒 Classic](templates/template_30s_twopart.md)
@@ -42,6 +57,7 @@ Node.js 18+，无npm依赖：
 
 ```sh
 node tests/qc-check.mjs
+node tests/creative-check.mjs
 ```
 
 仓库脚本检查完整模板、冻结基线、可解析字段、局部时间轴、图编号、负向块、有限音乐指令检测及结构化正反例。不是任意自然语言理解器，也不能判断真实视频中的穿模或声画表现。运行 Skill 时必须按 [统一QC](references/quality_control.md) 自检。
