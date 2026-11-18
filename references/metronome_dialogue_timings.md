@@ -1,9 +1,9 @@
 # Vlog AB Director: 节拍器时序与 AI 代写台词规范
 
 > **v2 / T02 范围注记**：本文件下方原始 **2.5 秒 / 6 镜规范是 Classic AB 的兼容资料，不是 Adaptive AB 或 Cinematic-led 的通用强制规则。** 15 秒非等长时间预算与 1–8 Part（最长 120 秒）规划请以 [`references/timing_engine.md`](timing_engine.md) 为准。  
-> **VO 兼容提示**：下文旧版把英文 `says in an off-screen voiceover:` 写为强制短语，现已知**用户实测有效的中文自然语言画外音**可以不含该固定短语（仍须 `<d>` 与闭嘴语义）。当前 `SKILL.md` / `SKILL.cn.md` 已接纳中文语义；T04 再统一改写该段语音规范。本轮仅为时序兼容，不重写其他声音规则。
+> **T04 声画规则已统一**：画内说话/闭嘴画外音/L-Cut/J-Cut/无对白与多人说话者绑定，执行时先阅读 [audio_director.md](audio_director.md)。**中文自然画外音是用户实测有效写法**；英文固定短语仅为可选兼容候选，`<scenetrans>` 亦是尚待 H3 实机验证的历史标签，均不能作为唯一验收依据。生成阶段始终无 BGM。
 
-本文件保存 **Classic AB 的 2.5 秒节拍器时间戳**、**该模式 AI 代写台词的字数预算与历史三类语音范例**；其他模式应先遵循 T01 路由与 T02 时间预算。
+本文件保留 **Classic AB 2.5 秒节拍器时间戳**、该模式台词经验预算与既有语音样例；声音与口型的当前统一规则见 [T04 Audio Director](audio_director.md)，其他导演模式先执行 T01 路由与 T02 时间预算。
 
 ---
 
@@ -37,32 +37,41 @@
 
 ### 2. 三种核心台词形态与 H3 标准语法
 
-#### 形态一：出镜直言（Direct-to-Camera Speech，主观 A 镜专用）
-主角直视手机镜头讲话，口型与面部肌肉必须高度对齐。
+#### 形态一：画内直言（Direct Speech，A 自拍常见，B 机位也可）
+主角对镜头或同伴说话，**嘴部可见且正在发声**时要求同步口型。A 自拍镜常见，B 外部机位拍摄角色说话时同样合法；不得强制将所有 B 镜对白变成心声。
 * **规则**：必须在 `<d>` 标签外描述说话人的身份、音色、语调与表情，台词内容置于 `<d>` 内且保留原始语言。
 * **标准范例**：
   ```text
   The young woman with a clear, cheerful voice (S1) smiles warmly into the lens and says: <d>[Chinese] 今天终于下班来到海边啦！</d>
   ```
 
-#### 形态二：心声画外音（Cinematic Closed-Lips Voiceover，客观 B 镜专用）
-B 镜展现唯美远景或人物背影，主角**嘴唇完全闭合**，声音作为内心独白在画面外流淌。
-* **规则**：必须使用固定短语 `says in an off-screen voiceover:`，并在 `<d>` 标签之后立即强制跟上 **`while her lips remain completely closed.`**
+#### 形态二：闭嘴画外音（Cinematic Closed-Lips Voiceover，B 机位常见）
+B 镜展现人物或环境，主角的声音作为内心独白在画面外流淌。**若人物口部在画中可见，就让嘴唇完全闭合；若看不到嘴部则指定不需要口型同步**。
+* **规则（T04 已修正）**：优先明确 `speaker_id`（如 S1）、画外心声的声音来源、`<d>[Chinese] ...</d>` 和画内人物嘴唇策略。**可以保留英文短语 `says in an off-screen voiceover:`，但不强制使用该英文字面**；用户已实测有效的中文自然语言表达不得因此被判错。人物嘴部清晰可见时保留 `while her lips remain completely closed.`，若人物完全不入镜则记录 `not_visible` 而非声称看见闭嘴。
 * **标准范例**：
   ```text
-  The woman (S1) says in an off-screen voiceover: <d>[Chinese] 迎面吹来的海风，把一整天的疲惫都吹散了。</d> while her lips remain completely closed.
+  此时她以画外音心声说道：<d>[Chinese] 果然如入深谷，甚是清净。</d> while her lips remain completely closed.
   ```
+  **证据等级**：上述中文句式由用户报告 MiniMax H3 实测成功；英文兼容写法 `The woman (S1) says in an off-screen voiceover: <d>[Chinese] ...</d> while her lips remain completely closed.` 也可作为候选，但不是唯一合法格式。复杂动作与逐帧口型表现仍待单独验证。
 
-#### 形态三：跨镜延续（L-Cut / Cross-Cut Continuity，AB 剪辑绝杀技巧）
+#### 形态三：跨镜声音延续（L-Cut；J-Cut 见下文）
 在 A 镜自拍时说出前半句，画面硬切到 B 镜大片展示风景时，声音不中断、跨镜头持续念完后半句。
-* **规则**：切镜连接处两端均使用 `<scenetrans>`，并明确声明 `continues seamlessly across the cut`。
-* **标准范例**：
+* **规则（T04 已修正）**：按 **谁在说、起止时间、视觉切点、切后口型**四要素明确连续性；`<scenetrans>` 与 `continues seamlessly across the cut` 可作为旧版尝试过的兼容候选，**不能强制每段加入，也不得宣称它在当前 H3 所有模式中实测可靠**。跨两个独立 15s Part 的 L-Cut 必须依赖后期音轨拼接或重配声，模型不能仅靠文字保证无缝。
+* **优先建议范例（自然语言起止关系）**：
   ```text
-  [Shot 1] ...The woman (S1) says: <d>[Chinese] 你看——</d><scenetrans>
-  [Shot 2] At 00:02.500, the camera cuts to a cinematic wide shot of the glowing horizon while her speech continues seamlessly across the cut: <scenetrans><d>[Chinese] ——这里的晚霞多美。</d> while her lips remain completely closed.
+  [Shot 1] 0.000–2.500，A1：S1 面部可见且嘴部同步说话：<d>[Chinese] 你看——</d>；该句在 2.500s 的画面硬切处没有结束。
+  [Shot 2] At 00:02.500, HARD CUT TO: B1：画面转向夕阳，S1 同一声音接着说：<d>[Chinese] ——这里的晚霞多美。</d>；如果 S1 嘴部仍在画中可见，while her lips remain completely closed.
   ```
+  **旧版标签候选**：以前使用 `<scenetrans>` 包围前后片段。T04 不强制，保留等待 T07 实机对照验证；在不同 Part 生成时应改为独立音轨后期处理。
 
 ---
+
+### 2.5 J-Cut（下一场声音早于画面）与静默
+
+- **J-Cut**：上一镜画面还没切走时，下一镜的环境/人物声音已提前进入；先指定新声源 S2 或下一场景的环境，再声明下一镜视觉硬切。前镜人物若可见嘴部却没有说话，应闭嘴/倾听，不能同步张嘴。跨独立 Part 需在后期提前混入下一段的音轨，不能要求单次任务自动获取另一任务素材。
+- **全片无台词**：允许。保留场景同期环境声和必要 Foley 即可，不用为了「2–3 镜说话」机械补台词。
+- **重要区别**：L-Cut/J-Cut 是声画剪接，**不是** T03B 的遮挡、甩镜、穿越式「神转场」；普通硬切同样可以接续声音。
+- **永远无 BGM**：`overall_soundscape` 只写环境、人声与 Foley；`non_diegetic_music: N/A`。音乐卡点属于后期建议，不进模型声音提示词。
 
 ### 3. 双人 Vlog 台词交互规范（Dual Dialogue）
 * `<Subject 1>` 绑定发言人 ID `(S1)`；
@@ -86,3 +95,13 @@ B 镜展现唯美远景或人物背影，主角**嘴唇完全闭合**，声音�
 6. **无 BGM / 不强制神转场**：生成声音字段保持 `non_diegetic_music: N/A`；跨 Part 技巧性转场由 T03B 按叙事可选，不影响 T02 的基本时间轴正确性。
 
 操作顺序与完整校验：见 [`references/timing_engine.md`](timing_engine.md)。Adaptive/Cinematic 的完整 MiniMax H3 提示词模板仍由 T05 交付，本阶段只完善时间与台词预算规范。
+
+---
+
+## 四、T04 语音声画完整性补充（所有导演模式）
+
+1. **说话者与嘴型**：为每句明确 S1/S2 及画内同步（`sync_lips`）或画外闭嘴（`closed_lips`，前提是嘴部可见），不能同一时点二者兼有。多人对白要明确轮次，只有实际同声齐唱时才写 `(S1,S2)`。
+2. **台词窗口**：Classic 6–12 汉字/2.5s 与 2–3 镜开口是既有**经验建议**，不是任何动作负载下的绝对可行保证。Adaptive/Cinematic 先扣除镜头动作/停顿后预算发声窗口，中文约 3–4 字/秒仅为规划起算。
+3. **跨镜与跨 Part**：记录谁开始、何时切画面、谁继续说、何时结束；同一独立 15s 任务可文字描述 L/J-Cut，**跨独立生成任务则需后期混音/接音**，不能声称 `<scenetrans>` 自动解决。
+4. **声音字段**：`detailed_description` 的防字幕与无 BGM 原始负向块不变；`overall_soundscape` 仅环境/人声/Foley；`non_diegetic_music` 严格为 `N/A`。不把音乐卡点建议塞入生成字段。
+5. **专项验证**：完整规范、证据边界及正反用例分别见 [`audio_director.md`](audio_director.md)、[`voiceover-verified.md`](../examples/voiceover-verified.md) 与 [`tests/audio-cases.md`](../tests/audio-cases.md)。T05 再实现多段六字段模板，T07 再对照实际 H3 音画效果。
