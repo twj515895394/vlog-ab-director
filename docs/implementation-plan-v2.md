@@ -1,6 +1,6 @@
 # Vlog AB Director v2 分阶段实施计划
 
-> 状态：**In Progress / 分阶段实施中**（2026-11-18：T00、T01、T02、T03、T03B 规范/入口实现已提交；T04–T07 尚未实施；H3 实机尚未验证）  
+> 状态：**In Progress / 分阶段实施中**（2026-11-18：T00、T01、T02、T03、T03B、T04 规范/入口实现已提交；T05–T07 尚未实施；H3 实机尚未验证）  
 > 制定日期：2026-11-18  
 > 设计依据：[v2 详细设计（已确认）](design-v2-director-engine.md)  
 > 目标仓库：`twj515895394/vlog-ab-director` / `main`  
@@ -181,7 +181,8 @@
 - 扩展 `references/metronome_dialogue_timings.md`；
 - 新增 `references/audio_director.md`；
 - 更新相关 `SKILL*.md` 规则；
-- 录入 `tests/regression-matrix.md` 的对白/无 BGM 断言。
+- 新增 `templates/audio_plan_examples.md`（15 秒 L/J-Cut 声画时间及跨 Part 后期示例）；
+- 新增 `tests/audio-cases.md`（36 条正反例），并更新 `tests/regression-matrix.md` 的对白/无 BGM 断言。
 
 **具体任务**
 1. 区分对镜直言、画外音、L-Cut、无台词；
@@ -197,6 +198,8 @@
 - 跨镜声音接续在镜头描述里明确起止关系；
 - Classic/Adaptive/Cinematic-led 三种策略均不能在模型声音字段生成 BGM；
 - 对白和画外音的嘴型要求不冲突。
+
+**T04 当前实现记录（2026-11-18）**：已新增 `references/audio_director.md` 并接入中英文 `SKILL.md`；在 `references/metronome_dialogue_timings.md` 纠正「必须包含英文固定 VO 短语」「L-Cut 两端必须写 `<scenetrans>`」的旧规则。保留用户报告已实测成功的中文自然闭嘴画外音、明确 S1/S2 说话者与口型、J/L-Cut 声画时间关系、跨独立 Part 的声音必须使用后期音轨衔接，以及所有模式生成阶段禁 BGM。新增 `templates/audio_plan_examples.md` 和 `tests/audio-cases.md`（36 条正反例）。**本轮是 Skill 规则与静态测试实施，不等于真实声音生成/混音系统或 MiniMax H3 实机音画验证。**
 
 ### T05 — MiniMax H3 装配器规则与模板落地
 
@@ -333,13 +336,13 @@
 4. 每个 Ticket 产出应至少报告：实际改动文件、符合的验收项、未验证的模型行为、Git 提交记录；
 5. 不预设实施工期；后续按照实际测试结果调整次序和分工。
 
-### 推荐的下一条执行指令（本轮不要执行）
+### 历史启动指令（已执行；不再作为当前下一步）
 
 > 按 `docs/implementation-plan-v2.md` 实施 T00：先冻结 v1 Classic AB、中文画外音与资产重编号回归基线。只修改 T00 允许的文件，完成自检并提交；不要开始 T01，也不要修改现有 Skill 入口或模板。
 
 ---
 
-**文件性质**：已确认设计下的实施计划；截至创建时尚未执行任何 Ticket。
+**文件性质**：已确认设计下的实施计划；该句最初写于文档创建日，当前阶段执行状态以第 7 节的已提交记录为准。
 
 ## 7. 阶段进度记录（2026-11-18）
 
@@ -350,8 +353,8 @@
 | **T02** | 已实施时间规划/预算 | `references/timing_engine.md`、Classic 节拍器兼容注记、`tests/timing-cases.md`；仅静态时间算术与文档一致性验证 |
 | **T03** | 已实施规则/入口 | `references/continuity_handoff.md`、扩展 `rules_state_machine.md`、`templates/segment_handoff_example.md`、`tests/continuity-cases.md`（32 例）；语言模型行为及 H3 视频待验证 |
 | **T03B** | 已实施规则/入口 | `references/transition_director.md`、46 技巧库、T03 交接选用字段、`templates/transition_boundary_examples.md`、`tests/transition-cases.md`（36 例）；模型行为和 H3 结果仍未实测 |
-| **T04** | 未实施 | VO/L-Cut 完整声音语法、无 BGM 声画 QC |
+| **T04** | 已实施规则/入口 | `references/audio_director.md`、旧节拍器语音规则修正、中英文 Skill 入口、`templates/audio_plan_examples.md`、`tests/audio-cases.md`（36 例）；真实音画表现待验证 |
 | **T05** | 未实施 | 可复制 Adaptive/Cinematic 多 Part H3 完整模板装配 |
 | **T06 / T07** | 未实施 | 完整静态 QC 与真实 H3 实机视频回归 |
 
-**后续执行从 T04 开始**；T03B 已接入场景驱动的可选转场推荐和双端镜头规划规则，但不能因此宣称已经具备 120 秒完整 H3 Prompt 自动装配、视频自动剪辑或 H3 实机转场成功率。
+**后续执行从 T05 开始**；T04 已接入中文画外音、口型/说话者与声画连接规则，但还没有 Adaptive/Cinematic 多段完整 H3 Prompt 模板、自动音频拼接或 H3 实机音画成功率数据。
