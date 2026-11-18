@@ -1,6 +1,6 @@
 # Vlog AB Director v2 分阶段实施计划
 
-> 状态：**In Progress / 分阶段实施中**（2026-11-18：T00、T01、T02、T03、T03B、T04 规范/入口实现已提交；T05–T07 尚未实施；H3 实机尚未验证）  
+> 状态：**In Progress / 分阶段实施中**（2026-11-18：T00、T01、T02、T03、T03B、T04、T05 已提交；T06–T07 尚未实施；H3 实机尚未验证）  
 > 制定日期：2026-11-18  
 > 设计依据：[v2 详细设计（已确认）](design-v2-director-engine.md)  
 > 目标仓库：`twj515895394/vlog-ab-director` / `main`  
@@ -210,6 +210,8 @@
 - 保留并更新 `templates/template_15s_single.md`、`templates/template_30s_twopart.md` 为 Classic 兼容模板；
 - 新增 `templates/template_15s_adaptive.md`；
 - 新增 `templates/template_30s_adaptive_twopart.md`；
+- 新增 `templates/template_15s_cinematic.md`（Cinematic-led 全 B 镜无图成品示例）；
+- 新增 `tests/adapter-cases.md`（26 条预期用例与成品静态核验）；
 - 新增 `templates/template_multipart_15s_sequence.md`：用于 3–8 Part 的动态规划/独立任务装配，而非一次生成 120 秒；
 - 更新 `SKILL.md` / `SKILL.cn.md` 的装配流程。
 
@@ -228,6 +230,8 @@
 - 四种兼容路径可用：15s Classic、15s Adaptive、30s Classic 双段、30s Adaptive 双段；扩展路径支持 3–8 Part 的长片规划；
 - 所有路径遵守 D1–D5（含最长 120s 和可选转场）；
 - 可从模板复制可运行文本，且不包含未替换的示例方括号占位符。
+
+**T05 当前实现记录（2026-11-18）**：新增 `references/model_h3_adapter.md`、Adaptive 单/双段、Cinematic-led 单段及 3–8 Part 动态装配和八段完整样例；中英文 Skill 接入六字段装配、Ref2VA/T2VA、逐任务素材、三种输出视图、选用转场及真实实体文字例外。Classic 两个模板使用 T00 冻结完整 Prompt 原文取代原占位符脚手架，固定六镜与基线原文件保持。临时静态回读检查共 15 份完整 Prompt、69 镜、每份 8 项断言（120 项）通过；包括字段顺序、内容非空、时间轴、模式、占位符、图引用、无音乐要求与负向块。仅针对样例的结构检查；26 条语义预期并未全部执行，不是 H3 实机或自动编译程序。T06 做完整 QC，T07 做真实视频验证。
 
 ### T06 — 结构化 QC、测试矩阵与静态回归
 
@@ -354,7 +358,7 @@
 | **T03** | 已实施规则/入口 | `references/continuity_handoff.md`、扩展 `rules_state_machine.md`、`templates/segment_handoff_example.md`、`tests/continuity-cases.md`（32 例）；语言模型行为及 H3 视频待验证 |
 | **T03B** | 已实施规则/入口 | `references/transition_director.md`、46 技巧库、T03 交接选用字段、`templates/transition_boundary_examples.md`、`tests/transition-cases.md`（36 例）；模型行为和 H3 结果仍未实测 |
 | **T04** | 已实施规则/入口 | `references/audio_director.md`、旧节拍器语音规则修正、中英文 Skill 入口、`templates/audio_plan_examples.md`、`tests/audio-cases.md`（36 例）；真实音画表现待验证 |
-| **T05** | 未实施 | 可复制 Adaptive/Cinematic 多 Part H3 完整模板装配 |
+| **T05** | 已实施装配规范与完整模板 | H3 Adapter、六种模板共15份完整 Prompt、26条装配回归预期；15份样例静态结构通过，H3 实机及加载 Skill 行为仍待验证 |
 | **T06 / T07** | 未实施 | 完整静态 QC 与真实 H3 实机视频回归 |
 
-**后续执行从 T05 开始**；T04 已接入中文画外音、口型/说话者与声画连接规则，但还没有 Adaptive/Cinematic 多段完整 H3 Prompt 模板、自动音频拼接或 H3 实机音画成功率数据。
+**后续执行从 T06 开始**；T05 已接入完整 H3 文本模板与装配规范，未实现自动视频剪辑、模型执行保证或完整语义 QC。
