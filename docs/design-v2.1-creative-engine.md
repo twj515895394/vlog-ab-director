@@ -6,7 +6,7 @@
 
 ## 1. 背景与产品目标
 
-v2 已解决明确需求如何拍、如何控制状态、如何装配 H3 Prompt。用户常常只有一个人物、一张图、一种审美偏好，甚至没有点子。v2.1 解决「拍什么」及「如何与用户共同找出值得拍的创意」。定位：**以人物为主体的 15–120 秒电影感短视频创意与视听导演**。Vlog 是一种表达形式而非唯一题材。允许轻剧情、弱剧情、非剧情视觉短片。人物的选择、体验、关系、情绪、生命状态或审美魅力主导作品，场景和道具为其服务，而非纯空镜拼贴。
+v2 已解决明确需求如何拍、如何控制状态、如何装配 H3 Prompt。用户常常只有一个人物、一张图、一种审美偏好，甚至没有点子。v2.1 解决「拍什么」及「如何与用户共同找出值得拍的创意」。定位：**以人物为主体的电影感短视频创意与视听导演**（现行常规15–300秒；当时的时长范围已由v2.2取代）。Vlog 是一种表达形式而非唯一题材。允许轻剧情、弱剧情、非剧情视觉短片。人物的选择、体验、关系、情绪、生命状态或审美魅力主导作品，场景和道具为其服务，而非纯空镜拼贴。
 
 目标：
 - 从零构思：先给可讨论的差异化点子，不把完整剧本当作输入门槛。
@@ -27,7 +27,7 @@ v2 已解决明确需求如何拍、如何控制状态、如何装配 H3 Prompt�
 | CE-D3 | 创意确认门禁 | 选中题材不等同批准故事；讨论中的「喜欢A」不是生成授权；完整简案确认或明确委托推进才进入导演流程 |
 | CE-D4 | 快捷路径 | 明确创作需求且直接请求成品：构建最小简案即可跳过讨论；完整剧本不强迫改写；仅求创意/剧本则停在对应产物 |
 | CE-D5 | 可变而非机械 | 资料库为启发组合，不是固定故事、必须用转场、强制小反转或固定情绪曲线 |
-| CE-D6 | 原 v2 硬约束 | 最多8个独立15s Part、目标≤120s，净时长诚实核算；Classic固定6×2.5s；现有无BGM、参考资产、物理状态和转场规则不变 |
+| CE-D6 | 原 v2 硬约束（时长已由v2.2取代） | 现行0<T≤300秒、独立15秒任务、有限素材预算，净时长诚实核算；Classic固定6×2.5s；现有无BGM、参考资产、物理状态和转场规则不变 |
 | CE-D7 | 证据与版本 | 创意QC+有限静态校验不证明实际生成效果；不升级正式版本号或虚构自然语言/H3 实测 |
 
 优先级：用户本轮明确修改 > 已锁定且未被修改的用户约束 > 已确认创意 > 本轮可逆建议 > 库及默认值。冲突时提出来，不能静默覆盖。用户锁定题材可以覆盖创意层偏好；导演模式仍由 T01 按原规则决定，不从题材机械映射。创意层可以给建议，不擅自宣告转场已授权。
@@ -147,7 +147,7 @@ v2 已解决明确需求如何拍、如何控制状态、如何装配 H3 Prompt�
 Creative Brief 为内部或可审核的人物创意简案，非 H3 顶层键。字段：
 - brief_id, revision, status=draft/confirmed, confirmation={kind:explicit/delegated/direct_ready,revision}（draft无确认），request_goal。
 - title, logline, primary_genre（可 custom）、secondary_genres、primary_goal/driver、story_structure、characters（稳定character_id、用户确认身份/关系/服装、未知项）、setting/world（时间地点/年代）、premise_or_visual_theme、beats（顺序、人物行动、目的、可见结果，不固定时码）、emotional_arc、memorable_moment、ending。
-- duration_target_s（暂定可空；交接时有15–120秒内可行值或解释默认15）、aspect_ratio（用户明确或标暂定）、camera_intent、director_mode_lock（如有）、dialogue_intent（含逐字锁定文本）、audio_plan_intent（生成无BGM；后期音乐仅可选）、transition_preference（未授权默认仅建议）、assets（global_id、类型、可用/待提供，未提交不写 Picture N）、constraints、preferences、exclusions、assumptions、risks、open_questions、creative_qc（hard/soft/证据）。
+- duration_target_s（暂定可空；交接时有0<T≤300秒的可行目标或解释默认15）、aspect_ratio（用户明确或标暂定）、camera_intent、director_mode_lock（如有）、dialogue_intent（含逐字锁定文本）、audio_plan_intent（生成无BGM；后期音乐仅可选）、transition_preference（未授权默认仅建议）、assets（global_id、类型、可用/待提供，未提交不写 Picture N）、constraints、preferences、exclusions、assumptions、risks、open_questions、creative_qc（hard/soft/证据）。
 
 最小交接：标题/主题、主角、场景或世界、清楚的核心事件/视觉主题、节拍与结尾（观察式可开放）、目标时长、明确硬约束/音频/资产、当前确认与创意QC。其余字段可不适用或暂定，不用伪造句子。不要把简案内部键放进六字段。
 
