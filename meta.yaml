@@ -10,10 +10,10 @@ complete-tags-cn:
 - 视频生成 / 电影感Vlog
 - 视频生成 / 提示词工程
 - 视频生成 / 双轨视听分镜
-summary-en: Character-centered short-video ideation, collaborative light stories and cinematic MiniMax H3 prompt direction; v2.1 text candidate.
-summary-cn: 以人物为主体的短视频题材发散、轻剧情多轮共创、创意简案与MiniMax H3视听导演；v2.1文本候选版。
-desc-en: Brainstorm original character-centered short-video concepts from zero ideas, references or vague stories, collaboratively refine and confirm a Creative Brief, then direct complete H3 prompts through Classic, Adaptive or Cinematic modes, up to eight independent 15s tasks. Clear requests fast-track; ideation-only requests stop before prompts. Continuity, Chinese VO, optional transitions, no BGM and QC remain. Actual Skill behavior and H3 results require acceptance; formal version remains 1.0.0.
-desc-cn: 人物短视频创意策划与视听导演，支持从零创意、角色参考和模糊想法发散，多轮讨论融合和定稿，明确需求直通或仅交付创意。确认Creative Brief后进入Classic、Adaptive、Cinematic导演策略，最多8个独立15秒任务、人物道具连续性、可选转场、中文VO、无BGM及QC。实际Skill多轮行为及H3效果仍待验收，正式版本1.0.0不变。
+summary-en: Character-centered short-video ideation, collaborative light stories and cinematic MiniMax H3 prompt direction; v2.2 text candidate.
+summary-cn: 以人物为主体的短视频题材发散、轻剧情多轮共创、创意简案与MiniMax H3视听导演；v2.2文本候选版。
+desc-en: Brainstorm original character-centered short-video concepts from zero ideas, references or vague stories, collaboratively refine and confirm a Creative Brief, then direct complete H3 prompts through Classic, Adaptive or Cinematic modes, up to 300s final films with explicit 15s task budgets and continuous, edited or hybrid narrative organization. Clear requests fast-track; ideation-only requests stop before prompts. Continuity, Chinese VO, optional transitions, no BGM and QC remain. Actual Skill behavior and H3 results require acceptance; formal version remains 1.0.0.
+desc-cn: 人物短视频创意策划与视听导演，支持从零创意、角色参考和模糊想法发散，多轮讨论融合和定稿，明确需求直通或仅交付创意。确认Creative Brief后进入Classic、Adaptive、Cinematic导演策略，最长300秒成片、有限15秒生成任务、连续/剪辑/混合叙事与自动剪辑导演、人物道具连续性、可选转场、中文VO、无BGM及QC。实际Skill多轮行为及H3效果仍待验收，正式版本1.0.0不变。
 author-en: MiniMax Hub User
 author-cn: MiniMax Hub 用户
 source: community
