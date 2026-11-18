@@ -129,7 +129,7 @@ prompt_output: complete six-section H3 prompt by default
 - **T02（已完成文字规范）**：见 [timing_engine.md](timing_engine.md)，提供 Adaptive/Cinematic 15s 镜头预算、1–8 Part 规划及剪后净时长账本；不等于 H3 已经逐帧执行。
 - **T03（已接入规范）**：参见 [continuity_handoff.md](continuity_handoff.md)；已定义跨镜/跨段的人物、手、道具和场景状态交接，模型行为与视频效果仍待后续验证。
 - **T03B（已接入文字规则）**：见 [transition_director.md](transition_director.md) 和 [46 技巧库](../docs/transition-techniques-library-v2.md)；按场景判断 `none / suggest_only / planned_pair`，仅实际采纳/授权时才要求双端镜头，始终不强制转场。
-- **T04**：将用户已实测有效的中文闭嘴画外音正式同步到相关硬规则，清理旧规范中「必须英文固定短语」的矛盾；
+- **T04（已接入文本规则）**：参见 [audio_director.md](audio_director.md)；已统一用户实测中文闭嘴 VO、多人说话者/口型、L/J-Cut 和无 BGM 约束，英文固定短语不是必填。
 - **T05**：根据策略输出可复制的 Adaptive/Cinematic 长片模板和逐任务引用；
 - **T06/T07**：静态 QC 和 H3 实机生成效果回归。
 
