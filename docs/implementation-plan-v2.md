@@ -1,10 +1,10 @@
 # Vlog AB Director v2 分阶段实施计划
 
-> 状态：**Planned / 未开始实施**（2026-11-18 已纳入 120 秒成片与可选跨 Part 转场需求）  
+> 状态：**In Progress / 分阶段实施中**（2026-11-18：T00、T01、T02 规范/入口实现已提交；T03–T07 尚未实施；H3 实机尚未验证）  
 > 制定日期：2026-11-18  
 > 设计依据：[v2 详细设计（已确认）](design-v2-director-engine.md)  
 > 目标仓库：`twj515895394/vlog-ab-director` / `main`  
-> 本计划仅用于后续实施，不代表本轮已修改 Skill 定义、参考规范、模板或测试用例。  
+> 本计划既是阶段实施依据，也记录已完成阶段的进展；代码库当前已按 T01/T02 修改 Skill 入口与参考规则，但尚未执行视频实机验证。  
 > 优先级：**保持 v1 已验证有效行为 > 新功能扩展 > 表述美化**。
 
 ## 1. 决策冻结基线与范围
@@ -88,7 +88,7 @@
 - 新增 `references/timing_engine.md`；
 - 扩展 `references/metronome_dialogue_timings.md`；
 - 依实际设计更新 `SKILL*.md` 的时长说明；
-- 增加 `tests/regression-matrix.md` 时间边界用例。
+- 新增 `tests/timing-cases.md`，并更新 `tests/regression-matrix.md` 的时间边界用例与测试状态。
 
 **具体任务**
 1. 区分「目标视频总时长」「当前任务局部时长」「成片全局时长」；
@@ -104,6 +104,8 @@
 - Classic 输出不退化；Adaptive 至少通过 15 秒不同镜头数与不同节奏的文本样例；
 - 任何 Part 都不被错误当作一次生成 30–120 秒的任务；完成 15/30/45/60/75/90/105/120 秒名义规划与时长上限文本测试；
 - 对需要精确 120 秒、同时要求剪裁冗余的输入，不错误保证 8×15 秒素材剪后仍足 120 秒。
+
+**T02 当前实现记录（2026-11-18）**：已新增 `references/timing_engine.md`，扩展 Classic 节拍器参考文件，更新中英文 Skill 入口与 T01 路由文件；新增 `tests/timing-cases.md`（22 个用例），更新回归矩阵。完成范围仅为**文本时间规划、预算和静态算术核对**，Adaptive/Cinematic 的完整成品 Prompt 模板仍由 T05 实现，非等长切镜的实际模型准确性待 T07 验证。
 
 ### T03 — 形式化状态机、道具守恒与段间交接
 
@@ -332,3 +334,17 @@
 ---
 
 **文件性质**：已确认设计下的实施计划；截至创建时尚未执行任何 Ticket。
+
+## 7. 阶段进度记录（2026-11-18）
+
+| Ticket | 阶段状态 | 证据与交付边界 |
+|---|---|---|
+| **T00** | 已完成文本基线 | `examples/classic-ab-15s.md`、`examples/classic-ab-30s.md`、`examples/voiceover-verified.md` 及 `tests/regression-matrix.md`；无 H3 实机视频 |
+| **T01** | 已实施规范/入口 | `references/director_strategy.md`、`SKILL.md`、`SKILL.cn.md`、路由预期用例；真实加载 Skill 的语言模型行为尚待验收 |
+| **T02** | 已实施时间规划/预算 | `references/timing_engine.md`、Classic 节拍器兼容注记、`tests/timing-cases.md`；仅静态时间算术与文档一致性验证 |
+| **T03 / T03B** | 未实施 | 人物道具状态机与选用型转场导演 |
+| **T04** | 未实施 | VO/L-Cut 完整声音语法、无 BGM 声画 QC |
+| **T05** | 未实施 | 可复制 Adaptive/Cinematic 多 Part H3 完整模板装配 |
+| **T06 / T07** | 未实施 | 完整静态 QC 与真实 H3 实机视频回归 |
+
+**后续执行从 T03 开始**；不要因为 T02 的 120 秒规划账本已存在，就宣称 120 秒视频成品提示词、自动剪辑或视频实际渲染已交付。
