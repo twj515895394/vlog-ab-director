@@ -2,7 +2,7 @@
 
 从零点子和人物参考开始共同构思轻剧情/弱剧情/非剧情审美短视频，确认创意简案后进入 MiniMax H3 Ref2VA/T2VA 导演引擎：选择策略、安排15秒任务、处理连续性、可选转场及声画，交付完整六字段 Prompt。
 
-**状态：v2.1 Creative Engine 文本候选实现；实际 Skill 多轮行为与 H3 视频验收尚未完成。正式版本号暂保留 1.0.0。**
+**状态：v2.2 Creative + Editing Director 文本候选实现；实际 Skill 多轮行为与 H3 视频验收尚未完成。正式版本号暂保留 1.0.0。**
 
 ## 使用
 
@@ -32,9 +32,13 @@
 | Adaptive AB | 旅行、生活、情侣互动 | 不等长，A/B按叙事分工 |
 | Cinematic-led | 氛围、人物/时装、风景 | B优先，可全B、可无对白 |
 
-最长计划成片120秒（1–8个独立15秒任务），不能承诺一次生成120秒或裁切后仍满120秒。非15秒倍数按素材和剪后净长分别核算。
+最长计划成片300秒，每个H3任务独立15秒；20任务仅是300秒无损新素材下界，补镜按有限显式预算。实际剪点、素材与净长待实机核验。
 
 转场三态：none（自然硬切）、suggest_only（建议在Prompt外，不改原稿）、planned_pair（用户选用或明确委托且可行才设计双端）。没有合适技巧时完全不使用。生成阶段始终无BGM，后期音乐卡点仅外置建议。中文闭嘴画外音不要求固定英文短语。
+
+## 连续叙事与剪辑导演
+
+连续轻剧情Vlog、片段剪辑叙事、混合叙事都是一等路径；根据实际剧本AUTO选择，不按时长强制。连续链严格T03交接，时域跳跃按Story版本。Classic/Adaptive/Cinematic独立选择。59张新剪辑卡覆盖时间、蒙太奇、连续性、情绪、节奏、信息、插镜、声音；特殊46转场继续可选授权。[剪辑导演](references/editing/editing_director.md) / [叙事架构](references/narrative/narrative_architect.md) / [详细设计](docs/design-v2.2-editing-director.md) / [实施计划](docs/implementation-plan-v2.2-editing-director.md)。
 
 ## 创意资料库
 
@@ -47,7 +51,7 @@
 - [15秒 Classic](templates/template_15s_single.md) / [30秒 Classic](templates/template_30s_twopart.md)
 - [15秒 Adaptive](templates/template_15s_adaptive.md) / [30秒 Adaptive](templates/template_30s_adaptive_twopart.md)
 - [15秒 Cinematic-led](templates/template_15s_cinematic.md)
-- [3–8 Part 装配及完整八段样例](templates/template_multipart_15s_sequence.md)
+- [多任务装配及120秒八段兼容样例](templates/template_multipart_15s_sequence.md)
 
 参考图样例需按各任务清单实际上传；本仓库并未附送对应图像。无图走T2VA，不虚构Picture引用。模板是写作范例，不代表全部题材都使用同样故事。
 
