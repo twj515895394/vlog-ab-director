@@ -46,7 +46,7 @@
 | X28 | 计划 `planned_pair`，但两端故事状态无 handoff 事件而道具瞬移 | **FAIL**，重新执行 T03 状态检查 | FAIL / HARD | 物理连续性 |
 | X29 | P3 当前上传只有角色 A + 海岸 C，却引用全局 `<Picture 3>` | **FAIL**，本次必须按上传次序引用 `<Picture 2>` | FAIL / HARD | Per-Part 资产 |
 | X30 | T2VA 没有任何参考图，但特殊转场 Prompt 引用 `<Picture 1>` | **FAIL**，不得虚构图片 | FAIL / HARD | 无图路径 |
-| X31 | 8×15s 名义 120s，采纳 PT01 后必须剪掉 1s | 净长 119s；标 `LENGTH_FEASIBILITY_CONFLICT`，不能承诺 120s | PASS | 净时长核算 |
+| X31 | 固定8任务且无其他素材/复用，8×15s 名义120s，采纳PT01后必须剪掉1s | 净长 119s；标 `LENGTH_FEASIBILITY_CONFLICT`，不能承诺 120s | PASS | 净时长核算 |
 | X32 | 普通硬切／`suggest_only`，没有确认裁切动作 | 不自动扣减每个 Part 的可用时长 | PASS | 剪辑预算 |
 | X33 | `planned_pair` 缺 `cut_basis` / `fallback` / `risk` | **FAIL**，必须补齐可操作剪点、风险回退 | FAIL / HARD | 配对硬 QC |
 | X34 | 多镜情绪低对比柔光 Vlog | 比较 `GM02`、`OT01` 或 `none`，不机械应用 `CM01` | PASS | 风格适配 |
