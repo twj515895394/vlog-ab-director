@@ -94,7 +94,7 @@ B 镜展现人物或环境，主角的声音作为内心独白在画面外流淌
 5. **先算素材、再算净时长**：剪辑中按 `retained = out−in` 统计每段真实保留长度；精确 120 秒由 8×15 秒素材构成时，若裁切造成损失，不得仍声称剪后必然是 120 秒。
 6. **无 BGM / 不强制神转场**：生成声音字段保持 `non_diegetic_music: N/A`；跨 Part 技巧性转场由 T03B 按叙事可选，不影响 T02 的基本时间轴正确性。
 
-操作顺序与完整校验：见 [`references/timing_engine.md`](timing_engine.md)。Adaptive/Cinematic 的完整 MiniMax H3 提示词模板仍由 T05 交付，本阶段只完善时间与台词预算规范。
+操作顺序与完整校验：见 [`references/timing_engine.md`](timing_engine.md)。Adaptive/Cinematic 完整 MiniMax H3 提示词模板已由 T05 交付，见 [H3 Adapter](model_h3_adapter.md)。
 
 ---
 
@@ -104,4 +104,4 @@ B 镜展现人物或环境，主角的声音作为内心独白在画面外流淌
 2. **台词窗口**：Classic 6–12 汉字/2.5s 与 2–3 镜开口是既有**经验建议**，不是任何动作负载下的绝对可行保证。Adaptive/Cinematic 先扣除镜头动作/停顿后预算发声窗口，中文约 3–4 字/秒仅为规划起算。
 3. **跨镜与跨 Part**：记录谁开始、何时切画面、谁继续说、何时结束；同一独立 15s 任务可文字描述 L/J-Cut，**跨独立生成任务则需后期混音/接音**，不能声称 `<scenetrans>` 自动解决。
 4. **声音字段**：`detailed_description` 的防字幕与无 BGM 原始负向块不变；`overall_soundscape` 仅环境/人声/Foley；`non_diegetic_music` 严格为 `N/A`。不把音乐卡点建议塞入生成字段。
-5. **专项验证**：完整规范、证据边界及正反用例分别见 [`audio_director.md`](audio_director.md)、[`voiceover-verified.md`](../examples/voiceover-verified.md) 与 [`tests/audio-cases.md`](../tests/audio-cases.md)。T05 再实现多段六字段模板，T07 再对照实际 H3 音画效果。
+5. **专项验证**：完整规范、证据边界及正反用例分别见 [`audio_director.md`](audio_director.md)、[`voiceover-verified.md`](../examples/voiceover-verified.md) 与 [`tests/audio-cases.md`](../tests/audio-cases.md)。T05 已实现多段六字段文本模板，T07 再对照实际 H3 音画效果。
