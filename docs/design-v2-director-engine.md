@@ -429,7 +429,7 @@ Auto 的输出必须做到「按需推荐，允许没有」。用户指示「仅
 - `references/timing_engine.md`（拟增）：动态节奏、1–8 Part 长片规划与净时长预算；
 - `references/rules_state_machine.md`（扩展）：形式化状态、约束、衔接；
 - `references/metronome_dialogue_timings.md`（扩展）：保留 2.5 秒经典节拍，补充自适应对白和实测中文画外音；
-- `references/audio_director.md`（拟增）：现场声、配乐、音画剪辑与口型；
+- `references/audio_director.md`（T04 已新增）：现场声、闭嘴中文 VO、说话者与口型、L/J-Cut、生成阶段无 BGM；
 - `references/model_h3_adapter.md`（拟增）：六段式装配、模型标签兼容与上传映射；
 - `references/quality_control.md`（拟增）：硬规则、软规则、验证口径；
 - `references/transition_director.md`（拟增）：按场景判断 none / suggest_only / planned_pair，只有选用时才成对装配转场镜头；
