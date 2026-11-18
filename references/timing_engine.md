@@ -153,7 +153,7 @@ transition_policy: optional, no forced special transition
 audio_policy: no BGM in generation
 ```
 
-此处各 Part 先生成 15 秒，后期取 13 秒。**这是编辑意向与预算，不等于 H3 自动裁片、自动拼接或实际保证得到满足镜头内容的 52 秒成片。** 在 T05 装配正式多 Part Prompt 前，只能称为**长片分段规划能力已接入**。
+此处各 Part 先生成 15 秒，后期取 13 秒。**这是编辑意向与预算，不等于 H3 自动裁片、自动拼接或实际保证得到满足镜头内容的 52 秒成片。** T05 已接入正式多 Part 文本装配，真实素材仍须后期裁切。
 
 ### 5.3 精确 120 秒、镜头裁切与无足够余量
 
@@ -191,7 +191,7 @@ audio_policy: no BGM in generation
 - **T03（已接入规范）**：参见 [continuity_handoff.md](continuity_handoff.md)，检查每镜 `entry/action/exit`、手/道具、场景锚点和各相邻 Part 的合法交接；仍需 T06/T07 验证实际效果。
 - **T03B（已接入文字规则）**：见 [transition_director.md](transition_director.md)；只有在用户采纳/授权且可行时才安排创意剪辑转场和两端镜头。编辑账本**只扣实际确认的裁切/重叠损耗**，`none` 或 `suggest_only` 不自动产生额外剪辑损失。
 - **T04（已接入文本规则）**：见 [audio_director.md](audio_director.md)，定义中文闭嘴 VO、多人发声/口型、L/J-Cut、跨独立 Part 后期接声和无 BGM；实际 H3 声画效果仍待 T07。
-- **T05**：把该时间表编译为可复制的 Adaptive/Cinematic H3 Prompt，并生成 3–8 Part 成套 Prompt；在 T05 完成前不要声明该完整能力已交付。
+- **T05（已接入）**：按 [H3 Adapter](model_h3_adapter.md) 把时间表装配为可复制的单段/多段 Prompt；真实视频待 T07 验证。
 - **T06/T07**：文本 QC 与真实 H3 视频样本验证。数学闭合不能保证模型真正在精确时间点切镜。
 
 **原则**：先叙事后算镜，再算剪辑净时长；时长冲突显式报告，转场不强制，配乐只在后期。
