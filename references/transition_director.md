@@ -3,7 +3,7 @@
 > **状态：T03B 已接入的文字导演规则与交接决策逻辑**。本文件不是视频剪辑程序、AI 视频模型原生参数，也不证明任何复杂转场已经在 MiniMax H3 实机成功。
 >
 > 技巧来源：[46 种摄影与剪辑技巧库](../docs/transition-techniques-library-v2.md)；前置规则：[T01 策略](director_strategy.md)、[T02 时间预算](timing_engine.md)、[T03 连续性交接](continuity_handoff.md)。  
-> 后续边界：T04 声画规则已接入 [audio_director.md](audio_director.md)，T05 才将所选两端镜头装配为正式多 Part H3 六段式 Prompt；T06/T07 进行更完整的 QC / 实机验收。
+> 后续边界：T04 声画规则已接入 [audio_director.md](audio_director.md)，T05 已接入所选两端镜头的正式多 Part 六字段文本装配，见 [H3 Adapter](model_h3_adapter.md)；T06/T07 进行更完整的 QC / 实机验收。
 
 ## 1. 总纲：没有特殊转场也是正确的导演选择
 
