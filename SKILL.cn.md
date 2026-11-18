@@ -7,7 +7,7 @@ description: MiniMax H3 电影感 Vlog 提示词导演，支持 Ref2VA/T2VA、Au
 
 `vlog-ab-director` 是一套专为 **MiniMax H3（特别是全参考 Ref2VA 及 T2VA 模式）** 研发的电影感生活 Vlog 提示词导演 Skill。
 
-它以**“主观视点（A镜）+ 客观电影运镜（B镜）”**交替为底层视听语法，通过**右手专职持机法则、免持物浮空随行模式、硬切省略哲学、道具守恒定律、2.5 秒黄金节拍器、AI 口语化台词代写**以及**空行级绝对防字幕负向约束**，彻底解决 AI 视频人物动作穿模、手部多指变形、道具瞬移、台词语速失控与画面乱码烧录字幕等通病。
+它以**“主观视点（A镜）+ 客观电影运镜（B镜）”**交替为底层视听语法，通过**右手专职持机法则、免持物浮空随行模式、硬切省略哲学、道具守恒定律、2.5 秒黄金节拍器、AI 口语化台词代写**以及**空行级绝对防字幕负向约束**，降低 AI 视频人物动作穿模、手部多指变形、道具瞬移、台词语速失控与画面乱码烧录字幕等问题的发生风险。
 
 ---
 
@@ -139,7 +139,7 @@ description: MiniMax H3 电影感 Vlog 提示词导演，支持 Ref2VA/T2VA、Au
    - **核心原理**：在 30–120 秒多 Part 规划中，每一段在 MiniMax H3 中都是一个**完全独立的 15 秒视频生成任务（Task）**，30 秒两段式只是经典兼容示例。AI 模型是根据该任务实际上传的参考图数量，从 1 开始按顺序匹配 `<Picture 1>`、`<Picture 2>`...；
    - **重编号约束**：若全局有图1人物、图2车库、图3超市，Part 1 上传图1和图2（`<Picture 1>`/`<Picture 2>`）；Part 2 仅上传图1和图3，**则图3在 Part 2 提示词中必须重编号为 `<Picture 2>`**！不得引用本次未上传的 `<Picture 3>`；无图的任务不编造 Picture 引用。完整映射和检查见 [`references/continuity_handoff.md`](references/continuity_handoff.md)。
 5. **绝对画面防字幕与防UI负向铁律（Zero-Text & Clean Screen Enforcement）**：
-   - 彻底解决 AI 视频因包含 `<d>` 对白标签而容易在画面中“烧录字幕、生成乱码水印与虚假UI”的通病；
+   - 降低 AI 视频因包含 `<d>` 对白标签而容易在画面中“烧录字幕、生成乱码水印与虚假UI”的通病；
    - 默认在提示词的 `detailed_description` 结尾必须注入（严格遵循独立空行排版格式）：
      ```text
      【禁止项】
@@ -180,7 +180,17 @@ description: MiniMax H3 电影感 Vlog 提示词导演，支持 Ref2VA/T2VA、Au
 - **负向规则**：默认原防字幕/无 BGM 块；仅用户明确需要实体招牌等真实场景文字时，按 Adapter 4.1 使用限定例外，仍禁浮层字幕/UI/水印/Logo，提示生成文字失真风险。所有模式无 BGM。
 - **边界选择**：planned_pair 经授权后将两端摄影动作分别写入实际 Prompt；suggest_only 仅外部备注，不修改任何 Prompt；none 正常剪接，保持 T03 handoff 与 T02 净时长账本。
 - **输出视图**：Standard 单段完整可复制 text 块；Multi-Part 逐段独立 text 块、必要上传顺序与交接提示；Director Detail 仅按需附详细时间/状态/声音/转场/QC。后期音乐、剪切、风险与未采纳建议在代码块外。
-- **最小自检**：字段完整、时间闭合、素材合法、无占位符、无 BGM、口型/状态/转场一致。不能因完成文本装配就保证模型生成精确切点、口型或无穿帮；T06 完整 QC、T07 实机仍待实施。
+- **交付前必须执行步骤 5 的统一 QC**；不能把文本合规当作模型实际渲染通过。
+
+---
+
+### 步骤 5：T06 统一质量门禁（所有模式、所有 Part 必须执行）
+
+**必须读取 [quality_control.md](references/quality_control.md)**。以实际用户约束及 T01–T05 的导演计划、状态表、当前任务上传清单和最终 Prompt 为依据，执行 H01–H15 硬门禁、S01–S10 软风险检查。硬性失败先修复再复核受影响镜头和相邻 Part，不能用软性评分抵消错误；缺必要输入或互斥约束未解时明确指出，不能编造通过结论。
+
+重点：局部 15 秒时间闭合、Classic 六镜兼容、独立资产编号、人物/手/道具守恒、中文 VO 音画语义、无 BGM、六字段完整、真实场景文字的限定例外、最长 8 个独立任务和净时长账本。none/suggest_only 不强制特殊转场；planned_pair 才检查双端、剪点、授权与回退。Cinematic 全 B、零台词均合法。
+
+默认只交付通过文本 QC 的完整 Prompt 与必要上传/交接/重要风险提示；详细 QC 仅按需展示。区分 S（结构）、L（语义审查）、E（用户单例经验）、V（真实视频）。仓库可执行静态回归脚本 `node tests/qc-check.mjs`；不把该结果当成任意自然语言或 H3 渲染的可靠性证明。T07 实机须按 [验证协议](docs/h3-validation-protocol.md) 提供真实样本才可升级正式版本。
 
 ---
 
@@ -195,6 +205,7 @@ description: MiniMax H3 电影感 Vlog 提示词导演，支持 Ref2VA/T2VA、Au
 - **T05 H3 装配器**：[model_h3_adapter.md](references/model_h3_adapter.md)；[15s Adaptive](templates/template_15s_adaptive.md)、[30s Adaptive](templates/template_30s_adaptive_twopart.md)、[15s Cinematic-led](templates/template_15s_cinematic.md)、[3–8 Part 完整装配及八段示例](templates/template_multipart_15s_sequence.md)。旧 Classic 模板保留固定六镜并改用无占位符完整样例。
 
 
+- **T06 质量门禁与测试**：[quality_control.md](references/quality_control.md)、[qc-check.mjs](tests/qc-check.mjs)；[T07 实机验收协议](docs/h3-validation-protocol.md)。
 - 状态机与防穿帮法则：[`references/rules_state_machine.md`](references/rules_state_machine.md)
 - 运镜景别与机位词库：[`references/camera_ab_grammar.md`](references/camera_ab_grammar.md)
 - 黄金节拍器与台词预算规范：[`references/metronome_dialogue_timings.md`](references/metronome_dialogue_timings.md)
