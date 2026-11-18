@@ -1,10 +1,10 @@
 # Vlog AB Director v2 分阶段实施计划
 
-> 状态：**In Progress / 分阶段实施中**（2026-11-18：T00、T01、T02、T03 规范/入口实现已提交；T03B–T07 尚未实施；H3 实机尚未验证）  
+> 状态：**In Progress / 分阶段实施中**（2026-11-18：T00、T01、T02、T03、T03B 规范/入口实现已提交；T04–T07 尚未实施；H3 实机尚未验证）  
 > 制定日期：2026-11-18  
 > 设计依据：[v2 详细设计（已确认）](design-v2-director-engine.md)  
 > 目标仓库：`twj515895394/vlog-ab-director` / `main`  
-> 本计划既是阶段实施依据，也记录已完成阶段的进展；代码库当前已按 T01/T02 修改 Skill 入口与参考规则，但尚未执行视频实机验证。  
+> 本计划既是阶段实施依据，也记录已完成阶段的进展；代码库当前已按 T01–T03B 修改 Skill 入口与参考规则，但尚未执行视频实机验证。  
 > 优先级：**保持 v1 已验证有效行为 > 新功能扩展 > 表述美化**。
 
 ## 1. 决策冻结基线与范围
@@ -145,7 +145,8 @@
 - 新增 `references/transition_director.md`，使 Skill 能按场景判断 `none / suggest_only / planned_pair`；
 - 在 `references/continuity_handoff.md` 中增加**仅对已采用转场**才启用的 outgoing/incoming 镜头字段；
 - 根据需要更新 `SKILL.md`、`SKILL.cn.md` 的 Auto 创作流程；
-- 扩展 `tests/regression-matrix.md` 的跨 Part 推荐/不用转场案例。
+- 新增 `templates/transition_boundary_examples.md`（内部规划正例，不冒充完整 H3 Prompt）；
+- 新增 `tests/transition-cases.md`（36 个正反用例），并扩展 `tests/regression-matrix.md` 的跨 Part 推荐/不用转场案例。
 
 **具体任务**
 1. 每个边界先判断叙事类型、情绪节奏和正常硬切是否已经足够；
@@ -169,6 +170,8 @@
 - none 是完全合格结果，QC 不因缺少技巧性转场报错；
 - planned_pair 双端配合完整，且有剪辑成本/风险与失败回退；
 - v1 Classic 镜头模式不被无意更改。
+
+**T03B 当前实现记录（2026-11-18）**：已新增 `references/transition_director.md`，在 `references/continuity_handoff.md` 加入**仅选中 planned_pair 才启用的** outgoing/incoming 双端镜头与剪点字段；中英文 `SKILL.md` 均接入场景判断与默认 suggest_only 行为；已有 46 技巧目录正式挂接，新增六个内部边界示例与 `tests/transition-cases.md`（36 个正反场景）。保持 `none` 合法，`suggest_only` 不改 Prompt，`planned_pair` 仅用户选用/明确授权且可行时应用。仅为**文字 Skill 执行规则和静态案例**，未开发自动剪辑器、未验证实际 H3 转场视频；完整多 Part H3 模板装配留 T05。
 
 ### T04 — 台词、已验证画外音与无 BGM 规则
 
@@ -346,9 +349,9 @@
 | **T01** | 已实施规范/入口 | `references/director_strategy.md`、`SKILL.md`、`SKILL.cn.md`、路由预期用例；真实加载 Skill 的语言模型行为尚待验收 |
 | **T02** | 已实施时间规划/预算 | `references/timing_engine.md`、Classic 节拍器兼容注记、`tests/timing-cases.md`；仅静态时间算术与文档一致性验证 |
 | **T03** | 已实施规则/入口 | `references/continuity_handoff.md`、扩展 `rules_state_machine.md`、`templates/segment_handoff_example.md`、`tests/continuity-cases.md`（32 例）；语言模型行为及 H3 视频待验证 |
-| **T03B** | 未实施 | 按场景推荐/采纳特殊转场、双端镜头配对、剪辑点与风险回退 |
+| **T03B** | 已实施规则/入口 | `references/transition_director.md`、46 技巧库、T03 交接选用字段、`templates/transition_boundary_examples.md`、`tests/transition-cases.md`（36 例）；模型行为和 H3 结果仍未实测 |
 | **T04** | 未实施 | VO/L-Cut 完整声音语法、无 BGM 声画 QC |
 | **T05** | 未实施 | 可复制 Adaptive/Cinematic 多 Part H3 完整模板装配 |
 | **T06 / T07** | 未实施 | 完整静态 QC 与真实 H3 实机视频回归 |
 
-**后续执行从 T03B 开始**；T03 状态交接已定义，但不要因此声称实现了创意转场推荐、120 秒完整 H3 Prompt 自动装配、自动剪辑或实际视频渲染。
+**后续执行从 T04 开始**；T03B 已接入场景驱动的可选转场推荐和双端镜头规划规则，但不能因此宣称已经具备 120 秒完整 H3 Prompt 自动装配、视频自动剪辑或 H3 实机转场成功率。
