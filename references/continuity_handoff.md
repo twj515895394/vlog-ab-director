@@ -1,7 +1,7 @@
 # Vlog AB Director v2：T03 镜头状态机与跨 Part 连续性交接契约
 
 > 状态：T03 已接入的**内部导演规划规范**；不是 MiniMax H3 原生参数格式，不是程序化校验器。  
-> 生效范围：Classic AB、Adaptive AB、Cinematic-led 的每一镜，以及最多 8 个独立 15 秒 Part 之间的每个边界。  
+> 生效范围：Classic AB、Adaptive AB、Cinematic-led 的每一镜，以及所有独立15秒任务中的连续依赖与实际播放边界。  
 > 关联：[基础物理规则](rules_state_machine.md) · [T02 时间轴](timing_engine.md) · [已确认 v2 设计](../docs/design-v2-director-engine.md)。  
 > 阶段边界：**T03B 已接入可选转场决策与选用时的双端镜头契约**，详见 [transition_director.md](transition_director.md)；T04 声音规范已接入 [audio_director.md](audio_director.md)，T05 将状态及已选用的镜头转成完整 H3 Prompt，T06 执行完整 QC。
 
@@ -101,28 +101,22 @@
 
 **例 3：时间跳跃。** Part 3 在白日林地、Part 4 设为数小时后夕阳海边。人物身份延续；scene、lighting、position 可显式发生变化；要声明从林地离开后经历路程。不要写「原地一秒变换成海边」作为没有解释的写实场景。
 
-## 6. 多 Part 交接契约（2–8 Part，任意相邻边界）
+## 6. 多 Part 交接契约（按实际剧本/剪辑边界）
 
 ### 6.1 边界生成顺序
 
-1. 在 T02 完成每段时间轴规划以后，依次规划 Part k 的每镜 `entry/action/exit`；
-2. 对 Part k 最后一镜的 `exit_state` 形成 `handoff_out(k)`；
-3. 在 Part k+1 前，明确衔接类型：`same_moment`、`cut_ellipsis`、`time_jump` 或 `location_jump`；这些是**叙事/物理连续性类型，不是 T03B 的「神转场」算法结果**；
-4. 记录 `allowed_changes` 与 `events`；要求 Part k+1 第一镜的 `entry_state` 与 handoff_out 一致，或有对应合法改变事件；
-5. 分别构造 Part k 与 Part k+1 的**独立参考素材上传清单**，先映射全局资产，再按当前任务重编号；
-6. 检查所有 1–8 Part 的边界，不能只维护 P1→P2 而忘记 P5→P6；
-7. 默认只在输出中给用户必需的「下一 Part 上传顺序 / 关键状态」简短说明；完整内部 handoff 表仅按需展示。T05 已接入 3–8 Part 成套 Prompt 装配，见 [H3 Adapter](model_h3_adapter.md)。
+CONTINUOUS应依真实剧情按顺序规划和消费状态；HYBRID局部同样严格；EDITED也可以有连续边界。先登记continuity_group_id/depends_on_task_ids，确认实际播放顺序和边界类型。每任务内保持逐镜entry/action/exit。按实际保留点（不是必然名义第15秒）提供前镜exit_snapshot、后镜entry_snapshot；同一时刻严格匹配，cut_ellipsis写合法事件。时间/地点跳跃、flashback/flashforward/parallel/associative/return按对应Story时期、因果、人物状态和观众线索核对，禁止把前一屏的道具/服装盲传给不同事件。每个真实边界记账；连续生成依赖不可因为技术独立而取消。真实裁切改变状态时更新下游。在实际素材未获得时仅做预计状态；核实真实出入点后修订。每任务独立上传/重编号。详见 [Editing Timeline](editing/editing_timeline.md)；默认简短交接即可。
 
 ### 6.2 Handoff 必需字段
 
 | 字段 | 意义 |
 |---|---|
-| `from_part / to_part` | 相邻独立生成任务 ID |
-| `boundary_type` | same_moment / cut_ellipsis / time_jump / location_jump |
-| `exit_snapshot` | 最后镜人物身份、服饰、姿态/朝向、双手、核心道具、场景锚点、光照 |
+| `from_part / to_part` | 实际剪辑相邻素材ID/任务或镜头ID |
+| `boundary_type` | same_moment / cut_ellipsis / time_jump / location_jump / flashback / flashforward / parallel / associative / return |
+| `exit_snapshot` | 实际保留出点的人物身份、服饰、姿态/朝向、双手、核心道具、场景锚点、光照 |
 | `events` | 不在镜内展示却解释状态变化的动作/时空事实，可为空 |
 | `allowed_changes` | 允许改变的字段，**仅在有事件时改变** |
-| `entry_snapshot` | 下一 Part 第一镜需要呈现的状态 |
+| `entry_snapshot` | 实际入点应呈现的状态 |
 | `persistent_lock` | 即使跨时空仍必须保留的身份、关键道具外观等 |
 | `audio_carry` | 仅记录跨 Part 音频是否接续，详细声画规则见已实施的 [T04 Audio Director](audio_director.md) |
 | `asset_manifest` | 各 Part 实际上传的全局资产 ID 与当前 `Picture N` 映射 |
@@ -189,7 +183,7 @@ P2 的「温室」虽然是全局第三个资产，实际本段仅上传两张�
 
 - **T03** 处理 `same_moment`、`cut_ellipsis`、`time_jump`、`location_jump` 的**叙事状态继承**；不把「水池穿越」等技巧当成必须调用的状态事件。
 - **T03B（已接入规则）** 根据题材与景别判 `none / suggest_only / planned_pair`，只有选用 `planned_pair` 时才要求两 Part 的出场/入场镜头成对匹配，并计入确实发生的编辑损耗。
-- 任意 120 秒片子即使所有边界都是普通硬切，**T03 的 handoff 仍必须成立**；特殊转场数量没有下限。
+- 任意≤300秒片子即使所有边界都是普通硬切，**T03 的 handoff 仍必须成立**；特殊转场数量没有下限。
 
 **T03 完成定义**：规范已接入入口，能够从镜头状态推导合法连续性，能够按每个任务重新编写参考资产清单，能够按不同时间/地点跳跃说明物理状态。完整动态 H3 Prompt 装配已由 T05 定义，实际视频仍待 T07。
 
@@ -212,7 +206,7 @@ P2 的「温室」虽然是全局第三个资产，实际本段仅上传两张�
 3. `outgoing_shot` 保留前段镜头结束时的手、道具与人物状态；`incoming_shot` 继承或通过 `cut_event / location_jump / time_jump` 合法改变状态。
 4. 每个 Part 用自己的局部 0–15 秒时间轴、独立的 `asset_id → Picture N` 上传列表；需要新素材时提醒真实上传，**绝不能凭空引用**。
 5. `cut_basis` 必须是剪辑可找到的画面依据（满幅遮挡、同向甩镜模糊峰值、相近水纹、动作相位、形状重合），而不是只写「无缝神转场」。
-6. 记录真实/预估的 `edit_in / edit_out`、是否真的产生净时长损耗。8×15s 恰好 120s 名义素材若需裁切，不得声称剪后仍有 120s。
+6. 记录真实/预估的 `edit_in / edit_out`、是否真的产生净时长损耗。固定素材预算若需裁切，不得声称剪后仍等于名义总长；补镜必须记账。
 7. 高风险镜头必须提供 `fallback=normal_hard_cut` 或更保守的真实镜头匹配方案；不能承诺 H3 跨任务精确无缝。
 
 **例：P4 水面 → P5 海岸的 PT01**：P4 尾镜的水纹覆盖画面，P5 首镜从类似水纹揭开环境；真正剪辑点在水纹覆盖帧，故事上标 `location_jump`，旧场景锚点仍留原场景，声音仅有水声/Foley、人声（如有），**没有 BGM**。两端都需要相应独立生成素材；若水纹不匹配则改普通硬切，不能编造自动无缝穿越。
